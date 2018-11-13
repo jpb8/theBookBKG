@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1>{{ user.username }}</h1>
+            <img src="{{ account.profile_pic.url }}">
+            <p>Account Balance: {{ account.balance }}</p>
+            <p>Email: {{ account.user.email }}</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

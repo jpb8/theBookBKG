@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% timezone "America/Chicago" %}
+<div class="container">
+    {% if tokens %}
+        {% include 'account/snippets/token_products.html' with tokens=tokens %}
+    {% else %}
+        <h1>No Tokens</h1>
+    {% endif %}
+</div>
+
+{% endtimezone %}
+{% endblock %}

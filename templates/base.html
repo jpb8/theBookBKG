@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    {% include 'base/css.html' %}
+
+    <title>Parlay Purchase</title>
+
+    <link rel="icon" href="{% static 'images/parlaypurchase.ico' %}">
+
+</head>
+<body>
+
+<!-- Nav bar -->
+<nav class="navbar  fixed-top navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Parlay Purchase</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'betslip:home' %}">Betslip <span class="betslip-span"></span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Sports Book
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'sportsbook:nfl' %}">NFL</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'sportsbook:ncaaf' %}">NCAAF</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'sportsbook:nhl' %}">NHL</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'sportsbook:nba' %}">NBA</a>
+                </div>
+            </li>
+
+
+        </ul>
+
+        {% if user.is_authenticated %}
+        <div class="dropdown dropleft">
+            <button class="btn btn-secondary btn-small dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ user.username }} (${{ user.account.balance }})
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'account:account_home' %}">Account Home</a>
+                <a class="dropdown-item" href="{% url 'account:active_bets' %}">Active Bets</a>
+                <a class="dropdown-item" href="{% url 'account:user_logout' %}">Logout</a>
+            </div>
+        </div>
+        {% else %}
+        <form class="form-inline my-2 my-lg-0" action="{% url 'sportsbook:base' %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" id="username" name="username" type="text" placeholder="Username"
+                   aria-label="Search">
+            <input class="form-control mr-sm-2" id="password" name="password" type="password" placeholder="Password"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign In</button>
+        </form>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Jumbotron -->
+<div class="jumbotron jumbo-top" id="top-jumbo" style="background: url('{% static 'images/main-banner.jpg' %}')">
+    <h1 class="display-4" id="disp-4">Parlay Purchcase!</h1>
+    <p class="lead" id="lead">Why BUY IT When You can WIN IT!</p>
+    <hr class="my-4">
+    {% if user.is_anonymous %}
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{% url 'account:signup' %}" role="button">Sign Up!</a>
+    </p>
+    {% endif %}
+</div>
+
+{% block body_block %}
+
+
+
+{% endblock %}
+<!-- Footer -->
+
+{% include 'base/js.html' %}
+
+<script>
+
+</script>
+
+
+</body>
+</html>

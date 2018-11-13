@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% timezone "America/Chicago" %}
+<div class="container">
+    {% if placed_bets %}
+    {% for bets in placed_bets %}
+    <table class="table">
+        <thead>
+            <th scope="col">Bet</th>
+            <th scope="col">Odds</th>
+            <th scope="col">Total</th>
+        </thead>
+        {% for odd in bets.betvalue_set.all %}
+        <tr>
+            <td>{{ odd.odd }}       {{ bets.placed }}</td>
+            <td>{{ odd.odd.price }}</td>
+            <td>{{ odd.value }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td>{{ bets.get_status_display }}</td>
+            <td>{{ bets.value }}</td>
+        </tr>
+    </table>
+    {% endfor %}
+    {% endif %}
+
+</div>
+
+{% endtimezone %}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% if cards %}
+    {% for card in cards %}
+            <label for='address-{{ card.id }}'>
+                <input id='address-{{ card.id }}' type='radio' name='saved_card' value='{{ card.id }}' />
+            {{ card }}
+            </label><br/>
+    {% endfor %}
+{% endif %}

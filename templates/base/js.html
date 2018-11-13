@@ -1,0 +1,27 @@
+{% load static %}
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.4/js/mdb.min.js"></script>
+<!-- Django Secure AJAX JS -->
+<script src='{% static "js/csrf.ajax.js" %}'></script>
+<!-- JS Render -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.min.js"></script>
+{% include 'base/js_templates.html' %}
+<!-- Chart.js -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src='{% static "js/bet_charts.js" %}'></script>
+<!-- ajax -->
+<script src='{% static "js/ajax.js" %}'></script>
+<!-- Stripe -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src='{% static "js/stripe.js" %}'></script>
+<!-- BetSlip -->
+<script src='{% static "js/betslip.js" %}'></script>

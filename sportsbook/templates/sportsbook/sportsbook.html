@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% timezone "America/Chicago" %}
+<div class="container">
+    <div class="row">
+        {% include 'sportsbook/snippets/game_tables.html' with games=games %}
+
+        {% include 'sportsbook/sidebar.html' %}
+
+    </div>
+</div>
+{% endtimezone %}
+{% endblock %}

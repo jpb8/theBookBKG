@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Daily Articles</h1>
+        <p class="lead"></p>
+    </div>
+</div>
+
+<!-- Cards -->
+<div class="container">
+    <div class="row">
+        <div class="card-deck">
+            <div class="col-md-4">
+                <div class="card" style="width: 24rem;">
+                    <img class="card-img-top" src="{% static 'images/football.jpg' %}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">NFL Article</h5>
+                        <p class="card-text">Pre-Season ranking for every team.</p>
+                        <a href="#" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 24rem;">
+                    <img class="card-img-top"
+                         src="https://images.pexels.com/photos/139762/pexels-photo-139762.jpeg?auto=compress&cs=tinysrgb&h=350"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">MLB Article</h5>
+                        <p class="card-text">Best MLB Stacks for the day. Home run hunters.</p>
+                        <a href="#" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 24rem;">
+                    <img class="card-img-top"
+                         src="https://images.pexels.com/photos/163452/basketball-dunk-blue-game-163452.jpeg?auto=compress&cs=tinysrgb&h=350"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">NBA Article</h5>
+                        <p class="card-text">Best Lottery adds and their DFS impact.</p>
+                        <a href="#" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+1. Get rid of cards
+
+2. Ajax Betslip update:
+    - Create create inputs and Update parlay "data-odds"
+    - Clean up. Change from a table.
+
+3. Password Change
+    - I will give them a password and they will update it the first time the login
+
+4. Pop up that "Are you sure you want to submit bet"
+
+5. Validate Bet with JS
+    - On Form Submit:
+        - Check to see if any of the bets are over there limit
+        - Check to see if they have enough funds in their account (Set Account Balance in Session?)
+        - Check to see if they have entered a value for each bet. If not delete?
+
+6. Switch from first half to second half. Make it Tabbed??
+
+7. Front page with highlighted games.
+
+8. Improve admin
+    - Total handle
+    - Sort events
+    - Search event for Odds
+
+

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+<div class="container">
+    <h1>{{ user.username }}</h1>
+    <img src="http://127.0.0.1:8000/media/{{ account_detail.profile_pic }}" height="75px">
+    <p>Account Balance: {{ account_detail.balance }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Address: {{ account_detail.city }}</p>
+    <p>City: {{ account_detail.state }}</p>
+    <p>City: {{ account_detail.zip_code }}</p>
+</div>
+<div class="container">
+    <p><a class="btn btn-outline-success" href="{% url 'account:update' pk=account_detail.pk %}">Update</a></p>
+</div>
+
+
+{% endblock %}

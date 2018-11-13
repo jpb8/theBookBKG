@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div classe="row">
+            <h1>Parlay</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Bet</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+
+                <tbody id="slip-table-body">
+                {% for odd in slip.odds.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href='#'>{{ odd.home }}: {{ odd.type }}</a>
+
+                    </td>
+                    <td>{{ odd.price }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Subtotal</b> {{ slip.divider }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+            <div class="row">
+            <h1>Bet Slip</h1>
+            {% if slip.odds.exists %}
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th>Product Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in slip.products.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href='#'>{{ product.title }}</a>
+
+                    </td>
+                    <td>{{ product.price }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total:</b> ${{ slip.total }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total Odds</b> {{ slip.divider }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Due:</b> ${{ slip.due }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        {% if not slip.shipping_address %}
+        <div class="col-3">
+            {% include 'account/snippets/saved_addresses.html' with address_qs=addresses %}
+        </div>
+        <div class="col-3">
+            {% include 'account/snippets/address_form.html' with form=address_form address_type='Billing Address'%}
+        </div>
+        {% else %}
+            <div class="col-3">
+                <h1>
+                    {{ slip.shipping_address.get_address }}
+                </h1>
+            </div>
+        {% endif %}
+    </div>
+    {% if slip.shipping_address %}
+    <form class="submit-betslip" method="POST" action="{% url 'betslip:submit_bet' %}">{% csrf_token %}
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-outline-success bet-button">Submit Bet</button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% else %}
+<h2>Cart is empty</h2>
+{% endif %}
+
+{% endblock %}
