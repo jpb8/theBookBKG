@@ -1,6 +1,6 @@
 <div class="col-sm-4" id="bets">
     <h1>Bet Slip</h1>
-    <form class="submit-betslip" method="POST" action="{% url 'betslip:submit_bet' %}">{% csrf_token %}
+    <form class="submit-betslip" id="submit-betslip" method="POST" action="{% url 'betslip:submit_bet' %}">{% csrf_token %}
     <table class="table" id="bet">
         <thead>
             <tr>
@@ -70,7 +70,7 @@
             </tr>
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    <button type="button" id="bet-form-review" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
     Submit
     </button>
     <button type="submit" class="btn btn-success">Submit</button>

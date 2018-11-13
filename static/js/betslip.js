@@ -42,4 +42,16 @@ $(document).ready(function(){
             $(this).val(val);
         }
     });
+
+
+    $('#bet-form-review').click(function() {
+        var inputs = $('.risk-input');
+        $.each(inputs, function(index, html){
+            if( !$(this).val() ) {
+                alert("Please fill out all bet boxes");
+                e.preventDefault();
+                return false;
+            }
+        })
+    });
 })
