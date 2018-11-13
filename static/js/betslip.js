@@ -43,12 +43,16 @@ $(document).ready(function(){
         }
     });
 
-
+    // validate Bet
     $('#bet-form-review').click(function() {
         var inputs = $('.risk-input');
         $.each(inputs, function(index, html){
-            if( !$(this).val() ) {
+            if( !$(this).val() || ) {
                 alert("Please fill out all bet boxes");
+                e.preventDefault();
+                return false;
+            } else if ( $(this).attr("data-max-bet") > $(this).val() ) {
+                alert("Exceded Max Bet of " + $(this).attr("data-max-bet"));
                 e.preventDefault();
                 return false;
             }

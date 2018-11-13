@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 from account.models import Account
 from .utls import validate_slip
 from django.db import transaction
-
+from django.template.loader import render_to_string
 
 # Create your views here.
 def slip_home(request):
@@ -45,19 +45,22 @@ def slip_update(request):
         added = slip_obj.add_or_remove_odd(odds_obj)
         request.session['slip_odds'] = str(round(slip_obj.divider, 2))
         request.session['slip_due'] = str(round(slip_obj.due, 2))
-    # Serialize bet and send back with ajax
+    # Serialize bet and send back with ajax - Old
+    # render sidebar template and return it as a string - new
     if request.is_ajax:
-        bets = serialize('json', slip_obj.odds.all())
-        json_data = {
-            "added": added,
-            "removed": not added,
-            "slipOdds": str(round(slip_obj.divider, 2)),
-            "slipDue": str(round(slip_obj.due, 2)),
-            "slipTotal": str(round(slip_obj.total, 2)),
-            "slipMulti": str(round(slip_obj.divider)),
-            "slipBets": bets,
-        }
-        return JsonResponse(json_data)
+        slip_dict = {"slip": slip_obj}
+        html = render_to_string("sportsbook/sidebar.html", slip_dict)
+        # bets = serialize('json', slip_obj.odds.all())
+        # json_data = {
+        #     "added": added,
+        #     "removed": not added,
+        #     "slipOdds": str(round(slip_obj.divider, 2)),
+        #     "slipDue": str(round(slip_obj.due, 2)),
+        #     "slipTotal": str(round(slip_obj.total, 2)),
+        #     "slipMulti": str(round(slip_obj.divider)),
+        #     "slipBets": bets,
+        # }
+        return HttpResponse(html)
     return redirect('betslip:home')
 
 

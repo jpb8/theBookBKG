@@ -7,24 +7,23 @@ $(document).ready(function(){
         var actionEndpoint = thisForm.attr("action");
         var httpMethod = thisForm.attr("method");
         var formData = thisForm.serialize();
-
+        // Send Odd id and get back new side bar HTML as string
         $.ajax({
             url: actionEndpoint,
             method: httpMethod,
             data: formData,
             success: function(data){
                 dataSlipBets = JSON.parse(data.slipBets)
-                var slipOdds = document.getElementById('slip-table-body')
-                var slipBetsHtml = ""
+                var slipSideBar = document.getElementById('bets')
+                slipSideBar.html(data);
 
-                for (i = 0; i < dataSlipBets.length; i++) {
-                    betNumb = i + 1
-                    tableBet = dataSlipBets[i]
-                    slipBetsHtml += "<tr><th scope='row'>" + betNumb +"</th><td><a href='#'>" + tableBet.fields.home + ": " + tableBet.fields.type + "</a></td><td>" + tableBet.fields.price + "</td><td></td></tr>"
-
-                };
-                slipBetsHtml += "<tr><th scope='row'></th><td>Total: " + data.slipTotal + "</td><td>Parlay Odds: " + data.slipOdds + "</td><td>Due: " + data.slipDue + "</tr>"
-                $('#slip-table-body').html(slipBetsHtml)
+                // for (i = 0; i < dataSlipBets.length; i++) {
+                //     betNumb = i + 1
+                //     tableBet = dataSlipBets[i]
+                //     slipBetsHtml += "<tr><th scope='row'>" + betNumb +"</th><td><a href='#'>" + tableBet.fields.home + ": " + tableBet.fields.type + "</a></td><td>" + tableBet.fields.price + "</td><td></td></tr>"
+                // };
+                // slipBetsHtml += "<tr><th scope='row'></th><td>Total: " + data.slipTotal + "</td><td>Parlay Odds: " + data.slipOdds + "</td><td>Due: " + data.slipDue + "</tr>"
+                // $('#slip-table-body').html(slipBetsHtml)
             },
             error: function(errorData){
                 console.log(errorData)
