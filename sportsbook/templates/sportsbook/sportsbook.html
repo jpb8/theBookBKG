@@ -6,9 +6,9 @@
 <div class="container">
     <div class="row">
         {% include 'sportsbook/snippets/game_tables.html' with games=games %}
-
+        <div class="col-sm-4" id="slip-bets" class="slip-sidebar">
         {% include 'sportsbook/sidebar.html' %}
-
+        </div>
     </div>
 </div>
 {% endtimezone %}
