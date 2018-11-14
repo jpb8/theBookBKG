@@ -43,6 +43,13 @@ $(document).ready(function(){
         }
     });
 
+    $('#myModal').on('show.bs.modal', function (e) {
+        var button = e.relatedTarget;
+        if($(button).hasClass('no-modal')) {
+            e.stopPropagation();
+        }
+    });
+
 
     $('#bet-form-review').click(function() {
         var inputs = $('.risk-input');
