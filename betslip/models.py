@@ -71,14 +71,15 @@ class Slip(models.Model):
 
     # Creates a PlacedBet and BetValue for all odds in the slip
     def create_straight_bets(self, post):
+        total_collected = 0
         for bet in self.odds.all():
-            total = Decimal(post['risk-{}'.format(bet.pk)])
-            value = Decimal(post['win-{}'.format(bet.pk)])
+            collected = Decimal(post['risk-{}'.format(bet.pk)])
+            value = Decimal(collected * bet.get_multiplier())
             new_placed = PlacedBet.objects.create(
                 user=self.user,
                 value=value,
                 divider=self.divider,
-                collected=total,
+                collected=collected,
                 sum_odds=bet.get_multiplier(),
                 placed=timezone.now(),
                 type="S"
@@ -95,11 +96,13 @@ class Slip(models.Model):
                 handicap=odd_group.handicap,
                 odd_group=odd_group
             )
+            total_collected += collected
+        return total_collected
 
     # Creates Placed with all odds as the parlay values
     def create_parlay(self, post):
         total = Decimal(post['parlay-risk-input'])
-        win = Decimal(post['parlay-win-input'])
+        win = Decimal(total * self.divider)
         new_placed = PlacedBet.objects.create(
             user=self.user,
             value=win,
@@ -122,6 +125,7 @@ class Slip(models.Model):
                 handicap=odd_group.handicap,
                 odd_group=odd_group
             )
+        return total
 
 
 # Change receiver for adding odds to betslip

@@ -9,6 +9,7 @@ from .utls import validate_slip
 from django.db import transaction
 from django.template.loader import render_to_string
 
+
 # Create your views here.
 def slip_home(request):
     slip_obj, new_obj = Slip.objects.new_or_get(request)
@@ -49,17 +50,7 @@ def slip_update(request):
     # render sidebar template and return it as a string - new
     if request.is_ajax:
         slip_dict = {"slip": slip_obj}
-        html = render_to_string("sportsbook/sidebar.html", slip_dict)
-        # bets = serialize('json', slip_obj.odds.all())
-        # json_data = {
-        #     "added": added,
-        #     "removed": not added,
-        #     "slipOdds": str(round(slip_obj.divider, 2)),
-        #     "slipDue": str(round(slip_obj.due, 2)),
-        #     "slipTotal": str(round(slip_obj.total, 2)),
-        #     "slipMulti": str(round(slip_obj.divider)),
-        #     "slipBets": bets,
-        # }
+        html = render_to_string("sportsbook/sidebar.html", slip_dict, request=request)
         return HttpResponse(html)
     return redirect('betslip:home')
 
@@ -110,25 +101,27 @@ def submit_bet(request):
         try:
             account = Account.objects.get(user=request.user)
         except Account.DoesNotExist:
-            return redirect('account:signup') # Change to Sign In
+            return redirect('account:signup')  # Change to Sign In
         # Check if bet slip is valid
         #   1. Check game start times
         #   2. Check account balance
         #   3. Check account limits
-        valid, message = validate_slip(slip_obj, account, post) # Returns Bool for valid and error Message
+        valid, message = validate_slip(slip_obj, account, post)  # Returns Bool for valid and error Message
         if not valid:
             print(message)
             HttpResponse(message)
         else:
+            due = 0
             # Create PlacedBets and BetValues
             if "parlay-checkbox" in post:
-                slip_obj.create_parlay(post)
-            slip_obj.create_straight_bets(request.POST)
+                due += slip_obj.create_parlay(post)
+                print(due)
+            due += slip_obj.create_straight_bets(request.POST)
+            print(due)
             slip_obj.odds.clear()
             # Get account for update and withdraw the total of all the bet.
             with transaction.atomic():
                 account_for_withdraw = Account.objects.select_for_update().get(user=request.user)
-                due = Decimal(post['betlsip-total-risk'])
                 account_for_withdraw.balance -= due
                 account_for_withdraw.save()
             return redirect('account:active_bets')
