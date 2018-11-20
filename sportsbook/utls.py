@@ -2,6 +2,14 @@ from .models import Event
 from django.utils import timezone
 
 
+def get_live_sports():
+    qs = Event.objects.raw('''select sport, 
+        lower(sport) as lower_sport 
+        from public.sportsbook_event as e 
+        where e.start_time >= now() 
+        group by e.sport;''')
+    return qs
+
 def get_event_qs(sport, odd_type):
     qs = Event.objects.raw('''select 
         game_id, start_time, e.home, away,
@@ -24,6 +32,32 @@ def get_event_qs(sport, odd_type):
         order by start_time
         '''.format(sport, odd_type, timezone.now()))
     return qs
+
+
+def get_featured_games():
+    qs = Event.objects.raw('''select 
+        game_id, start_time, e.home, away, e.sport,
+        handicap, total, e.h_score, e.a_score, og.id as ogid,
+        a_line_id, a_line.price as a_line_price,
+        h_line_id, h_line.price as h_line_price,
+        a_sprd_id, a_sprd.price as a_sprd_price,
+        h_sprd_id, h_sprd.price as h_sprd_price,
+        over_id, ovr.price as over_id_price,
+        under_id, undr.price as under_id_price
+        from sportsbook_event as e 
+        left join sportsbook_oddsgroup as og on e.game_id=og.event_id
+        left join sportsbook_odds as h_sprd on og.a_sprd_id=h_sprd.odd_id
+        left join sportsbook_odds as a_sprd on og.a_sprd_id=a_sprd.odd_id
+        left join sportsbook_odds as h_line on og.h_line_id=h_line.odd_id
+        left join sportsbook_odds as a_line on og.a_line_id=a_line.odd_id
+        left join sportsbook_odds as ovr on og.over_id=ovr.odd_id
+        left join sportsbook_odds as undr on og.under_id=undr.odd_id
+        where e.live_status=0 and e.featured=true and og."type"='Game' and e.start_time >= '{}'
+        order by start_time
+        '''.format(timezone.now()))
+    print(timezone.now())
+    return qs
+
 
 def get_ml_gs():
     qs = Event.objects.raw('''select t.game_id,

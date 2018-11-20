@@ -32,3 +32,7 @@
 .emp-button {
     margin-left:3px !important;
 }
+
+.bets-hidden {
+    display: none;
+}

@@ -107,12 +107,12 @@ class Event(models.Model):
     h_score = models.IntegerField(default=0, null=True)
     a_score = models.IntegerField(default=0, null=True)
     live_status = models.IntegerField(choices=LIVE_STATUS_OPTIONS, default=0)
+    featured = models.BooleanField(default=False)
 
     objects = EventManager()
 
     def __str__(self):
         return "{} @ {}".format(self.away, self.home)
-
 
 
 class OddsGroup(models.Model):

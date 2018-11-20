@@ -5,9 +5,25 @@
 {% timezone "America/Chicago" %}
 <div class="container">
     <div class="row">
-        {% include 'sportsbook/snippets/game_tables.html' with games=games %}
-        <div class="col-sm-4" id="slip-bets" class="slip-sidebar">
-        {% include 'sportsbook/sidebar.html' %}
+        <div class="col-lg-8">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="bet-type-select">Bet Types</label>
+                </div>
+                <select class="custom-select" id="bet-type-select">
+                    <option value="game" selected>Game Lines</option>
+                    <option value="first-half">First Half Lines</option>
+                </select>
+            </div>
+            <div id="full-game-bets-wrapper"> Game
+                {% include 'sportsbook/snippets/game_tables.html' with games=full_game_bets %}
+            </div>
+            <div id="first-half-bets-wrapper"> First Half
+                {% include 'sportsbook/snippets/game_tables.html' with games=first_half_bets %}
+            </div>
+        </div>
+        <div class="col-sm-4 slip-sidebar" id="slip-bets">
+            {% include 'sportsbook/sidebar.html' %}
         </div>
     </div>
 </div>

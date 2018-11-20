@@ -4,7 +4,7 @@ from . import views
 app_name = 'sportsbook'
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.sportsbook_home, name='home'),
     url(r'^nfl', views.nfl, name='nfl'),
     url(r'^ncaaf', views.ncaaf, name='ncaaf'),
     url(r'^nhl', views.nhl, name='nhl'),

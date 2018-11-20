@@ -4,26 +4,41 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from betslip.models import Slip
 from django.views.generic import View
-from .utls import get_event_qs, get_ml_gs, get_total_qs, get_sprd_qs
+from .utls import (get_event_qs,
+                   get_ml_gs,
+                   get_total_qs,
+                   get_sprd_qs,
+                   get_featured_games)
 
 
 def index(request):
-    basic_dict = {'basic': "hello"}
-    return render(request, 'index.html', context=basic_dict)
+    return render(request, 'index.html')
+
+
+def sportsbook_home(request):
+    qs = get_featured_games()
+    slip_obj, new_obj = Slip.objects.new_or_get(request)
+    game_dict = {'games': qs,
+                 'slip': slip_obj}
+    return render(request, 'sportsbook/index.html', context=game_dict)
 
 
 def nfl(request):
-    qs = get_event_qs("NFL", "Game")
+    game_qs = get_event_qs("NFL", "Game")
+    half_qs = get_event_qs("NFL", "FirstHalf")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
-    game_dict = {'games': qs,
+    game_dict = {'full_game_bets': game_qs,
+                 'first_half_bets': half_qs,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
 def ncaaf(request):
-    qs = get_event_qs("NCAAF", "Game")
+    game_qs = get_event_qs("NCAAF", "Game")
+    half_qs = get_event_qs("NCAAF", "FirstHalf")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
-    game_dict = {'games': qs,
+    game_dict = {'full_game_bets': game_qs,
+                 'first_half_bets': half_qs,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
@@ -37,9 +52,11 @@ def nhl(request):
 
 
 def nba(request):
-    qs = get_event_qs('NBA', "Game")
+    game_qs = get_event_qs("NBA", "Game")
+    half_qs = get_event_qs("NBA", "FirstHalf")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
-    game_dict = {'games': qs,
+    game_dict = {'full_game_bets': game_qs,
+                 'first_half_bets': half_qs,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
@@ -91,4 +108,3 @@ def event_values(request):
         'line_values': get_ml_gs()
     }
     return render(request, 'sportsbook/values.html', context=event_dict)
-
