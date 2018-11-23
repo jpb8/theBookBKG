@@ -3,11 +3,16 @@
 {% block body_block %}
 <div class="container">
     <div class="row">
+        {{ total_balance.balance__sum }}
+        {{ total_handle.collected__sum }}
+        {{ total_risk }}
+    </div>
+    <div class="row">
         <div class="col-sm-4" style="border: solid">
             {% if events_h_sprd %}
             <p style="font-size: 1em">Spread Values</p>
             {%  for e in events_h_sprd %}
-            <p><h10 style="font-size: .75em">{{ e.team }} => {{ e.val }}</h10></p>
+            <p><h10 style="font-size: .75em">{{ e.team }} {{ e.type }} {{ e.handicap }} => {{ e.val }}</h10></p>
             {% endfor %}
             {% endif %}
         </div>
@@ -23,7 +28,7 @@
             {% if line_values %}
             <p style="font-size: 1em">Money Line Values</p>
             {%  for e in line_values %}
-            <p><h10 style="font-size: .75em">{{ e.team }} {{ e.handicap }} => {{ e.val }}</h10></p>
+            <p><h10 style="font-size: .75em">{{ e.team }} {{ e.type }} => {{ e.val }}</h10></p>
             {% endfor %}
             {% endif %}
         </div>
@@ -39,7 +44,7 @@
             {% if total_values %}
             <p style="font-size: 1em">Total Values</p>
             {%  for e in total_values %}
-            <p><h10 style="font-size: .75em">{{ e.game_name }} {{ e.ou }}{{ e.tot }}=> {{ e.val }}</h10></p>
+            <p><h10 style="font-size: .75em">{{ e.game_name }} {{ e.type }} {{ e.ou }}{{ e.tot }}=> {{ e.val }}</h10></p>
             {% endfor %}
             {% endif %}
         </div>

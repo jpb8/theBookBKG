@@ -1,4 +1,7 @@
-1. Get rid of cards
+1. Get rid of cards :)
+
+2. Switch to Extending the base user instead of One2One Field. seems less cluncky. Or link everything back to account
+
 
 3. Password Change
     - I will give them a password and they will update it the first time the login
@@ -11,9 +14,9 @@
     - On Form Submit:
         - Check to see if they have enough funds in their account (Set Account Balance in Session?)
 
-6. Switch from first half to second half. Make it Tabbed??
+6. Switch from first half to second half. Make it Tabbed?? :)
 
-7. Front page with highlighted games.
+7. Front page with highlighted games. :)
 
 8. Improve admin
     - Total handle
@@ -23,3 +26,8 @@
 9. Solidify Bet Creation
     - Double Check that risk * divider = win on Submit bet
     - Make sure they don't have an active bet with that odd already to get over the limit
+
+10. Update bets
+    - The Values for Placed Bet and Bet Values do not add up.
+    - Need to check Parley logic with pushes
+     --- Think this is fixed ---

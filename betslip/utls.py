@@ -11,3 +11,5 @@ def validate_slip(slip, account, post):
         if total > account.limit:
             return False, "Bet total is greater than Account Limit"
     return True, "Valid Slip"
+
+

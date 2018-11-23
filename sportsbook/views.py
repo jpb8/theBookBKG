@@ -9,6 +9,8 @@ from .utls import (get_event_qs,
                    get_total_qs,
                    get_sprd_qs,
                    get_featured_games)
+from account.models import Account
+from betslip.models import PlacedBet, BetValue
 
 
 def index(request):
@@ -84,27 +86,40 @@ class BetValuesAjax(View):
         data['labels'] = []
         data['data'] = []
         if request.GET.get('type') == 'sprd':
-            for e in get_ml_gs():
-                data['labels'].append(e.team)
+            for e in get_sprd_qs():
+                data['labels'].append("{} {}".format(e.team, e.handicap))
                 data['data'].append(e.val)
-            data['title'] = 'Money Line'
+            data['title'] = 'Spread'
         if request.GET.get('type') == 'ou':
             for e in get_total_qs():
                 data['labels'].append("{} {}{}".format(e.game_name, e.ou, e.tot))
                 data['data'].append(e.val)
             data['title'] = 'Over/Under'
         if request.GET.get('type') == 'line':
-            for e in get_sprd_qs():
-                data['labels'].append("{} {}".format(e.team, e.handicap))
+            for e in get_ml_gs():
+                data['labels'].append(e.team)
                 data['data'].append(e.val)
-            data['title'] = 'Spread'
+            data['title'] = 'Money Line'
         return JsonResponse(data)
 
 
 def event_values(request):
+    sprd = get_sprd_qs()
+    tots = get_total_qs()
+    ml = get_ml_gs()
+    total = 0
+    for e in sprd:
+        total += e.val
+    for e in tots:
+        total += e.val
+    for e in ml:
+        total += e.val
     event_dict = {
-        'events_h_sprd': get_sprd_qs(),
-        'total_values': get_total_qs(),
-        'line_values': get_ml_gs()
+        'events_h_sprd': sprd,
+        'total_values': tots,
+        'line_values': ml,
+        'total_balance': Account.objects.total_balances(),
+        'total_handle': PlacedBet.objects.total_handle(),
+        'total_risk': total
     }
     return render(request, 'sportsbook/values.html', context=event_dict)

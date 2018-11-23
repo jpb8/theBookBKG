@@ -1,9 +1,9 @@
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save, m2m_changed
 from decimal import Decimal
 from django.utils import timezone
-from django.db import transaction
 from django.db.models import Q
 import uuid
 from sportsbook.models import Odds, Event, OddsGroup
@@ -155,10 +155,19 @@ pre_save.connect(pre_save_cart_receiver, sender=Slip)
 
 
 class PlacedBetpManager(models.Manager):
-    def update_all_bet_values(self):
+    def update_all_bet_values(self): # does this go here?
         bets = self.get_queryset().all()
         for bet in bets:
             bet.update_bet_values()
+
+    def active(self):
+        return self.get_queryset().filter(status=0)
+
+    def total_handle(self):
+        return self.active().aggregate(Sum("collected"))
+
+    def total_risk(self): # Need Raw Sql to get actual risk
+        return self.active().aggregate(Sum("value"))
 
 
 # All placed bets
@@ -252,6 +261,14 @@ class PlacedBet(models.Model):
             self.update_straight()
 
 
+class BetValueManager(models.Manager):
+    def active(self):
+        return self.get_queryset().filter(status=0)
+
+    def total_risk(self): # Need Raw Sql to get actual risk
+        return self.active().aggregate(Sum("value"))
+
+
 class BetValue(models.Model):
     STATUS_OPTIONS = (
         (0, 'pregame'),
@@ -270,7 +287,7 @@ class BetValue(models.Model):
     status = models.IntegerField(choices=STATUS_OPTIONS, default=0)
     value = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
 
-    objects = models.Manager()
+    objects = BetValueManager()
 
     def __str__(self):
         return "{}, Value: {}".format(self.type, self.value)
