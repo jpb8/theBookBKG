@@ -1,22 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
 from betslip.models import Slip
 from django.views.generic import View
-from .utls import (get_event_qs,
-                   get_ml_gs,
-                   get_total_qs,
-                   get_sprd_qs,
-                   get_featured_games)
+from .utls import (get_event_qs, get_ml_gs, get_total_qs, get_sprd_qs, get_featured_games)
 from account.models import Account
-from betslip.models import PlacedBet, BetValue
+from betslip.models import PlacedBet
 
 
 def index(request):
     return render(request, 'index.html')
 
 
+@login_required(login_url="/")
 def sportsbook_home(request):
     qs = get_featured_games()
     slip_obj, new_obj = Slip.objects.new_or_get(request)
@@ -25,6 +22,7 @@ def sportsbook_home(request):
     return render(request, 'sportsbook/index.html', context=game_dict)
 
 
+@login_required(login_url="/")
 def nfl(request):
     game_qs = get_event_qs("NFL", "Game")
     half_qs = get_event_qs("NFL", "FirstHalf")
@@ -35,6 +33,7 @@ def nfl(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
+@login_required(login_url="/")
 def ncaaf(request):
     game_qs = get_event_qs("NCAAF", "Game")
     half_qs = get_event_qs("NCAAF", "FirstHalf")
@@ -45,6 +44,7 @@ def ncaaf(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
+@login_required(login_url="/")
 def nhl(request):
     qs = get_event_qs("NHL", "Game")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
@@ -53,6 +53,7 @@ def nhl(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
+@login_required(login_url="/")
 def nba(request):
     game_qs = get_event_qs("NBA", "Game")
     half_qs = get_event_qs("NBA", "FirstHalf")
@@ -71,7 +72,7 @@ def base(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect(reverse('index'))
+                return redirect('sportsbook:home')
             else:
                 return HttpResponse("ACCOUNT NOT ACTIVE")
         else:
@@ -103,6 +104,7 @@ class BetValuesAjax(View):
         return JsonResponse(data)
 
 
+@login_required(login_url="/")
 def event_values(request):
     sprd = get_sprd_qs()
     tots = get_total_qs()

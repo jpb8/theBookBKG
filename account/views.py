@@ -109,7 +109,7 @@ def active_bets(request):
     return render(request, 'account/active_bets.html', bet_dict)
 
 
-@login_required()
+@login_required(login_url="/")
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -117,7 +117,7 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password')
+            return redirect('account:account_home')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
