@@ -29,7 +29,7 @@ SECRET_KEY = 're+@!=dye3-rs+-+=4qyb^l_r30g^l=8ap(9ri-l5qq7_5v8*!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".herokuapp.com"]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -72,8 +72,6 @@ HUEY = {
     }
 }
 
-STRIPE_SECRET_KEY = 'sk_test_77wzyPpkvRzLfLlCDmJOo3VJ'
-STRIPE_PUB_KEY = 'pk_test_xMtlglrwHbQ4JyRsWGbDh2RJ'
 JSONODDS_API_KEY = 'd355f4c8-629f-4667-bf45-282e34fdc637'
 
 MIDDLEWARE = [
