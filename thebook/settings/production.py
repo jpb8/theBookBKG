@@ -17,6 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+GEOIP_DATABASE = os.path.join(STATIC_DIR, "GeoIP.dat.gz")
+GEOIPV6_DATABASE = os.path.join(STATIC_DIR, "GeoLiteCityv6.dat.gz")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
