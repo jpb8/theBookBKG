@@ -52,28 +52,6 @@ INSTALLED_APPS = [
     'betslip',
 ]
 
-from redis import ConnectionPool
-
-pool = ConnectionPool(
-    host='localhost',
-    port='6379',
-    max_connections=20
-)
-
-HUEY = {
-    'name': 'thebook',
-    'always_eager': False,
-    'connection': {
-        'connection_pool': pool
-    },
-    'consumer': {
-        'workers': 2,
-        'worker_type': 'thread'
-    }
-}
-
-STRIPE_SECRET_KEY = 'sk_test_77wzyPpkvRzLfLlCDmJOo3VJ'
-STRIPE_PUB_KEY = 'pk_test_xMtlglrwHbQ4JyRsWGbDh2RJ'
 JSONODDS_API_KEY = 'd355f4c8-629f-4667-bf45-282e34fdc637'
 
 MIDDLEWARE = [
