@@ -27,7 +27,7 @@ GEOIPV6_DATABASE = os.path.join(STATIC_DIR, "GeoLiteCityv6.dat.gz")
 SECRET_KEY = 're+@!=dye3-rs+-+=4qyb^l_r30g^l=8ap(9ri-l5qq7_5v8*!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
