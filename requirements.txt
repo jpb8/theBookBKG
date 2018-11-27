@@ -11,6 +11,7 @@ Django==2.1.2
 django-debug-toolbar==1.10.1
 django-easy-timezones==0.8.0
 django-extensions==2.1.2
+django-heroku==0.3.1
 Faker==0.8.15
 gunicorn==19.9.0
 huey==1.10.2
@@ -33,3 +34,4 @@ urllib3==1.23
 vine==1.1.4
 virtualenv==16.0.0
 virtualenvwrapper-win==1.2.5
+whitenoise==4.1.2
