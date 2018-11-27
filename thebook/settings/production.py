@@ -29,7 +29,7 @@ SECRET_KEY = 're+@!=dye3-rs+-+=4qyb^l_r30g^l=8ap(9ri-l5qq7_5v8*!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [".herokuapp.com"]
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -62,7 +62,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'easy_timezones.middleware.EasyTimezoneMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
