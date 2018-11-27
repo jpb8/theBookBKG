@@ -115,9 +115,7 @@ def submit_bet(request):
             # Create PlacedBets and BetValues
             if "parlay-checkbox" in post:
                 due += slip_obj.create_parlay(post)
-                print(due)
             due += slip_obj.create_straight_bets(request.POST)
-            print(due)
             slip_obj.odds.clear()
             # Get account for update and withdraw the total of all the bet.
             with transaction.atomic():

@@ -3,8 +3,8 @@ $(document).ready(function(){
     function updateTotalInputs(totalRisk, totalWin) {
         $("#betlsip-total-risk").val(totalRisk);
         $("#betlsip-total-win").val(totalWin);
-        $("#betlsip-total-risk-modal").val(totalRisk);
-        $("#betlsip-total-win-modal").val(totalWin);
+        $("#betlsip-total-risk-model").val(totalRisk);
+        $("#betlsip-total-win-model").val(totalWin);
     }
 
     function loadValsFromStorage() {
@@ -14,13 +14,9 @@ $(document).ready(function(){
             var betVal = localStorage.getItem($(this).attr("id"));
             if( betVal ) {
                 if( $(this).hasClass("risk-input") ) {
-                    console.log(betVal + "risk")
                     totalRisk += Number(betVal);
-                    console.log(totalRisk);
                 } else if ( $(this).hasClass("win-input") ) {
-                    console.log(betVal + "win")
                     totalWin += Number(betVal);
-                    console.log(totalWin);
                 }
                 $(this).val(betVal);
                 $("#" + $(this).attr("id") + "-modal").val(betVal);
@@ -61,21 +57,24 @@ $(document).ready(function(){
                 var win = updateWinValue(risk, multiplier, oddId);
                 totalWin += parseFloat(win);
                 addValuesToStorage(risk, win, oddId);
+                $("#" + $(this).attr("id") + "-model").val(risk);
             } else {
                 $("#win-" + oddId).val(null);
                 $("#win-" + oddId + "-model").val(null);
+                $("#" + $(this).attr("id") + "-model").val(null);
             }
         })
         return [totalRisk.toFixed(2), totalWin.toFixed(2)]
     }
+
     // for every risk-input change run the update win and tatal risk/win inputs
     $('#slip-bets').on("keyup", '.risk-input', function() {
-        var totalValues;
-        totalValues = calcAllInputs("straight-bet-risk-input"); // 0 => risk 1 => wun
-        $('#betlsip-total-risk').val(totalValues[0]);
-        $('#betlsip-total-risk-model').val(totalValues[0]);
-        $('#betlsip-total-win').val(totalValues[1]);
-        $('#betlsip-total-win-model').val(totalValues[1]);
+        var totalValues = calcAllInputs(); // 0 => risk 1 => won
+        updateTotalInputs(totalValues[0], totalValues[1]);
+        // $('#betlsip-total-risk').val(totalValues[0]);
+        // $('#betlsip-total-risk-model').val(totalValues[0]);
+        // $('#betlsip-total-win').val(totalValues[1]);
+        // $('#betlsip-total-win-model').val(totalValues[1]);
     });
 
     $('#slip-bets').on('blur', '.risk-input', function() {
@@ -87,7 +86,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#myModal').on('show.bs.modal', function (e) {
+    $('#betslip-model').on('show.bs.modal', function (e) {
         var button = e.relatedTarget;
         if($(button).hasClass('no-modal')) {
             e.stopPropagation();
@@ -102,11 +101,15 @@ $(document).ready(function(){
             var betVal = Number($(this).val())
             if( !betVal ) {
                 alert("Please fill out all bet boxes");
+
                 return false;
             } else if ( maxBet < betVal ) {
                 alert("Exceded Max Bet of " + maxBet);
                 return false;
             }
-        })
+        });
+        // update model values for betslip check
+        var totalValues = calcAllInputs(); // 0 => risk 1 => won
+        updateTotalInputs(totalValues[0], totalValues[1]);
     });
 })
