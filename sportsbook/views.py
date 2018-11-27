@@ -10,6 +10,7 @@ from betslip.models import PlacedBet
 
 
 def index(request):
+    print("hello")
     return render(request, 'index.html')
 
 
