@@ -1,6 +1,11 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% block body_block %}
+<!--{% extends 'base.html' %}-->
+<!--{% load staticfiles %}-->
+<!--{% block body_block %}-->
+<html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Parlay Purchase</title>
+<body>
 <div class="container">
     <div class="login-wrapper">
         <form class="form-inline my-2 my-lg-0" action="{% url 'sportsbook:base' %}" method="POST">
@@ -13,4 +18,8 @@
         </form>
     </div>
 </div>
-{% endblock %}
+</body>
+
+</html>
+
+<!--{% endblock %}-->
