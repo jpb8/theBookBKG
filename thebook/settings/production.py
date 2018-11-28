@@ -24,7 +24,7 @@ GEOIPV6_DATABASE = os.path.join(STATIC_DIR, "GeoLiteCityv6.dat.gz")
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 're+@!=dye3-rs+-+=4qyb^l_r30g^l=8ap(9ri-l5qq7_5v8*!'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'betslip',
 ]
 
-JSONODDS_API_KEY = 'd355f4c8-629f-4667-bf45-282e34fdc637'
+JSONODDS_API_KEY = os.environ.get('JSONODDS_API_KEY')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -102,6 +102,7 @@ DATABASES = {
 }
 
 import dj_database_url
+
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 DATABASES['default']['CONN_MAX_AGE'] = 500
