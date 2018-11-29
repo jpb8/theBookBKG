@@ -58,6 +58,7 @@ coverage.xml
 *.log
 thebook/settings/local.py
 db.sqlite3
+static/
 
 # Flask stuff:
 instance/
