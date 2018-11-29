@@ -24,12 +24,12 @@ GEOIPV6_DATABASE = os.path.join(STATIC_DIR, "GeoLiteCityv6.dat.gz")
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 're+@!=dye3-rs+-+=4qyb^l_r30g^l=8ap(9ri-l5qq7_5v8*!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.thebookbkg.herokuapp.com', '0.0.0.0', '*', 'localhost', '.herokuapp.com']
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
