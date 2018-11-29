@@ -25,7 +25,8 @@
         <div class="col-sm-4 slip-sidebar" id="slip-bets">
             <h1>Bet Slip</h1>
             <form class="submit-betslip" id="submit-betslip" method="POST" action="{% url 'betslip:submit_bet' %}">{% csrf_token %}
-            {% include 'sportsbook/sidebar.html' %}
+                {% include 'sportsbook/sidebar.html' %}
+            </form>
         </div>
     </div>
 </div>

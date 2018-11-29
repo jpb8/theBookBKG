@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'huey.contrib.djhuey',
     # 'easy_timezones',
 
     'storages',
@@ -50,6 +51,35 @@ INSTALLED_APPS = [
     'account',
     'betslip',
 ]
+
+from redis import ConnectionPool
+
+pool = ConnectionPool(
+    host=os.environ.get('REDIS_HOST'),
+    port=os.environ.get('REDIS_PORT'),
+    password=os.environ.get('REDIS_PASSWORD'),
+    max_connections=20
+)
+
+HUEY = {
+    'name': 'thebook',
+    'always_eager': False,
+    'connection': {
+        'connection_pool': pool
+    },
+    'consumer': {
+        'workers': 1,
+        'worker_type': 'thread',
+        'initial_delay': 0.1,  # Smallest polling interval, same as -d.
+        'backoff': 1.15,  # Exponential backoff using this rate, -b.
+        'max_delay': 10.0,  # Max possible polling interval, -m.
+        'utc': True,  # Treat ETAs and schedules as UTC datetimes.
+        'scheduler_interval': 1,  # Check schedule every second, -s.
+        'periodic': True,  # Enable crontab feature.
+        'check_worker_health': True,  # Enable worker health checks.
+        'health_check_interval': 1,  # Check worker health every second.
+    },
+}
 
 JSONODDS_API_KEY = os.environ.get('JSONODDS_API_KEY')
 
@@ -152,8 +182,8 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
-AWS_ACCESS_KEY_ID = 'AKIAJ2FWWIP5OROTMRMQ'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'bigkahunagrande'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
@@ -168,6 +198,7 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AWS_DEFAULT_ACL = None
+
 
 # GEOIP_DATABASE = os.path.join(STATIC_URL, "GeoIP.dat.gz")
 # GEOIPV6_DATABASE = os.path.join(STATIC_URL, "GeoLiteCityv6.dat.gz")

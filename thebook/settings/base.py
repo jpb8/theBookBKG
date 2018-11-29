@@ -17,19 +17,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-GEOIP_DATABASE = os.path.join(STATIC_DIR, "GeoIP.dat.gz")
-GEOIPV6_DATABASE = os.path.join(STATIC_DIR, "GeoLiteCityv6.dat.gz")
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 're+@!=dye3-rs+-+=4qyb^l_r30g^l=8ap(9ri-l5qq7_5v8*!'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [".herokuapp.com"]
+ALLOWED_HOSTS = ['.thebookbkg.herokuapp.com', '0.0.0.0', '*', 'localhost', '.herokuapp.com']
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -43,9 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'easy_timezones',
     'huey.contrib.djhuey',
-    'debug_toolbar',
+    # 'easy_timezones',
 
     'storages',
 
@@ -54,7 +52,36 @@ INSTALLED_APPS = [
     'betslip',
 ]
 
-JSONODDS_API_KEY = 'd355f4c8-629f-4667-bf45-282e34fdc637'
+from redis import ConnectionPool
+
+pool = ConnectionPool(
+    host=os.environ.get('REDIS_HOST'),
+    port=os.environ.get('REDIS_PORT'),
+    password=os.environ.get('REDIS_PASSWORD'),
+    max_connections=20
+)
+
+HUEY = {
+    'name': 'thebook',
+    'always_eager': False,
+    'connection': {
+        'connection_pool': pool
+    },
+    'consumer': {
+        'workers': 1,
+        'worker_type': 'thread',
+        'initial_delay': 0.1,  # Smallest polling interval, same as -d.
+        'backoff': 1.15,  # Exponential backoff using this rate, -b.
+        'max_delay': 10.0,  # Max possible polling interval, -m.
+        'utc': True,  # Treat ETAs and schedules as UTC datetimes.
+        'scheduler_interval': 1,  # Check schedule every second, -s.
+        'periodic': True,  # Enable crontab feature.
+        'check_worker_health': True,  # Enable worker health checks.
+        'health_check_interval': 1,  # Check worker health every second.
+    },
+}
+
+JSONODDS_API_KEY = os.environ.get('JSONODDS_API_KEY')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -64,7 +91,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'easy_timezones.middleware.EasyTimezoneMiddleware',
+    # 'easy_timezones.middleware.EasyTimezoneMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -102,6 +129,12 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+import dj_database_url
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
@@ -149,8 +182,8 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
-AWS_ACCESS_KEY_ID = 'AKIAJ2FWWIP5OROTMRMQ'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'bigkahunagrande'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
@@ -167,10 +200,12 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_DEFAULT_ACL = None
 
 
+# GEOIP_DATABASE = os.path.join(STATIC_URL, "GeoIP.dat.gz")
+# GEOIPV6_DATABASE = os.path.join(STATIC_URL, "GeoLiteCityv6.dat.gz")
+
 LOGIN_URL = '/sportsbook/base'
 LOGIN_REDIRECT_URL = '/sportsbook/'
 
-# https
 CORS_REPLACE_HTTPS_REFERER = False
 HOST_SCHEME = "http://"
 SECURE_PROXY_SSL_HEADER = None
