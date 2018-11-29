@@ -114,6 +114,7 @@ def update_results(sport):
         if e["OddType"] == "Game":
             try:
                 event = Event.objects.get(pk=e['ID'])
+                time_now = timezone.now()
                 if e["HomeScore"] is None or e["HomeScore"] == "":
                     event.h_score = 0
                 else:
@@ -124,7 +125,7 @@ def update_results(sport):
                     event.a_score = int(e["AwayScore"])
                 if e["Final"]:
                     event.live_status = 2
-                elif event.start_time < timezone.now():
+                elif event.start_time < time_now:
                     event.live_status = 1
                 else:
                     event.live_status = 0
