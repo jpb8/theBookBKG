@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'easy_timezones',
+    # 'easy_timezones',
 
     'storages',
 
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'easy_timezones.middleware.EasyTimezoneMiddleware',
+    # 'easy_timezones.middleware.EasyTimezoneMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -169,8 +169,8 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AWS_DEFAULT_ACL = None
 
-GEOIP_DATABASE = os.path.join(STATIC_URL, "GeoIP.dat.gz")
-GEOIPV6_DATABASE = os.path.join(STATIC_URL, "GeoLiteCityv6.dat.gz")
+# GEOIP_DATABASE = os.path.join(STATIC_URL, "GeoIP.dat.gz")
+# GEOIPV6_DATABASE = os.path.join(STATIC_URL, "GeoLiteCityv6.dat.gz")
 
 LOGIN_URL = '/sportsbook/base'
 LOGIN_REDIRECT_URL = '/sportsbook/'
