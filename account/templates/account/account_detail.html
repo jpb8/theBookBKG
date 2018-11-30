@@ -3,7 +3,6 @@
 {% block body_block %}
 <div class="container">
     <h1>{{ user.username }}</h1>
-    <img src="http://127.0.0.1:8000/media/{{ account_detail.profile_pic }}" height="75px">
     <p>Account Balance: {{ account_detail.balance }}</p>
     <p>Email: {{ user.email }}</p>
     <p>Address: {{ account_detail.city }}</p>
