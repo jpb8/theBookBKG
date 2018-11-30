@@ -32,7 +32,7 @@ def signup(request):
             if 'profile_pic' in request.FILES:
                 account.profile_pic = request.FILES['profile_pic']
             account.save()
-            registered = True
+            return HttpResponseRedirect(reverse('sportsbook:home'))
         else:
             pass
     else:

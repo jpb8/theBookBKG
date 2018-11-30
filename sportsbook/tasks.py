@@ -25,7 +25,7 @@ odds_dict = {
     "under": "UnderLine"
 }
 
-bet_list = ["Game", "FirstHalf"]
+bet_list = ["Game", "FirstHalf", "FirstPeriod"]
 
 
 def get_full_game_odds(game):
@@ -156,41 +156,41 @@ def update_results(sport):
                 pass
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def pull_nfl():
     pull_sport_odds("NFL")
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_nfl():
     update_results("NFL")
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def pull_ncaaf():
     pull_sport_odds("NCAAF")
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_ncaaf():
     update_results("NCAAF")
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def pull_nhl():
     pull_sport_odds("NHL")
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_nhl():
     update_results("NHL")
 
 
-@db_periodic_task(crontab(hour="*/2"))
+@db_periodic_task(crontab(minute='0', hour="*/2"))
 def pull_nba():
     pull_sport_odds("NBA")
 
 
-@db_periodic_task(crontab(hour="*/2"))
+@db_periodic_task(crontab(minute='0', hour="*/2"))
 def update_nba():
     update_results("NBA")

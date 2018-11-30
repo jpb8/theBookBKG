@@ -70,11 +70,6 @@
     <h1 class="display-4" id="disp-4">The Book</h1>
     <p class="lead" id="lead">Winners Winners Winners!</p>
     <hr class="my-4">
-    {% if user.is_anonymous %}
-    <p class="lead">
-        <a class="btn btn-primary btn-lg" href="{% url 'account:signup' %}" role="button">Sign Up!</a>
-    </p>
-    {% endif %}
 </div>
 
 {% block body_block %}
