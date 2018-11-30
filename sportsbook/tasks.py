@@ -191,6 +191,6 @@ def pull_nba():
     pull_sport_odds("NBA")
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(hour="*/2"))
 def update_nba():
     update_results("NBA")
