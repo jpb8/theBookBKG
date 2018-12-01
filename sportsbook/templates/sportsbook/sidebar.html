@@ -37,7 +37,7 @@
         </tr>
         {% endfor %}
         <tr><th scope="row"></th>
-            <td><input type="checkbox" name="parlay-checkbox" value="parlay"> Create Parlay?</td>
+            <td><input type="checkbox" id='parlay-checkbox' name="parlay-checkbox" value="parlay"> Create Parlay?</td>
             <td><input class="parlay-bet-risk-input risk-input bet-input"
                        type="number"
                        step="0.01"
@@ -117,7 +117,7 @@ Review Slip
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <input type="button" class="btn btn-success" form="submit-betslip" title="Submit"/>
+    <input type="submit" class="btn btn-success" form="submit-betslip" value="Submit"/>
   </div>
 </div>
 </div>
