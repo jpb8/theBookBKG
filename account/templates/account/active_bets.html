@@ -10,9 +10,9 @@
             <a href="#" class="button-9 w-button">Settled</a>
         </div>
     </div>
+    {% if placed_bets %}
+    {% for bets in placed_bets %}
     <div class="recent-bets-wrapper">
-        {% if placed_bets %}
-        {% for bets in placed_bets %}
         <div class="place-bet">
             <div class="time w-clearfix">
                 <div class="text-block-8">Placed: {{ bets.placed }}</div>
