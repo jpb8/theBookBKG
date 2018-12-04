@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block body_block %}
 <div class="container">
-    <div class="login-wrapper">
+    <div class="login-wrapper" style="position: fixed; top: 75px;">
         <form class="form-inline my-2 my-lg-0" action="{% url 'sportsbook:base' %}" method="POST">
             {% csrf_token %}
             <input class="form-control mr-sm-2" id="username" name="username" type="text" placeholder="Username"
