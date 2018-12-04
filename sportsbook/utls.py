@@ -10,7 +10,7 @@ def get_live_sports():
         group by e.sport;''')
     return qs
 
-#  and e.start_time >= '{}'
+
 def get_event_qs(sport, odd_type):
     qs = Event.objects.raw('''select 
         game_id, start_time, e.home, away,
@@ -29,7 +29,7 @@ def get_event_qs(sport, odd_type):
         left join sportsbook_odds as a_line on og.a_line_id=a_line.odd_id
         left join sportsbook_odds as ovr on og.over_id=ovr.odd_id
         left join sportsbook_odds as undr on og.under_id=undr.odd_id
-        where e.live_status=0 and e.sport='{}' and og."type"='{}'
+        where e.live_status=0 and e.sport='{}' and og."type"='{}' and e.start_time >= '{}'
         order by start_time
         '''.format(sport, odd_type, timezone.now()))
     return qs
