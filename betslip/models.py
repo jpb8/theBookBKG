@@ -302,6 +302,23 @@ class BetValue(models.Model):
             multiplier = Decimal(100 / (self.placed_price * -1) + 1)
         return multiplier
 
+    def get_display_name(self):
+        event = self.event
+        if self.type == "h_sprd":
+            return "{} {} ({})".format(event.home, self.handicap, self.placed_price)
+        elif self.type == "a_sprd":
+            handicap = self.handicap * -1
+            return "{} {} ({})".format(event.away, handicap, self.placed_price)
+        elif self.type == "h_line":
+            return "{} ({})".format(event.home, self.placed_price)
+        elif self.type == "a_line":
+            return "{} ({})".format(event.away, self.placed_price)
+        elif self.type == "over":
+            return "Total ({} vs {}) O{} ({})".format(event.away, event.home, self.total, self.placed_price)
+        elif self.type == "under":
+            return "Total ({} vs {}) U{} ({})".format(event.away, event.home, self.total, self.placed_price)
+        return "Unknown"
+
 
 def update_bets(sender, instance, *args, **kwargs):
     instance.placed_bet.check_odds_update_status()

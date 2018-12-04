@@ -28,6 +28,36 @@
     {% endfor %}
     {% endif %}
 
+    <div class="placed-bets-nav">
+        <div class="pb-buttons w-clearfix">
+            <a href="#" class="button-8 w-button">Active</a>
+            <a href="#" class="button-9 w-button">Settled</a>
+        </div>
+    </div>
+    <div class="recent-bets-wrapper">
+        {% if placed_bets %}
+        {% for bets in placed_bets %}
+        <div class="place-bet">
+            <div class="time w-clearfix">
+                <div class="text-block-8">Placed: {{ bets.placed }}</div>
+                <div class="text-block-9">05:05:34 CST</div>
+            </div>
+            <div class="details">
+                <div class="text-block-12">{{ odd.get_display_name }}</div>
+            </div>
+            <div class="risk-win w-clearfix">
+                <div class="text-block-10">Risk: ${{ bets.collected }}</div>
+                <div class="text-block-11"> Win: {{ bets.value }}</div>
+            </div>
+            <div class="w-clearfix">
+                <div class="text-block-13">Status:</div>
+                <div class="text-block-14">{{ bets.get_status_display }}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
 </div>
 
 {% endtimezone %}

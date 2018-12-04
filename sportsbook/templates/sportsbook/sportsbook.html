@@ -3,29 +3,62 @@
 {% block body_block %}
 {% load tz %}
 {% timezone "America/Chicago" %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="bet-type-select">Bet Types</label>
-                </div>
-                <select class="custom-select" id="bet-type-select">
-                    <option value="game" selected>Game Lines</option>
-                    <option value="first-half">First Half Lines</option>
-                </select>
-            </div>
-            <div id="full-game-bets-wrapper"> Game
-                {% include 'sportsbook/snippets/game_tables.html' with games=full_game_bets %}
-            </div>
-            <div id="first-half-bets-wrapper"> First Half
-                {% include 'sportsbook/snippets/game_tables.html' with games=first_half_bets %}
+<body class="body">
+<div class="main">
+    <div class="columns w-row">
+        <div class="column w-col w-col-2">
+            <div>
+              <div class="sportsbook-nav">Sports</div>
+                <a href="/sportsbook/ncaaf" class="sport-nav w-button">NCAA FOOTBALL</a>
+                <a href="/sportsbook/nfl" class="sport-nav w-button">NFL</a>
+                <a href="/sportsbook/nba" class="sport-nav w-button">NBA</a>
+                <a href="/sportsbook/ncaabb" class="sport-nav w-button">NCAA BASKETBALL</a>
+                <a href="/sportsbook/nhl" class="sport-nav w-button">NHL</a>
             </div>
         </div>
-        <div class="col-sm-4 slip-sidebar" id="slip-bets">
+        <div class="column-2 w-col w-col-7">
+            <div>
+              <div class="w-layout-grid bet-type-grid">
+                <h1 id="w-node-1d2105c53043-a60b1e96" class="bet-type-headers">Sport</h1>
+                <div id="w-node-8ae247067b13-a60b1e96" class="form-block-3 w-form">
+                  <select id="bet-type-select" name="Bet-type" class="select-field w-select">
+                      <option value="game">Full Game Lines</option>
+                      <option value="first-half">First Half Lines</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="full-game-bets-wrapper">
+                {% include 'sportsbook/snippets/gameswf.html' with games=full_game_bets %}
+            </div>
+            <div id="first-half-bets-wrapper">
+                {% include 'sportsbook/snippets/gameswf.html' with games=first_half_bets %}
+            </div>
+        </div>
+        <div class="column-3 w-col w-col-3 slip-sidebar" id="slip-bets">
             {% include 'sportsbook/sidebar.html' %}
         </div>
     </div>
 </div>
+<div class="div-block-5 w-hidden-main w-hidden-medium">
+    <div class="w-layout-grid grid-5">
+        <div data-delay="0" id="w-node-8ebcc6ffd373-a60b1e96" class="w-dropdown">
+            <div class="mobile-dropdown-toggle w-hidden-main w-hidden-medium w-dropdown-toggle">
+                <div class="w-icon-dropdown-toggle"></div>
+                <div data-w-id="b0e74711-079b-bb46-8ea9-8ebcc6ffd376">Sports</div>
+            </div>
+            <nav class="w-dropdown-list"><a href="#" class="w-dropdown-link">Link 1</a><a href="#" class="w-dropdown-link">Link 2</a><a href="#" class="w-dropdown-link">Link 3</a></nav>
+        </div>
+            <div data-delay="0" id="w-node-2435e1dcf548-a60b1e96" class="w-dropdown">
+            <div class="mobile-dropdown-toggle w-dropdown-toggle">
+                <div class="icon w-icon-dropdown-toggle"></div>
+                <div>Bet Types</div>
+            </div>
+            <nav class="w-dropdown-list"><a href="#" class="w-dropdown-link">Link 1</a><a href="#" class="w-dropdown-link">Link 2</a><a href="#" class="w-dropdown-link">Link 3</a></nav>
+        </div><a id="w-node-a816b0fbb51a-a60b1e96" data-w-id="938572a1-053f-1a52-a0b7-a816b0fbb51a" href="#" class="button-7 w-button">Button Text</a>
+    </div>
+  </div>
+
+</body>
 {% endtimezone %}
 {% endblock %}

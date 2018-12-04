@@ -1,0 +1,130 @@
+<h1>Bet Slip</h1>
+<form class="submit-betslip" id="submit-betslip" method="POST" action="{% url 'betslip:submit_bet' %}">{% csrf_token %}
+<table class="table" id="bet">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Bet</th>
+            <th>Odds</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="slip-table-body">
+        {% for odd in slip.odds.all %}
+        <tr><th scope='row'></th>
+            <td><a href='#'>{{ odd.get_display_name }}</a></td>
+        </tr>
+        <tr><td><input class="straight-bet-risk-input risk-input bet-input"
+                   type="number"
+                   step="0.01"
+                   name="risk-{{ odd.pk }}"
+                   id="risk-{{ odd.pk }}"
+                   data-type="straight"
+                   data-odds="{{ odd.get_multiplier }}"
+                   placeholder="$ Risk"
+                   data-max-bet="{{ user.account.limit }}"
+                   data-id="{{ odd.pk }}"></td>
+        <td><input class="straight-bet-win-input bet-input win-input"
+                   readonly
+                   type="number"
+                   step="0.01"
+                   name="win-{{ odd.pk }}"
+                   id="win-{{ odd.pk }}"
+                   data-type="straight"
+                   data-odds="{{ ood.get_multiplier }}"
+                   data-id="{{ odd.pk }}"
+                   placeholder="$ Win"></td>
+        </tr>
+        {% endfor %}
+        <tr><th scope="row"></th>
+            <td><input type="checkbox" id='parlay-checkbox' name="parlay-checkbox" value="parlay"> Create Parlay?</td>
+            <td><input class="parlay-bet-risk-input risk-input bet-input"
+                       type="number"
+                       step="0.01"
+                       name="parlay-risk-input"
+                       data-type="parlay"
+                       data-odds="{{ slip.divider }}"
+                       id="risk-parlay"
+                       data-id="parlay"
+                       placeholder="$ Risk"
+                       data-max-bet="{{ user.account.limit }}"></td>
+            <td><input class="parlay-bet-win-input bet-input win-input"
+                       readonly
+                       type="number"
+                       step="0.01"
+                       name="parlay-win-input"
+                       id="win-parlay"
+                       data-type="parlay"
+                       data-odds="{{ slip.divider }}"
+                       placeholder="$ Win"></td>
+        </tr>
+        <tr><th scope="row"></th>
+            <td>Total Risk: <input readonly
+                                   id="betlsip-total-risk"
+                                   type="number"
+                                   name="betlsip-total-risk"
+                                   style="background: transparent; border: none;text-align: right; width: 100%;"></td>
+            <td>Total Win: <input readonly
+                                  id="betlsip-total-win"
+                                  type="number"
+                                  name="betlsip-total-win"
+                                  style="background: transparent; border: none;text-align: right; width: 100%;"></td>
+        </tr>
+    </tbody>
+</table>
+<button type="button" id="bet-form-review" class="btn btn-primary" data-toggle="modal" data-target="#betslip-model">
+Review Slip
+</button>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="betslip-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Reveiw Bets</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {% for odd in slip.odds.all %}
+    <p>{{ odd.get_display_name }} Risk:
+        <input disabled id="risk-{{ odd.pk }}-model" type="number"
+            style="background: transparent; border: none;text-align: right; width: 60px;">
+        Win:<input disabled id="win-{{ odd.pk }}-model" type="number" name="betlsip-total-risk"
+            style="background: transparent; border: none;text-align: right; width: 60px;">
+    </p>
+    {% endfor %}
+    <p>Parlay Risk:
+        <input
+        disabled
+        type="number"
+        data-type="parlay"
+        id="risk-parlay-model"
+        data-id="parlay"
+        style="background: transparent; border: none;text-align: right; width: 60px;">
+        Win:
+        <input
+        disabled
+        type="number"
+        data-type="parlay"
+        id="win-parlay-model"
+        data-id="parlay"
+        style="background: transparent; border: none;text-align: right; width: 60px;">
+    <p>Total Risk: <input disabled
+                    id="betlsip-total-risk-model"
+                    type="number"
+                    name="betlsip-total-risk"
+                    style="background: transparent; border: none;text-align: right; width: 50%;">
+    </p>
+    <p>Total Win: <input disabled id="betlsip-total-win-model" type="number" name="betlsip-total-win"
+                          style="background: transparent; border: none;text-align: right; width: 50%;"></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <input type="submit" class="btn btn-success" form="submit-betslip" value="Submit"/>
+  </div>
+</div>
+</div>
+</div>

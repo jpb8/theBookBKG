@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html lang="en">
+<html lang="en"> <!-- need to remove -->
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" type="image/png" href='{% static "images/icon.png" %}'>
@@ -16,7 +16,7 @@
 
 <!-- Nav bar -->
 <nav class="navbar  fixed-top navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Parlay Purchase</a>
+    <a class="navbar-brand" href="/">The BKG Book</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -51,7 +51,7 @@
 
         {% if user.is_authenticated %}
         <div class="dropdown dropleft">
-            <button class="btn btn-secondary btn-small dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-success btn-small dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ user.username }} (${{ user.account.balance }})
             </button>
@@ -66,11 +66,11 @@
 </nav>
 
  <!--Jumbotron-->
-<div class="jumbotron jumbo-top" id="top-jumbo" style="background: url('{% static 'images/main-banner.jpg' %}')">
-    <h1 class="display-4" id="disp-4">The Book</h1>
-    <p class="lead" id="lead">Winners Winners Winners!</p>
-    <hr class="my-4">
-</div>
+<!--<div class="jumbotron jumbo-top" id="top-jumbo" style="background: url('{% static 'images/main-banner.jpg' %}')">-->
+    <!--<h1 class="display-4" id="disp-4">The Book</h1>-->
+    <!--<p class="lead" id="lead">Winners Winners Winners!</p>-->
+    <!--<hr class="my-4">-->
+<!--</div>-->
 
 {% block body_block %}
 

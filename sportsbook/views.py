@@ -34,6 +34,17 @@ def nfl(request):
 
 
 @login_required(login_url="/")
+def new_design(request):
+    game_qs = get_event_qs("NFL", "Game")
+    half_qs = get_event_qs("NFL", "FirstHalf")
+    slip_obj, new_obj = Slip.objects.new_or_get(request)
+    game_dict = {'full_game_bets': game_qs,
+                 'first_half_bets': half_qs,
+                 'slip': slip_obj}
+    return render(request, 'sportsbook/new.html', context=game_dict)
+
+
+@login_required(login_url="/")
 def ncaaf(request):
     game_qs = get_event_qs("NCAAF", "Game")
     half_qs = get_event_qs("NCAAF", "FirstHalf")
