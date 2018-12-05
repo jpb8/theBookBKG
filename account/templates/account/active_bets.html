@@ -17,9 +17,11 @@
             <div class="time w-clearfix">
                 <div class="text-block-8">Placed: {{ bets.placed }}</div>
             </div>
+            {% for odd in bets.betvalue_set.all %}
             <div class="details">
                 <div class="text-block-12">{{ odd.get_display_name }}</div>
             </div>
+            {% endfor %}
             <div class="risk-win w-clearfix">
                 <div class="text-block-10">Risk: ${{ bets.collected }}</div>
                 <div class="text-block-11"> Win: {{ bets.value }}</div>
