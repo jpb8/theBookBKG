@@ -96,15 +96,20 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
     template_name = 'account/account_detail.html'
 
 
+@login_required(login_url="/")
 def active_bets(request):
     if not request.user.is_authenticated:
         return redirect('sportsbook:mlb')
     user = request.user
     time_48_hours_ago = datetime.datetime.now() - datetime.timedelta(days=2)
     placed_bets = PlacedBet.objects.filter(user=user,
-                                           placed__gte=time_48_hours_ago)
+                                           placed__gte=time_48_hours_ago,
+                                           status=0).order_by("placed")
+    settled_bets = PlacedBet.objects.filter(user=user,
+                                            placed__gte=time_48_hours_ago).exclude(status=0).order_by("placed")
     bet_dict = {
         'placed_bets': placed_bets,
+        'settled_bets': settled_bets
     }
     return render(request, 'account/active_bets.html', bet_dict)
 
