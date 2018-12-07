@@ -25,10 +25,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'betslip:home' %}">Betslip <span class="betslip-span"></span></a>
+                <a class="nav-link" href="{% url 'sportsbook:home' %}">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -64,13 +61,6 @@
         {% endif %}
     </div>
 </nav>
-
- <!--Jumbotron-->
-<!--<div class="jumbotron jumbo-top" id="top-jumbo" style="background: url('{% static 'images/main-banner.jpg' %}')">-->
-    <!--<h1 class="display-4" id="disp-4">The Book</h1>-->
-    <!--<p class="lead" id="lead">Winners Winners Winners!</p>-->
-    <!--<hr class="my-4">-->
-<!--</div>-->
 
 {% block body_block %}
 

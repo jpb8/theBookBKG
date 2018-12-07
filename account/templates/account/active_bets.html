@@ -6,13 +6,13 @@
 <div class="container" style="margin-top: 75px;">
     <div class="placed-bets-nav">
         <div class="pb-buttons w-clearfix">
-            <a href="#" class="button-8 w-button">Active</a>
-            <a href="#" class="button-9 w-button">Settled</a>
+            <button class="button-8 w-button" id="active-bets-btn">Active</button>
+            <button class="button-9 w-button" id="settled-bets-btn">Settled</button>
         </div>
     </div>
     {% if placed_bets %}
     {% for bets in placed_bets %}
-    <div class="recent-bets-wrapper">
+    <div class="recent-bets-wrapper" id="active-bets">
         <div class="place-bet">
             <div class="time w-clearfix">
                 <div class="text-block-8">Placed: {{ bets.placed }}</div>
@@ -36,7 +36,7 @@
     {% endif %}
     {% if settled_bets %}
     {% for bets in settled_bets %}
-    <div class="recent-bets-wrapper">
+    <div class="recent-bets-wrapper bets-hidden" id="settled-bets">
         <div class="place-bet">
             <div class="time w-clearfix">
                 <div class="text-block-8">Placed: {{ bets.placed }}</div>

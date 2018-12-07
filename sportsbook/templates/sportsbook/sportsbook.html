@@ -8,7 +8,7 @@
     <div class="columns w-row">
         <div class="column w-col w-col-2">
             <div>
-              <div class="sportsbook-nav">Sports</div>
+              <div class="sportsbook-nav">{{ sport_label }}</div>
                 <a href="/sportsbook/ncaaf" class="sport-nav w-button">NCAA FOOTBALL</a>
                 <a href="/sportsbook/nfl" class="sport-nav w-button">NFL</a>
                 <a href="/sportsbook/nba" class="sport-nav w-button">NBA</a>
@@ -31,7 +31,7 @@
             <div id="full-game-bets-wrapper">
                 {% include 'sportsbook/snippets/gameswf.html' with games=full_game_bets %}
             </div>
-            <div id="first-half-bets-wrapper">
+            <div id="first-half-bets-wrapper" class="bets-hidden">
                 {% include 'sportsbook/snippets/gameswf.html' with games=first_half_bets %}
             </div>
         </div>
