@@ -10,54 +10,58 @@
             <button class="button-9 w-button" id="settled-bets-btn">Settled</button>
         </div>
     </div>
-    {% if placed_bets %}
-    {% for bets in placed_bets %}
-    <div class="recent-bets-wrapper" id="active-bets">
-        <div class="place-bet">
-            <div class="time w-clearfix">
-                <div class="text-block-8">Placed: {{ bets.placed }}</div>
-            </div>
-            {% for odd in bets.betvalue_set.all %}
-            <div class="details">
-                <div class="text-block-12">{{ odd.get_display_name }}</div>
-            </div>
-            {% endfor %}
-            <div class="risk-win w-clearfix">
-                <div class="text-block-10">Risk: ${{ bets.collected }}</div>
-                <div class="text-block-11"> Win: {{ bets.value }}</div>
-            </div>
-            <div class="w-clearfix">
-                <div class="text-block-13">Status:</div>
-                <div class="text-block-14">{{ bets.get_status_display }}</div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% if settled_bets %}
-    {% for bets in settled_bets %}
-    <div class="recent-bets-wrapper bets-hidden" id="settled-bets">
-        <div class="place-bet">
-            <div class="time w-clearfix">
-                <div class="text-block-8">Placed: {{ bets.placed }}</div>
-            </div>
-            {% for odd in bets.betvalue_set.all %}
-            <div class="details">
-                <div class="text-block-12">{{ odd.get_display_name }}</div>
-            </div>
-            {% endfor %}
-            <div class="risk-win w-clearfix">
-                <div class="text-block-10">Risk: ${{ bets.collected }}</div>
-                <div class="text-block-11"> Win: {{ bets.value }}</div>
-            </div>
-            <div class="w-clearfix">
-                <div class="text-block-13">Status:</div>
-                <div class="text-block-14">{{ bets.get_status_display }}</div>
+    <div id="active-bets">
+        {% if placed_bets %}
+        {% for bets in placed_bets %}
+        <div class="recent-bets-wrapper">
+            <div class="place-bet">
+                <div class="time w-clearfix">
+                    <div class="text-block-8">Placed: {{ bets.placed }}</div>
+                </div>
+                {% for odd in bets.betvalue_set.all %}
+                <div class="details">
+                    <div class="text-block-12">{{ odd.get_display_name }}</div>
+                </div>
+                {% endfor %}
+                <div class="risk-win w-clearfix">
+                    <div class="text-block-10">Risk: ${{ bets.collected }}</div>
+                    <div class="text-block-11"> Win: {{ bets.value }}</div>
+                </div>
+                <div class="w-clearfix">
+                    <div class="text-block-13">Status:</div>
+                    <div class="text-block-14">{{ bets.get_status_display }}</div>
+                </div>
             </div>
         </div>
+        {% endfor %}
+        {% endif %}
     </div>
-    {% endfor %}
-    {% endif %}
+    <div id="settled-bets" class="bets-hidden">
+        {% if settled_bets %}
+        {% for bets in settled_bets %}
+        <div class="recent-bets-wrapper">
+            <div class="place-bet">
+                <div class="time w-clearfix">
+                    <div class="text-block-8">Placed: {{ bets.placed }}</div>
+                </div>
+                {% for odd in bets.betvalue_set.all %}
+                <div class="details">
+                    <div class="text-block-12">{{ odd.get_display_name }}</div>
+                </div>
+                {% endfor %}
+                <div class="risk-win w-clearfix">
+                    <div class="text-block-10">Risk: ${{ bets.collected }}</div>
+                    <div class="text-block-11"> Win: {{ bets.value }}</div>
+                </div>
+                <div class="w-clearfix">
+                    <div class="text-block-13">Status:</div>
+                    <div class="text-block-14">{{ bets.get_status_display }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
 
 </div>
 
