@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from betslip.models import Slip
 from django.views.generic import View
 from .utls import (get_event_qs, get_ml_gs, get_total_qs, get_sprd_qs, get_featured_games)
@@ -123,7 +124,7 @@ class BetValuesAjax(View):
         return JsonResponse(data)
 
 
-@login_required(login_url="/")
+@staff_member_required()
 def event_values(request):
     sprd = get_sprd_qs()
     tots = get_total_qs()

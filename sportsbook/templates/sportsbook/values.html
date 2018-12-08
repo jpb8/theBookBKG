@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block body_block %}
+<div class="container" style="padding-top: 80px;">
 <div class="container">
     <div class="row">
         {{ total_balance.balance__sum }}
@@ -54,6 +55,7 @@
     </div>
 </div>
 <hr>
+</div>
 {% endblock %}
 
 <script>

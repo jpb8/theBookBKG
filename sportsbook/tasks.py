@@ -194,3 +194,13 @@ def pull_nba():
 @db_periodic_task(crontab(minute='0', hour="*/2"))
 def update_nba():
     update_results("NBA")
+
+
+# @db_periodic_task(crontab(minute='0', hour="*/2"))
+# def pull_nccaabb():
+#     pull_sport_odds("NCAABB")
+#
+#
+# @db_periodic_task(crontab(minute='0', hour="*/2"))
+# def update_ncaabb():
+#     update_results("NCAABB")
