@@ -34,7 +34,7 @@
                        data-type="straight"
                        placeholder="$ Risk"
                        required="">
-                <img src="{% static 'images/trash.svg' %}" width="13" alt="" class="reset-betslip">
+                <img src="{% static 'images/trash.svg' %}" width="13" alt="" class="reset-betslip" data-bet-id="{{ odd.pk }}">
             </div>
         </div>
         {% endfor %}
@@ -89,3 +89,8 @@
         </div>
     </div>
 </form>
+{% for odd in slip.odds.all %}
+<form class="form-betslip-ajax" method="POST" action="{% url 'betslip:update' %}" id="form-{{ odd.pk }}">{% csrf_token %}
+    <input type="hidden" name="bet_id" value="{{ odd.pk }}">
+</form>
+{% endfor %}
