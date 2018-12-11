@@ -6,7 +6,6 @@ app_name = 'sportsbook'
 urlpatterns = [
     url(r'^$', views.sportsbook_home, name='home'),
     url(r'^nfl', views.nfl, name='nfl'),
-    url(r'^new', views.new_design, name='new'),
     url(r'^ncaaf', views.ncaaf, name='ncaaf'),
     url(r'^nhl', views.nhl, name='nhl'),
     url(r'^nba', views.nba, name='nba'),

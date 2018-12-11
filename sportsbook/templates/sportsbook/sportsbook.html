@@ -8,18 +8,16 @@
     <div class="columns w-row">
         <div class="column w-col w-col-2">
             <div>
-              <div class="sportsbook-nav">{{ sport_label }}</div>
-                <a href="/sportsbook/ncaaf" class="sport-nav w-button">NCAA FOOTBALL</a>
-                <a href="/sportsbook/nfl" class="sport-nav w-button">NFL</a>
-                <a href="/sportsbook/nba" class="sport-nav w-button">NBA</a>
-                <a href="/sportsbook/ncaabb" class="sport-nav w-button">NCAA BASKETBALL</a>
-                <a href="/sportsbook/nhl" class="sport-nav w-button">NHL</a>
+              <div class="sportsbook-nav">Sports</div>
+                {% for s in sports %}
+                    <a href="/sportsbook/{{ s.lower_sport }}" class="sport-nav w-button">{{ s.sport }}</a>
+                {% endfor %}
             </div>
         </div>
         <div class="column-2 w-col w-col-7">
             <div>
               <div class="w-layout-grid bet-type-grid">
-                <h1 id="w-node-1d2105c53043-a60b1e96" class="bet-type-headers">Sport</h1>
+                <h1 id="w-node-1d2105c53043-a60b1e96" class="bet-type-headers">{{ sport_label }}</h1>
                 <div id="w-node-8ae247067b13-a60b1e96" class="form-block-3 w-form">
                   <select id="bet-type-select" name="Bet-type" class="select-field w-select">
                       <option value="game">Full Game Lines</option>

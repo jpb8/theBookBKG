@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from betslip.models import Slip
 from django.views.generic import View
-from .utls import (get_event_qs, get_ml_gs, get_total_qs, get_sprd_qs, get_featured_games)
+from .utls import (get_event_qs, get_ml_gs, get_total_qs, get_sprd_qs, get_featured_games, get_live_sports)
 from account.models import Account
 from betslip.models import PlacedBet
 
@@ -17,9 +17,11 @@ def index(request):
 @login_required(login_url="/")
 def sportsbook_home(request):
     qs = get_featured_games()
+    all_sports = get_live_sports()
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     game_dict = {'games': qs,
-                 'slip': slip_obj}
+                 'slip': slip_obj,
+                 'sports': all_sports,}
     return render(request, 'sportsbook/index.html', context=game_dict)
 
 
@@ -29,22 +31,13 @@ def nfl(request):
     half_qs = get_event_qs("NFL", "FirstHalf")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     sport_label = "NFL"
+    all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
+                 'sports': all_sports,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
-
-
-@login_required(login_url="/")
-def new_design(request):
-    game_qs = get_event_qs("NFL", "Game")
-    half_qs = get_event_qs("NFL", "FirstHalf")
-    slip_obj, new_obj = Slip.objects.new_or_get(request)
-    game_dict = {'full_game_bets': game_qs,
-                 'first_half_bets': half_qs,
-                 'slip': slip_obj}
-    return render(request, 'sportsbook/new.html', context=game_dict)
 
 
 @login_required(login_url="/")
@@ -53,9 +46,11 @@ def ncaaf(request):
     half_qs = get_event_qs("NCAAF", "FirstHalf")
     sport_label = "NCAA FOOTBALL"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
+                 'sports': all_sports,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
@@ -65,8 +60,10 @@ def nhl(request):
     qs = get_event_qs("NHL", "Game")
     sport_label = "NHL"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    all_sports = get_live_sports()
     game_dict = {'games': qs,
                  'sport_label': sport_label,
+                 'sports': all_sports,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
@@ -77,9 +74,11 @@ def nba(request):
     half_qs = get_event_qs("NBA", "FirstHalf")
     sport_label = "NBA"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
+                 'sports': all_sports,
                  'slip': slip_obj}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 

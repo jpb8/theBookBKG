@@ -1,13 +1,25 @@
 from .models import Event
 from django.utils import timezone
+from django.db import connection
+
+
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 
 def get_live_sports():
-    qs = Event.objects.raw('''select sport, 
-        lower(sport) as lower_sport 
-        from public.sportsbook_event as e 
-        where e.start_time >= now() 
-        group by e.sport;''')
+    with connection.cursor() as cursor:
+        cursor.execute('''select sport,
+            lower(sport) as lower_sport 
+            from public.sportsbook_event as e 
+            where e.start_time >= now()
+            group by e.sport''')
+        qs = dictfetchall(cursor)
     return qs
 
 

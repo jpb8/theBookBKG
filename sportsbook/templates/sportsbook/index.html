@@ -9,10 +9,9 @@
         <div class="column w-col w-col-2">
             <div>
               <div class="sportsbook-nav">Sports</div>
-                <a href="/sportsbook/ncaaf" class="sport-nav w-button">NCAA FOOTBALL</a>
-                <a href="/sportsbook/nfl" class="sport-nav w-button">NFL</a>
-                <a href="/sportsbook/nba" class="sport-nav w-button">NBA</a>
-                <a href="/sportsbook/nhl" class="sport-nav w-button">NHL</a>
+                {% for s in sports %}
+                    <a href="/sportsbook/{{ s.lower_sport }}" class="sport-nav w-button">{{ s.sport }}</a>
+                {% endfor %}
             </div>
         </div>
         <div class="column-2 w-col w-col-7">
