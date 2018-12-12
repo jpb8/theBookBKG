@@ -7,7 +7,7 @@
 <div class="main">
     <div class="columns w-row">
         <div class="column w-col w-col-2">
-            <div>
+            <div style="width: 100%">
               <div class="sportsbook-nav">Sports</div>
                 {% for s in sports %}
                     <a href="/sportsbook/{{ s.lower_sport }}" class="sport-nav w-button">{{ s.sport }}</a>
@@ -34,7 +34,9 @@
             </div>
         </div>
         <div class="column-3 w-col w-col-3 slip-sidebar" id="slip-bets">
-            {% include 'sportsbook/sidebar.html' %}
+            <div class="scroll-padding">
+                {% include 'sportsbook/sidebar.html' %}
+            </div>
         </div>
     </div>
 </div>
