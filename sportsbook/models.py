@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from decimal import Decimal
+from django.contrib import admin
 
 
 class OddsManager(models.Manager):
@@ -113,6 +114,11 @@ class Event(models.Model):
 
     def __str__(self):
         return "{} @ {}".format(self.away, self.home)
+
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'sport', 'start_time', 'live_status', 'featured')
+    list_filter = ('live_status', 'sport')
 
 
 class OddsGroup(models.Model):

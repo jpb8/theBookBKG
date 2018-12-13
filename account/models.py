@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import transaction
 from django.db.models import Sum
+from django.contrib import admin
 
 
 class AccountManager(models.Manager):
@@ -38,3 +39,6 @@ class Account(models.Model):
             self.save()
             print("Paid {}".format(win))
 
+
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'balance', 'limit')

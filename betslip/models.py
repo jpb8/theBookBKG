@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save, m2m_changed
 from decimal import Decimal
 from django.utils import timezone
+from django.contrib import admin
 from django.db.models import Q
 import uuid
 from sportsbook.models import Odds, Event, OddsGroup
@@ -196,7 +197,7 @@ class PlacedBet(models.Model):
     objects = PlacedBetpManager()
 
     def __str__(self):
-        return "{}=> {}: Value: {}".format(self.placed_id, self.user, self.value)
+        return "{}: Value: {}".format(self.user, self.value)
 
     def update_bet_values(self):
         bets = self.betvalue_set.all()
@@ -259,6 +260,11 @@ class PlacedBet(models.Model):
             self.update_parlay()
         elif self.type == "S":
             self.update_straight()
+
+
+class PlacedBetAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'placed_id', 'collected', 'status', 'type')
+    list_filter = ('status', 'type')
 
 
 class BetValueManager(models.Manager):

@@ -42,22 +42,19 @@
 </div>
 <div class="div-block-5 w-hidden-main w-hidden-medium">
     <div class="w-layout-grid grid-5">
-        <div data-delay="0" id="w-node-8ebcc6ffd373-a60b1e96" class="w-dropdown">
-            <div class="mobile-dropdown-toggle w-hidden-main w-hidden-medium w-dropdown-toggle">
-                <div class="w-icon-dropdown-toggle"></div>
-                <div data-w-id="b0e74711-079b-bb46-8ea9-8ebcc6ffd376">Sports</div>
+        <div class="btn-group dropup" id="w-node-8ebcc6ffd373-a60b1e96">
+            <button type="button" class="btn dropdown-toggle mobile-betslip-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sports
+            </button>
+            <div class="dropdown-menu">
+            {% for s in sports %}
+                <a href="/sportsbook/{{ s.lower_sport }}" class="w-dropdown-link">{{ s.sport }}</a>
+            {% endfor %}
             </div>
-            <nav class="w-dropdown-list"><a href="#" class="w-dropdown-link">Link 1</a><a href="#" class="w-dropdown-link">Link 2</a><a href="#" class="w-dropdown-link">Link 3</a></nav>
         </div>
-            <div data-delay="0" id="w-node-2435e1dcf548-a60b1e96" class="w-dropdown">
-            <div class="mobile-dropdown-toggle w-dropdown-toggle">
-                <div class="icon w-icon-dropdown-toggle"></div>
-                <div>Bet Types</div>
-            </div>
-            <nav class="w-dropdown-list"><a href="#" class="w-dropdown-link">Link 1</a><a href="#" class="w-dropdown-link">Link 2</a><a href="#" class="w-dropdown-link">Link 3</a></nav>
-        </div><button id="mobile-betslip-btn" class="mobile-betslip-btn w-button">Bet Slip</button>
+        <button id="mobile-betslip-btn" class="mobile-betslip-btn btn">Bet Slip</button>
     </div>
-  </div>
+</div>
 
 </body>
 {% endtimezone %}
