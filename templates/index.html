@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block body_block %}
-<div class="container">
-    <div class="login-wrapper" style="position: fixed; top: 75px;">
-        <form class="form-inline my-2 my-lg-0" action="{% url 'sportsbook:base' %}" method="POST">
-            {% csrf_token %}
-            <input class="form-control mr-sm-2" id="username" name="username" type="text" placeholder="Username"
-                   aria-label="Search">
-            <input class="form-control mr-sm-2" id="password" name="password" type="password" placeholder="Password"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign In</button>
-        </form>
+<body class="login-body">
+  <div class="w-container">
+    <div class="w-form">
+      <form id="email-form" action="{% url 'sportsbook:base' %}" method="POST" class="login-form">
+          {% csrf_token %}
+        <div class="login-image-section"><img src='{% static "images/icon.png" %}' width="100" alt="" class="login-image"></div>
+        <h1 class="login-header">Sign In</h1>
+        <input type="text" class="login-inputs w-input" maxlength="256" name="username" data-name="user" placeholder="Username" id="user">
+        <input type="password" class="login-inputs w-input" maxlength="256" name="password" data-name="password" placeholder="Password" id="password" required="">
+        <input type="submit" value="Sign In" data-wait="Please wait..." class="login-submit w-button">
+    </form>
     </div>
-</div>
+  </div>
+</body>
 {% endblock %}

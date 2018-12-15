@@ -48,7 +48,7 @@
 
         {% if user.is_authenticated %}
         <div class="dropdown dropleft">
-            <button class="btn btn-success btn-small dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ user.username }} (${{ user.account.balance }})
             </button>

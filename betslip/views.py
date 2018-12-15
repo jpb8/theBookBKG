@@ -133,3 +133,15 @@ def check_out(request):
         'slip': slip_obj,
     }
     return render(request, 'betslip/check_out.html', cont_dict)
+
+
+def cancel_bet(request):
+    '''Cancel bet and refund amount collected. Send with success message?'''
+    placed_id = request.POST.get('placed_id')
+    try:
+        placed_bet = PlacedBet.objects.get(placed_id=placed_id)
+    except PlacedBet.DoesNotExist:
+        return redirect('account:active_bets')
+    refunded = placed_bet.cancel_and_refund()
+    return redirect('account:active_bets')
+

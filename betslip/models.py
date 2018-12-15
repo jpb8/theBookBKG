@@ -81,29 +81,30 @@ class Slip(models.Model):
         total_collected = 0
         for bet in self.odds.all():
             collected = Decimal(post['risk-{}'.format(bet.pk)])
-            value = Decimal(collected * bet.get_multiplier())
-            new_placed = PlacedBet.objects.create(
-                user=self.user,
-                value=value,
-                divider=self.divider,
-                collected=collected,
-                sum_odds=bet.get_multiplier(),
-                placed=timezone.now(),
-                type="S"
-            )
-            odd_group = bet.get_odd_group()
-            BetValue.objects.create(
-                placed_bet=new_placed,
-                odd=bet,
-                value=value,
-                placed_price=bet.price,
-                type=bet.type,
-                event=odd_group.event,
-                total=odd_group.total,
-                handicap=odd_group.handicap,
-                odd_group=odd_group
-            )
-            total_collected += collected
+            if collected != 0:
+                value = Decimal(collected * bet.get_multiplier())
+                new_placed = PlacedBet.objects.create(
+                    user=self.user,
+                    value=value,
+                    divider=self.divider,
+                    collected=collected,
+                    sum_odds=bet.get_multiplier(),
+                    placed=timezone.now(),
+                    type="S"
+                )
+                odd_group = bet.get_odd_group()
+                BetValue.objects.create(
+                    placed_bet=new_placed,
+                    odd=bet,
+                    value=value,
+                    placed_price=bet.price,
+                    type=bet.type,
+                    event=odd_group.event,
+                    total=odd_group.total,
+                    handicap=odd_group.handicap,
+                    odd_group=odd_group
+                )
+                total_collected += collected
         return total_collected
 
     # Creates Placed with all odds as the parlay values
@@ -221,6 +222,7 @@ class PlacedBet(models.Model):
                         bet.value = Decimal(self.value / (price_sum / bet.get_multiplier()))
                     print(bet)
                     bet.save()
+        return
 
     def update_straight(self):
         if self.status == 0:
@@ -229,6 +231,7 @@ class PlacedBet(models.Model):
             if self.status == 2 or self.status == 3:
                 self.pay_winners_or_push()
             self.save()
+        return
 
     def update_parlay(self):
         if self.status == 0:
@@ -245,6 +248,7 @@ class PlacedBet(models.Model):
                 self.status = 2
                 self.pay_winners_or_push()
             self.save()
+        return
 
     def updated_value_from_push(self):
         bets = self.betvalue_set.filter(~Q(status=3))
@@ -260,12 +264,29 @@ class PlacedBet(models.Model):
             account.reward_bet(self.value)
         elif self.status == 3:
             account.reward_bet(self.collected)
+        return
 
     def check_odds_update_status(self):
         if self.type == "P":
             self.update_parlay()
         elif self.type == "S":
             self.update_straight()
+        return
+
+    def cancel_and_refund(self):
+        if not self.check_odd_times():
+            return False
+        else:
+            account = Account.objects.get(user=self.user)
+            account.reward_bet(self.collected)
+            self.delete()
+        return
+
+    def check_odd_times(self):
+        for odd in self.odds.all():
+            if odd.get_event_start_time() < timezone.now():
+                return False
+        return
 
 
 class PlacedBetAdmin(admin.ModelAdmin):
