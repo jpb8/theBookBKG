@@ -61,7 +61,22 @@ def nhl(request):
     sport_label = "NHL"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     all_sports = get_live_sports()
-    game_dict = {'games': qs,
+    game_dict = {'full_game_bets': qs,
+                 'sport_label': sport_label,
+                 'sports': all_sports,
+                 'slip': slip_obj}
+    return render(request, 'sportsbook/sportsbook.html', context=game_dict)
+
+
+@login_required(login_url="/")
+def ncaabb(request):
+    game_qs = get_event_qs("NCAABB", "Game")
+    half_qs = get_event_qs("NCAABB", "FirstHalf")
+    sport_label = "NCAABB"
+    slip_obj, new_obj = Slip.objects.new_or_get(request)
+    all_sports = get_live_sports()
+    game_dict = {'full_game_bets': game_qs,
+                 'first_half_bets': half_qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
                  'slip': slip_obj}

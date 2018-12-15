@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.sportsbook_home, name='home'),
     url(r'^nfl', views.nfl, name='nfl'),
     url(r'^ncaaf', views.ncaaf, name='ncaaf'),
+    url(r'^ncaabb', views.ncaabb, name='ncaabb'),
     url(r'^nhl', views.nhl, name='nhl'),
     url(r'^nba', views.nba, name='nba'),
     url(r'^base', views.base, name='base'),
