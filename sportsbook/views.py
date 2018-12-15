@@ -11,6 +11,8 @@ from betslip.models import PlacedBet
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('sportsbook:home')
     return render(request, 'index.html')
 
 
@@ -19,6 +21,7 @@ def sportsbook_home(request):
     qs = get_featured_games()
     all_sports = get_live_sports()
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
     game_dict = {'games': qs,
                  'slip': slip_obj,
                  'sports': all_sports,}
@@ -30,6 +33,7 @@ def nfl(request):
     game_qs = get_event_qs("NFL", "Game")
     half_qs = get_event_qs("NFL", "FirstHalf")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
     sport_label = "NFL"
     all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
@@ -46,6 +50,7 @@ def ncaaf(request):
     half_qs = get_event_qs("NCAAF", "FirstHalf")
     sport_label = "NCAA FOOTBALL"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
@@ -60,6 +65,7 @@ def nhl(request):
     qs = get_event_qs("NHL", "Game")
     sport_label = "NHL"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
     game_dict = {'full_game_bets': qs,
                  'sport_label': sport_label,
@@ -74,6 +80,7 @@ def ncaabb(request):
     half_qs = get_event_qs("NCAABB", "FirstHalf")
     sport_label = "NCAABB"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
@@ -89,6 +96,7 @@ def nba(request):
     half_qs = get_event_qs("NBA", "FirstHalf")
     sport_label = "NBA"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,

@@ -41,7 +41,7 @@ def slip_update(request):
             odds_obj = Odds.objects.get(odd_id=odds_id)
         except Odds.DoesNotExist:
             print('Odds does not exist')
-            return redirect('betslip:home')
+            return redirect('sportsbook:home')
         slip_obj, new_obj = Slip.objects.new_or_get(request)
         added = slip_obj.add_or_remove_odd(odds_obj)
         request.session['slip_odds'] = str(round(slip_obj.divider, 2))
@@ -122,7 +122,6 @@ def submit_bet(request):
                 account_for_withdraw = Account.objects.select_for_update().get(user=request.user)
                 account_for_withdraw.balance -= due
                 account_for_withdraw.save()
-            return redirect('account:active_bets')
     return redirect('account:active_bets')
 
 

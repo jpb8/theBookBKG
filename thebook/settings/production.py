@@ -30,8 +30,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['.thebookbkg.herokuapp.com', '0.0.0.0', '*', 'localhost', '.herokuapp.com']
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
 # Application definition
 
 INSTALLED_APPS = [

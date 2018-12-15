@@ -70,6 +70,12 @@ class Slip(models.Model):
                 return False
         return True
 
+    def remove_nonpregame_odds(self):
+        for odd in self.odds.all():
+            if odd.get_event_start_time() < timezone.now():
+                self.odds.remove(odd)
+        return
+
     # Creates a PlacedBet and BetValue for all odds in the slip
     def create_straight_bets(self, post):
         total_collected = 0
