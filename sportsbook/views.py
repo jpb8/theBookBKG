@@ -75,9 +75,9 @@ def nhl(request):
 
 
 @login_required(login_url="/")
-def ncaabb(request):
-    game_qs = get_event_qs("NCAABB", "Game")
-    half_qs = get_event_qs("NCAABB", "FirstHalf")
+def ncaab(request):
+    game_qs = get_event_qs("NCAAB", "Game")
+    half_qs = get_event_qs("NCAAB", "FirstHalf")
     sport_label = "NCAABB"
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
