@@ -161,7 +161,7 @@ def pull_nfl():
     pull_sport_odds("NFL")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/4'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_nfl():
     update_results("NFL")
 
@@ -171,7 +171,7 @@ def pull_ncaaf():
     pull_sport_odds("NCAAF")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/4'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_ncaaf():
     update_results("NCAAF")
 
@@ -186,7 +186,7 @@ def update_nhl():
     update_results("NHL")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/6"))
+@db_periodic_task(crontab(minute='0', hour="*/2"))
 def pull_nba():
     pull_sport_odds("NBA")
 
