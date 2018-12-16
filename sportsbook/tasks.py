@@ -156,51 +156,51 @@ def update_results(sport):
                 pass
 
 
-@db_periodic_task(crontab(minute='0', hour='*/4'))
+@db_periodic_task(crontab(minute='*/15'))
 def pull_nfl():
     pull_sport_odds("NFL")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/2'))
+@db_periodic_task(crontab(minute='*/15'))
 def update_nfl():
     update_results("NFL")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/4'))
+@db_periodic_task(crontab(minute='*/15'))
 def pull_ncaaf():
     pull_sport_odds("NCAAF")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/2'))
+@db_periodic_task(crontab(minute='*/15'))
 def update_ncaaf():
     update_results("NCAAF")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/12'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def pull_nhl():
     pull_sport_odds("NHL")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/12'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_nhl():
     update_results("NHL")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/2"))
+@db_periodic_task(crontab(minute='*/30'))
 def pull_nba():
     pull_sport_odds("NBA")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/6"))
+@db_periodic_task(crontab(minute='*/15'))
 def update_nba():
     update_results("NBA")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/12"))
+@db_periodic_task(crontab(minute='0', hour="*/2"))
 def pull_nccaabb():
     pull_sport_odds("NCAABB")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/12"))
+@db_periodic_task(crontab(minute='0', hour="*/2"))
 def update_ncaabb():
     update_results("NCAABB")
