@@ -74,6 +74,7 @@ def pull_sport_odds(sport):
         data = r.content
         json_data = json.loads(data.decode("utf-8"))
         print("Successful API CALL")
+        print(sport)
     except requests.exceptions.RequestException:
         print('HTTP Request failed')
     for e in json_data:
@@ -99,7 +100,7 @@ def pull_sport_odds(sport):
                                                                             })
                 except django.db.utils.IntegrityError:
                     print("Odds Group Integrity Error")
-                print("{} => New: {}".format(odds_group.type, is_new))
+                print("{} - {} - {} => New: {}".format(event.game_id, event.sport, odds_group.type, is_new))
     print("FINISHED")
 
 
