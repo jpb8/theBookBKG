@@ -103,12 +103,16 @@ def active_bets(request):
     user = request.user
     time_one_week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
     placed_bets = PlacedBet.objects.filter(user=user,
-                                           placed__gte=time_one_week_ago,
+                                           start_time__gte=datetime.datetime.now(),
                                            status=0).order_by("placed")
+    live_bets = PlacedBet.objects.filter(user=user,
+                                         start_time__lte=datetime.datetime.now(),
+                                         status=0)
     settled_bets = PlacedBet.objects.filter(user=user,
                                             placed__gte=time_one_week_ago).exclude(status=0).order_by("placed")
     bet_dict = {
         'placed_bets': placed_bets,
+        'live_bets': live_bets,
         'settled_bets': settled_bets
     }
     return render(request, 'account/active_bets.html', bet_dict)

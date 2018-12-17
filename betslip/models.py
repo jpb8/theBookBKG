@@ -64,11 +64,13 @@ class Slip(models.Model):
         return added
 
     # Check to see if the games have started already
-    def check_odd_times(self):
+    def get_earliest_start_time(self):
+        start = timezone.now() + timezone.timedelta(days=365)
         for odd in self.odds.all():
-            if odd.get_event_start_time() < timezone.now():
-                return False
-        return True
+            s = odd.get_event_start_time()
+            if s < start:
+                start = s
+        return start
 
     def remove_nonpregame_odds(self):
         for odd in self.odds.all():
@@ -90,7 +92,8 @@ class Slip(models.Model):
                     collected=collected,
                     sum_odds=bet.get_multiplier(),
                     placed=timezone.now(),
-                    type="S"
+                    type="S",
+                    start_time=self.get_earliest_start_time()
                 )
                 odd_group = bet.get_odd_group()
                 BetValue.objects.create(
@@ -117,7 +120,8 @@ class Slip(models.Model):
             divider=self.divider,
             collected=total,
             placed=timezone.now(),
-            type="P"
+            type="P",
+            start_time=self.get_earliest_start_time()
         )
         for bet in self.odds.all():
             bet_value = Decimal(win / (self.divider / bet.get_multiplier()))
@@ -198,6 +202,7 @@ class PlacedBet(models.Model):
     placed = models.DateTimeField()
     collected = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     value = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
+    start_time = models.DateTimeField(null=True)
     status = models.IntegerField(choices=STATUS_OPTIONS, default=0)
     type = models.CharField(max_length=24)
 

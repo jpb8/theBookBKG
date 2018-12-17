@@ -1,10 +1,12 @@
 from decimal import Decimal
+from django.utils import timezone
 
 
 def validate_slip(slip, account, post):
     if Decimal(post['betlsip-total-risk']) > account.balance:
         return False, "Insufficient Funds"
-    if not slip.check_odd_times():
+    start = slip.get_earliest_start_time()
+    if start < timezone.now():
         return False, "One Game Has already Started"
     for bet in slip.odds.all():
         total = Decimal(post['risk-{}'.format(bet.pk)])
