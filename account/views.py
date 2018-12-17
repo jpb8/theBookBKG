@@ -103,7 +103,7 @@ def active_bets(request):
     user = request.user
     time_one_week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
     placed_bets = PlacedBet.objects.filter(user=user,
-                                           start_time__gte=datetime.datetime.now(),
+                                           placed__gte=time_one_week_ago,
                                            status=0).order_by("placed")
     live_bets = PlacedBet.objects.filter(user=user,
                                          start_time__lte=datetime.datetime.now(),
