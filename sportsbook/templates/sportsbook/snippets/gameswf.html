@@ -42,7 +42,7 @@
         </form>
         <form class="form-betslip-ajax" method="POST" action="{% url 'betslip:update' %}">{% csrf_token %}
             <input type="hidden" name="bet_id" value="{{ game.h_line_id }}">
-            <button type="submit" class="bet-button w-button h-ml-button" id="btn-{{ game.h_line_id }}" {% if game.h_line_pric == 0 %} disabled {% endif %}>
+            <button type="submit" class="bet-button w-button h-ml-button" id="btn-{{ game.h_line_id }}" {% if game.h_line_price == 0 %} disabled {% endif %}>
                 {{ game.h_line_price }}
             </button>
         </form>

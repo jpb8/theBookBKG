@@ -16,6 +16,7 @@
         {% for bets in placed_bets %}
         <div class="recent-bets-wrapper">
             <div class="place-bet">
+                <h1>Pre Game</h1>
                 <div class="time w-clearfix">
                     <div class="text-block-8">Placed: {{ bets.placed }}</div>
                 </div>
@@ -37,10 +38,11 @@
         {% endfor %}
         {% endif %}
     </div>
-    <div id="live-bets">
+    <div id="live-bets" class="bets-hidden">
         {% if live_bets %}
         {% for bets in live_bets %}
         <div class="recent-bets-wrapper">
+            <h1>Live Bets</h1>
             <div class="place-bet">
                 <div class="time w-clearfix">
                     <div class="text-block-8">Placed: {{ bets.placed }}</div>
@@ -67,6 +69,7 @@
         {% if settled_bets %}
         {% for bets in settled_bets %}
         <div class="recent-bets-wrapper">
+            <h1>Settled Bets</h1>
             <div class="place-bet">
                 <div class="time w-clearfix">
                     <div class="text-block-8">Placed: {{ bets.placed }}</div>
