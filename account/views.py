@@ -13,6 +13,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .utls import get_client_ip
 from .models import Account
 from betslip.models import PlacedBet
+from sportsbook.utls import get_live_sports
 
 import datetime
 from decimal import Decimal
@@ -77,9 +78,10 @@ def account_home(request):
         return redirect('account:signup')
 
     account = Account.objects.get(user=request.user)
-
+    all_sports = get_live_sports()
     context = {
         'account': account,
+        'sports': all_sports
     }
 
     return render(request, 'account/index.html', context)
@@ -110,10 +112,13 @@ def active_bets(request):
                                          status=0)
     settled_bets = PlacedBet.objects.filter(user=user,
                                             placed__gte=time_one_week_ago).exclude(status=0).order_by("placed")
+    all_sports = get_live_sports()
     bet_dict = {
         'placed_bets': placed_bets,
         'live_bets': live_bets,
-        'settled_bets': settled_bets
+        'settled_bets': settled_bets,
+        'sports': all_sports,
+
     }
     return render(request, 'account/active_bets.html', bet_dict)
 

@@ -112,31 +112,34 @@ class Slip(models.Model):
 
     # Creates Placed with all odds as the parlay values
     def create_parlay(self, post):
-        total = Decimal(post['parlay-risk-input'])
-        win = Decimal(total * self.divider)
-        new_placed = PlacedBet.objects.create(
-            user=self.user,
-            value=win,
-            divider=self.divider,
-            collected=total,
-            placed=timezone.now(),
-            type="P",
-            start_time=self.get_earliest_start_time()
-        )
-        for bet in self.odds.all():
-            bet_value = Decimal(win / (self.divider / bet.get_multiplier()))
-            odd_group = bet.get_odd_group()
-            BetValue.objects.create(
-                placed_bet=new_placed,
-                odd=bet,
-                value=bet_value,
-                placed_price=bet.price,
-                type=bet.type,
-                event=odd_group.event,
-                total=odd_group.total,
-                handicap=odd_group.handicap,
-                odd_group=odd_group
+        risk_amount = post['parlay-risk-input']
+        total = 0
+        if risk_amount:
+            total = Decimal(risk_amount)
+            win = Decimal(total * self.divider)
+            new_placed = PlacedBet.objects.create(
+                user=self.user,
+                value=win,
+                divider=self.divider,
+                collected=total,
+                placed=timezone.now(),
+                type="P",
+                start_time=self.get_earliest_start_time()
             )
+            for bet in self.odds.all():
+                bet_value = Decimal(win / (self.divider / bet.get_multiplier()))
+                odd_group = bet.get_odd_group()
+                BetValue.objects.create(
+                    placed_bet=new_placed,
+                    odd=bet,
+                    value=bet_value,
+                    placed_price=bet.price,
+                    type=bet.type,
+                    event=odd_group.event,
+                    total=odd_group.total,
+                    handicap=odd_group.handicap,
+                    odd_group=odd_group
+                )
         return total
 
 
