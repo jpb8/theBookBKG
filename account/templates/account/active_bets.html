@@ -18,7 +18,16 @@
         <div class="recent-bets-wrapper">
             <div class="place-bet">
                 <div class="time w-clearfix">
-                    <div class="text-block-8">Placed: {{ bets.placed }}</div>
+                    <div class="text-block-8">
+                        <p>Placed: {{ bets.placed }}</p>
+                        <p>Starts: {{ bets.start_time }}</p>
+                    </div>
+                    <div class="text-block-9">
+                        <form method="POST" action="{% url 'betslip:cancel_bet' %}">{% csrf_token %}
+                            <input type="hidden" name="placed_id" value="{{ bets.placed_id }}">
+                            <button type="submit">Cancel</button>
+                        </form>
+                    </div>
                 </div>
                 {% for odd in bets.betvalue_set.all %}
                 <div class="details">

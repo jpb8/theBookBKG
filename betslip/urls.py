@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import slip_home, slip_update, parley_update, submit_bet, check_out
+from .views import slip_home, slip_update, parley_update, submit_bet, check_out, cancel_bet
 
 
 app_name = 'betslip'
@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^parley_update/$', parley_update, name='parley_update'),
     url(r'^submit_bet/$', submit_bet, name='submit_bet'),
     url(r'^check_out/$', check_out, name='check_out'),
+    url(r'^cancel_bet/$', cancel_bet, name='cancel_bet'),
 ]

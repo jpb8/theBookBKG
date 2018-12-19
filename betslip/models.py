@@ -170,7 +170,7 @@ pre_save.connect(pre_save_cart_receiver, sender=Slip)
 
 
 class PlacedBetpManager(models.Manager):
-    def update_all_bet_values(self): # does this go here?
+    def update_all_bet_values(self):  # does this go here?
         bets = self.get_queryset().all()
         for bet in bets:
             bet.update_bet_values()
@@ -181,7 +181,7 @@ class PlacedBetpManager(models.Manager):
     def total_handle(self):
         return self.active().aggregate(Sum("collected"))
 
-    def total_risk(self): # Need Raw Sql to get actual risk
+    def total_risk(self):  # Need Raw Sql to get actual risk
         return self.active().aggregate(Sum("value"))
 
 
@@ -282,19 +282,21 @@ class PlacedBet(models.Model):
         return
 
     def cancel_and_refund(self):
-        if not self.check_odd_times():
+        if self.get_earliest_start_time() < timezone.now():
             return False
         else:
             account = Account.objects.get(user=self.user)
             account.reward_bet(self.collected)
             self.delete()
-        return
+        return True
 
-    def check_odd_times(self):
+    def get_earliest_start_time(self):
+        start = timezone.now() + timezone.timedelta(days=365)
         for odd in self.odds.all():
-            if odd.get_event_start_time() < timezone.now():
-                return False
-        return
+            s = odd.get_event_start_time()
+            if s < start:
+                start = s
+        return start
 
 
 class PlacedBetAdmin(admin.ModelAdmin):
@@ -306,7 +308,7 @@ class BetValueManager(models.Manager):
     def active(self):
         return self.get_queryset().filter(status=0)
 
-    def total_risk(self): # Need Raw Sql to get actual risk
+    def total_risk(self):  # Need Raw Sql to get actual risk
         return self.active().aggregate(Sum("value"))
 
 
@@ -331,7 +333,7 @@ class BetValue(models.Model):
     objects = BetValueManager()
 
     def __str__(self):
-        return "{}, Value: {}".format(self.type, self.value)
+        return self.get_display_name()
 
     # Convert price to tradition odd
     # ex. +150 => 2.5
@@ -342,6 +344,9 @@ class BetValue(models.Model):
         else:
             multiplier = Decimal(100 / (self.placed_price * -1) + 1)
         return multiplier
+
+    def get_user(self):
+        return self.placed_bet.user
 
     def get_display_name(self):
         event = self.event
@@ -359,6 +364,11 @@ class BetValue(models.Model):
         elif self.type == "under":
             return "Total ({} vs {}) U{} ({})".format(event.away, event.home, self.total, self.placed_price)
         return "Unknown"
+
+
+class BetValueAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'value', 'status', 'get_user')
+    list_filter = ('status',)
 
 
 def update_bets(sender, instance, *args, **kwargs):

@@ -14,7 +14,7 @@ from .utls import get_client_ip
 from .models import Account
 from betslip.models import PlacedBet
 from sportsbook.utls import get_live_sports
-
+from django.utils import timezone
 import datetime
 from decimal import Decimal
 
@@ -105,11 +105,11 @@ def active_bets(request):
     user = request.user
     time_one_week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
     placed_bets = PlacedBet.objects.filter(user=user,
-                                           placed__gte=time_one_week_ago,
+                                           start_time__gte=timezone.now(),
                                            status=0).order_by("placed")
     live_bets = PlacedBet.objects.filter(user=user,
-                                         start_time__lte=datetime.datetime.now(),
-                                         status=0)
+                                         start_time__lte=timezone.now(),
+                                         status=0).order_by("start_time")
     settled_bets = PlacedBet.objects.filter(user=user,
                                             placed__gte=time_one_week_ago).exclude(status=0).order_by("placed")
     all_sports = get_live_sports()

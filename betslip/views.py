@@ -8,6 +8,7 @@ from account.models import Account
 from .utls import validate_slip
 from django.db import transaction
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -88,6 +89,7 @@ def parley_update(request):
 
 
 # Submits all bets
+@login_required(login_url="/")
 def submit_bet(request):
     if not request.user.is_authenticated:
         return redirect('account:signup')
@@ -135,6 +137,7 @@ def check_out(request):
     return render(request, 'betslip/check_out.html', cont_dict)
 
 
+@login_required(login_url="/")
 def cancel_bet(request):
     '''Cancel bet and refund amount collected. Send with success message?'''
     placed_id = request.POST.get('placed_id')
@@ -143,5 +146,7 @@ def cancel_bet(request):
     except PlacedBet.DoesNotExist:
         return redirect('account:active_bets')
     refunded = placed_bet.cancel_and_refund()
+    if not refunded:
+        print("There was an error refunding your account") #Error message??
     return redirect('account:active_bets')
 
