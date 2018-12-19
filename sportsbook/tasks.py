@@ -157,12 +157,13 @@ def update_results(sport):
                 pass
 
 
-@db_periodic_task(crontab(minute='*/15'))
+@db_periodic_task(crontab(minute='*/30'))
 def pull_nfl():
     pull_sport_odds("NFL")
 
 
-@db_periodic_task(crontab(minute='*/15'))
+@db_periodic_task(crontab(minute='*/5', hour='0-7', day_of_week='1,2,4'))
+@db_periodic_task(crontab(minute='*/5', hour='17-23', day_of_week='0'))
 def update_nfl():
     update_results("NFL")
 
@@ -192,7 +193,7 @@ def pull_nba():
     pull_sport_odds("NBA")
 
 
-@db_periodic_task(crontab(minute='*/15'))
+@db_periodic_task(crontab(minute='*/5', hour='0-7'))
 def update_nba():
     update_results("NBA")
 

@@ -27,23 +27,21 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'sportsbook:home' %}">Home<span class="sr-only">(current)</span></a>
             </li>
+            {% if sports %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Sports Book
                 </a>
+
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'sportsbook:nfl' %}">NFL</a>
+                    {% for s in sports %}
+                    <a href="/sportsbook/{{ s.lower_sport }}" class="w-dropdown-link">{{ s.sport }}</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'sportsbook:ncaaf' %}">NCAAF</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'sportsbook:nhl' %}">NHL</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'sportsbook:nba' %}">NBA</a>
+                    {% endfor %}
                 </div>
             </li>
-
-
+            {% endif %}
         </ul>
 
         {% if user.is_authenticated %}
