@@ -25,7 +25,7 @@
                     <div class="text-block-9">
                         <form method="POST" action="{% url 'betslip:cancel_bet' %}">{% csrf_token %}
                             <input type="hidden" name="placed_id" value="{{ bets.placed_id }}">
-                            <button type="submit">Cancel</button>
+                            <button type="submit">Cancel/Refund</button>
                         </form>
                     </div>
                 </div>

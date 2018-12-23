@@ -111,7 +111,7 @@ def active_bets(request):
                                          start_time__lte=timezone.now(),
                                          status=0).order_by("start_time")
     settled_bets = PlacedBet.objects.filter(user=user,
-                                            placed__gte=time_one_week_ago).exclude(status=0).order_by("placed")
+                                            placed__gte=time_one_week_ago).exclude(status=0).order_by("-placed")
     all_sports = get_live_sports()
     bet_dict = {
         'placed_bets': placed_bets,
