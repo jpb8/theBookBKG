@@ -93,7 +93,7 @@ class Slip(models.Model):
                     sum_odds=bet.get_multiplier(),
                     placed=timezone.now(),
                     type="S",
-                    start_time=self.get_earliest_start_time()
+                    start_time=bet.get_event_start_time()
                 )
                 odd_group = bet.get_odd_group()
                 BetValue.objects.create(

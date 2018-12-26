@@ -12,10 +12,10 @@
         </div>
     </div>
     <div id="active-bets">
+        <div class="recent-bets-wrapper">
         <h1>Pre Game Bets</h1>
         {% if placed_bets %}
         {% for bets in placed_bets %}
-        <div class="recent-bets-wrapper">
             <div class="place-bet">
                 <div class="time w-clearfix">
                     <div class="text-block-8">
@@ -43,15 +43,16 @@
                     <div class="text-block-14">{{ bets.get_status_display }}</div>
                 </div>
             </div>
-        </div>
         {% endfor %}
         {% endif %}
+        </div>
     </div>
     <div id="live-bets" class="bets-hidden">
+        <div class="recent-bets-wrapper">
         <h1>Live Bets</h1>
         {% if live_bets %}
         {% for bets in live_bets %}
-        <div class="recent-bets-wrapper">
+
             <div class="place-bet">
                 <div class="time w-clearfix">
                     <div class="text-block-8">Placed: {{ bets.placed }}</div>
@@ -70,15 +71,17 @@
                     <div class="text-block-14">{{ bets.get_status_display }}</div>
                 </div>
             </div>
-        </div>
+
         {% endfor %}
         {% endif %}
+        </div>
     </div>
     <div id="settled-bets" class="bets-hidden">
+        <div class="recent-bets-wrapper">
         <h1>Settled Bets</h1>
         {% if settled_bets %}
         {% for bets in settled_bets %}
-        <div class="recent-bets-wrapper">
+
             <div class="place-bet">
                 <div class="time w-clearfix">
                     <div class="text-block-8">Placed: {{ bets.placed }}</div>
@@ -97,9 +100,10 @@
                     <div class="text-block-14">{{ bets.get_status_display }}</div>
                 </div>
             </div>
-        </div>
+
         {% endfor %}
         {% endif %}
+        </div>
     </div>
 
 </div>
