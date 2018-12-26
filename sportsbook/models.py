@@ -125,7 +125,8 @@ class OddsGroup(models.Model):
     ODDS_GROUP_STATUS_OPTIONS = (
         (0, 'pregame'),
         (1, 'live'),
-        (2, 'complete')
+        (2, 'complete'),
+        (3, 'canceled')
     )
 
     id = models.CharField(primary_key=True, max_length=100)
@@ -234,6 +235,13 @@ class OddsGroup(models.Model):
                     bet.status = 1
                 bet.save()
 
+    def push_all_bets(self):
+        bets = self.betvalue_set.all()
+        for bet in  bets:
+            bet.status = 3
+            bet.save()
+
+
     # run all bet updates
     def update_game_bets(self):
         if self.live_status == 2:
@@ -243,6 +251,8 @@ class OddsGroup(models.Model):
             self.final_h_spread()
             self.final_over()
             self.final_under()
+        elif self.live_status == 3:
+            self.push_all_bets()
 
 
 def update_odds(sender, instance, *args, **kwargs):

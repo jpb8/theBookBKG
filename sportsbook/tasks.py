@@ -124,8 +124,10 @@ def update_results(sport):
                     event.a_score = 0
                 else:
                     event.a_score = int(e["AwayScore"])
-                if e["Final"]:
+                if e["Final"] and e["FinalType"] == "Finished":
                     event.live_status = 2
+                elif e["Final"] and e["FinalType"] != "Finished":
+                    event.live_status = 3
                 elif event.start_time < time_now:
                     event.live_status = 1
                 else:
