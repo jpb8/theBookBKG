@@ -164,7 +164,7 @@ def update_results(sport):
 
 
 def active_events(sport):
-    latest_event = Event.objects.filter(live_status__in=[0, 1], sport=sport).latest('start_time')
+    latest_event = Event.objects.filter(live_status__in=[0, 1], sport=sport).earliest('start_time')
     if latest_event.start_time < timezone.now():
         return True
     return False
@@ -175,10 +175,13 @@ def pull_nfl():
     pull_sport_odds("NFL")
 
 
-@db_periodic_task(crontab(minute='*/5', hour='0-7', day_of_week='1,2,5'))
-@db_periodic_task(crontab(minute='*/5', hour='17-23', day_of_week='0,5,6'))
+@db_periodic_task(crontab(minute='*/5'))
 def update_nfl():
-    update_results("NFL")
+    if active_events("NFL"):
+        print("NFL is active")
+        update_results("NLF")
+    else:
+        print("NFL is inactive")
 
 
 @db_periodic_task(crontab(minute='*/15'))
