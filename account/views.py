@@ -103,7 +103,7 @@ def active_bets(request):
     if not request.user.is_authenticated:
         return redirect('sportsbook:mlb')
     user = request.user
-    time_one_week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+    time_one_month_ago = datetime.datetime.now() - datetime.timedelta(days=31)
     placed_bets = PlacedBet.objects.filter(user=user,
                                            start_time__gte=timezone.now(),
                                            status=0).order_by("placed")
@@ -111,7 +111,7 @@ def active_bets(request):
                                          start_time__lte=timezone.now(),
                                          status=0).order_by("start_time")
     settled_bets = PlacedBet.objects.filter(user=user,
-                                            placed__gte=time_one_week_ago).exclude(status=0).order_by("-placed")
+                                            placed__gte=time_one_month_ago).exclude(status=0).order_by("-placed")
     all_sports = get_live_sports()
     bet_dict = {
         'placed_bets': placed_bets,
