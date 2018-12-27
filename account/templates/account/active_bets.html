@@ -52,14 +52,16 @@
         <h1>Live Bets</h1>
         {% if live_bets %}
         {% for bets in live_bets %}
-
             <div class="place-bet">
                 <div class="time w-clearfix">
                     <div class="text-block-8">Placed: {{ bets.placed }}</div>
                 </div>
                 {% for odd in bets.betvalue_set.all %}
                 <div class="details">
-                    <div class="text-block-12">{{ odd.get_display_name }}</div>
+                    <div class="text-block-12">
+                        <p>{{ odd.get_display_name }}</p>
+                        <p>{{ odd.event.home }}: {{ odd.odd_group.h_score }} {{ odd.event.away }}: {{ odd.odd_group.a_score }}</p>
+                    </div>
                 </div>
                 {% endfor %}
                 <div class="risk-win w-clearfix">
@@ -88,7 +90,10 @@
                 </div>
                 {% for odd in bets.betvalue_set.all %}
                 <div class="details">
-                    <div class="text-block-12">{{ odd.get_display_name }}</div>
+                    <div class="text-block-12">
+                        <p>{{ odd.get_display_name }}</p>
+                        <p>{{ odd.event.home }}: {{ odd.odd_group.h_score }} {{ odd.event.away }}: {{ odd.odd_group.a_score }}</p>
+                    </div>
                 </div>
                 {% endfor %}
                 <div class="risk-win w-clearfix">

@@ -237,7 +237,7 @@ class OddsGroup(models.Model):
 
     def push_all_bets(self):
         bets = self.betvalue_set.all()
-        for bet in  bets:
+        for bet in bets:
             bet.status = 3
             bet.save()
 

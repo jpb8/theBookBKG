@@ -228,7 +228,6 @@ class PlacedBet(models.Model):
                 for bet in bets:
                     if bet.status == 0:
                         bet.value = Decimal(self.value / (price_sum / bet.get_multiplier()))
-                    print(bet)
                     bet.save()
         return
 
