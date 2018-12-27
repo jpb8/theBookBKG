@@ -163,6 +163,13 @@ def update_results(sport):
                 pass
 
 
+def active_events(sport):
+    latest_event = Event.objects.filter(live_status__in=[0, 1], sport=sport).latest('start_time')
+    if latest_event.start_time < timezone.now():
+        return True
+    return False
+
+
 @db_periodic_task(crontab(minute='*/30'))
 def pull_nfl():
     pull_sport_odds("NFL")
@@ -179,9 +186,13 @@ def pull_ncaaf():
     pull_sport_odds("NCAAF")
 
 
-@db_periodic_task(crontab(minute='*/15'))
+@db_periodic_task(crontab(minute='*/5'))
 def update_ncaaf():
-    update_results("NCAAF")
+    if active_events("NCAAF"):
+        print("NCAA is active")
+        update_results("NCAAF")
+    else:
+        print("NCAA is inactive")
 
 
 @db_periodic_task(crontab(minute='0', hour='*/2'))
@@ -199,9 +210,13 @@ def pull_nba():
     pull_sport_odds("NBA")
 
 
-@db_periodic_task(crontab(minute='*/5', hour='0-7'))
+@db_periodic_task(crontab(minute='*/5'))
 def update_nba():
-    update_results("NBA")
+    if active_events("NBA"):
+        print("NBA is active")
+        update_results("NBA")
+    else:
+        print("NBA is inactive")
 
 
 @db_periodic_task(crontab(minute='0', hour="*/2"))

@@ -118,7 +118,6 @@ def active_bets(request):
         'live_bets': live_bets,
         'settled_bets': settled_bets,
         'sports': all_sports,
-
     }
     return render(request, 'account/active_bets.html', bet_dict)
 

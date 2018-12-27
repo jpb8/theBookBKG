@@ -97,7 +97,8 @@ class Event(models.Model):
     LIVE_STATUS_OPTIONS = (
         (0, 'pregame'),
         (1, 'live'),
-        (2, 'complete')
+        (2, 'complete'),
+        (3, 'canceled')
     )
 
     game_id = models.CharField(primary_key=True, max_length=100)
