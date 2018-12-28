@@ -10,6 +10,7 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 
+import json
 
 # Create your views here.
 def slip_home(request):
@@ -50,9 +51,11 @@ def slip_update(request):
     # Serialize bet and send back with ajax - Old
     # render sidebar template and return it as a string - new
     if request.is_ajax:
+        numb_bets = slip_obj.odds.all().count()
         slip_dict = {"slip": slip_obj}
         html = render_to_string("sportsbook/sidebar.html", slip_dict, request=request)
-        return HttpResponse(html)
+        response_data = {"html": html, 'bets': numb_bets}
+        return JsonResponse(response_data)
     return redirect('betslip:home')
 
 

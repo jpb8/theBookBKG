@@ -16,7 +16,7 @@
 
 <!-- Nav bar -->
 <nav class="navbar  fixed-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">The BKG Book</a>
+    <a class="navbar-brand" href="/">The Book BKG</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -25,12 +25,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'sportsbook:home' %}">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'sportsbook:home' %}" style="font-size:2em">Home<span class="sr-only">(current)</span></a>
             </li>
             {% if sports %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                   aria-haspopup="true" aria-expanded="false" style="font-size:2em">
                     Sports Book
                 </a>
 
@@ -47,7 +47,7 @@
         {% if user.is_authenticated %}
         <div class="dropdown dropleft">
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:1.5em">
                 {{ user.username }} (${{ user.account.balance }})
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
