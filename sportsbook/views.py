@@ -22,9 +22,11 @@ def sportsbook_home(request):
     all_sports = get_live_sports()
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'games': qs,
                  'slip': slip_obj,
-                 'sports': all_sports,}
+                 'sports': all_sports,
+                 'slip_bets': slip_bets}
     return render(request, 'sportsbook/index.html', context=game_dict)
 
 
@@ -36,11 +38,13 @@ def nfl(request):
     slip_obj.remove_nonpregame_odds()
     sport_label = "NFL"
     all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
-                 'slip': slip_obj}
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
@@ -52,11 +56,13 @@ def ncaaf(request):
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
-                 'slip': slip_obj}
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
@@ -67,10 +73,12 @@ def nhl(request):
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'full_game_bets': qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
-                 'slip': slip_obj}
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
@@ -82,11 +90,13 @@ def ncaab(request):
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
-                 'slip': slip_obj}
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
@@ -98,11 +108,13 @@ def nba(request):
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
     all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'full_game_bets': game_qs,
                  'first_half_bets': half_qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
-                 'slip': slip_obj}
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
