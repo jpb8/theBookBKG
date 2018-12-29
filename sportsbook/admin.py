@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Event, EventAdmin)
 admin.site.register(Odds)
 admin.site.register(OddsGroup)
+admin.site.register(GameOdds)

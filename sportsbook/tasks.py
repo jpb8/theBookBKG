@@ -4,7 +4,7 @@ from decimal import *
 import pytz
 from django.utils import timezone
 import datetime
-from .models import Event, OddsGroup, Odds
+from .models import Event, OddsGroup, Odds, GameOdds
 import django
 from huey import crontab
 from huey.contrib.djhuey import db_periodic_task
@@ -67,6 +67,20 @@ def create_odds_in_group(e, o, odds_dict):
     return odds_list
 
 
+def get_or_create_gameodds(event, o):
+    try:
+        game_stat, new = GameOdds.objects.get_or_create(event=event,
+                                                        h_line=o["MoneyLineHome"],
+                                                        a_line=o["MoneyLineAway"],
+                                                        total=Decimal(o["TotalNumber"]),
+                                                        handicap=Decimal(o["PointSpreadHome"]),
+                                                        )
+    except django.db.utils.IntegrityError:
+        print("Error happened adding GameOdds")
+        return False, False
+    return game_stat, new
+
+
 def pull_sport_odds(sport):
     try:
         print("PULLING FROM API")
@@ -100,6 +114,9 @@ def pull_sport_odds(sport):
                                                                             })
                 except django.db.utils.IntegrityError:
                     print("Odds Group Integrity Error")
+                if o["OddType"] == "Game" and (sport == "NFL" or sport == "NBA" or sport == "NCAAF"):
+                    game_stats, new = get_or_create_gameodds(event, o)
+                    print("New Game Stats for {}".format(event))
                 print("{} - {} - {} => New: {}".format(event.game_id, event.sport, odds_group.type, is_new))
     print("FINISHED")
 
@@ -203,9 +220,13 @@ def pull_nhl():
     pull_sport_odds("NHL")
 
 
-@db_periodic_task(crontab(minute='0', hour='*/2'))
+@db_periodic_task(crontab(minute='*/30'))
 def update_nhl():
-    update_results("NHL")
+    if active_events("NHL"):
+        print("NHL is active")
+        update_results("NHL")
+    else:
+        print("NHL is inactive")
 
 
 @db_periodic_task(crontab(minute='*/30'))
@@ -227,6 +248,10 @@ def pull_nccaabb():
     pull_sport_odds("NCAAB")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/2"))
+@db_periodic_task(crontab(minute='*/30'))
 def update_ncaabb():
-    update_results("NCAAB")
+    if active_events("NCAAB"):
+        print("NCAAB is active")
+        update_results("NCAAB")
+    else:
+        print("NCAAB is inactive")

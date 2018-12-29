@@ -261,3 +261,18 @@ def update_odds(sender, instance, *args, **kwargs):
 
 
 post_save.connect(update_odds, sender=OddsGroup)
+
+
+class GameOdds(models.Model):
+    handicap = models.DecimalField(max_digits=7, decimal_places=1)
+    h_line = models.IntegerField()
+    a_line = models.IntegerField()
+    total = models.DecimalField(max_digits=7, decimal_places=1, null=True)
+    time = models.DateTimeField(auto_now=True)
+    event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Odds"
+
+    def __str__(self):
+        return "{} {} => {}".format(self.event, self.handicap, self.time)
