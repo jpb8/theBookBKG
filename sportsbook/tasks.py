@@ -127,6 +127,7 @@ def update_results(sport):
         r = requests.get("https://jsonodds.com/api/results/{}".format(sport), headers=headers)
         data = r.content
         json_data = json.loads(data.decode("utf-8"))
+        print("Udating NFL")
     except requests.exceptions.RequestException:
         print('HTTP Request failed')
     for e in json_data:
@@ -144,6 +145,7 @@ def update_results(sport):
                     event.a_score = int(e["AwayScore"])
                 if e["Final"] and e["FinalType"] == "Finished":
                     event.live_status = 2
+                    print("{} => {}".format(event, event.live_status))
                 elif e["Final"] and e["FinalType"] != "Finished":
                     print("{} is canceled".format(event))
                     event.live_status = 3
@@ -152,7 +154,6 @@ def update_results(sport):
                 else:
                     event.live_status = 0
                 event.save()
-                print("{} => {}".format(event, event.live_status))
             except Event.DoesNotExist:
                 pass
         if e["OddType"] in bet_list:
@@ -166,8 +167,9 @@ def update_results(sport):
                     group.a_score = 0
                 else:
                     group.a_score = int(e["AwayScore"])
-                if e["Final"]:
+                if e["Final"] and e["FinalType"] == "Finished":
                     group.live_status = 2
+                    print("{} => {}".format(group, event.live_status))
                 elif e["Final"] and e["FinalType"] != "Finished":
                     print("{} is canceled".format(group))
                     event.live_status = 3
@@ -176,7 +178,6 @@ def update_results(sport):
                 else:
                     group.live_status = 0
                 group.save()
-                print("{} => {}".format(event, event.live_status))
             except OddsGroup.DoesNotExist:
                 pass
 
@@ -197,7 +198,7 @@ def pull_nfl():
 def update_nfl():
     if active_events("NFL"):
         print("NFL is active")
-        update_results("NLF")
+        update_results("NFL")
     else:
         print("NFL is inactive")
 
