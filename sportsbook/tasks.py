@@ -116,7 +116,8 @@ def pull_sport_odds(sport):
                     print("Odds Group Integrity Error")
                 if o["OddType"] == "Game" and (sport == "NFL" or sport == "NBA" or sport == "NCAAF"):
                     game_stats, new = get_or_create_gameodds(event, o)
-                    print("New Game Stats for {}".format(event))
+                    if new:
+                        print(game_stats)
                 print("{} - {} - {} => New: {}".format(event.game_id, event.sport, odds_group.type, is_new))
     print("FINISHED")
 

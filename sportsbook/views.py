@@ -4,10 +4,15 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from betslip.models import Slip
-from django.views.generic import View
-from .utls import (get_event_qs, get_ml_gs, get_total_qs, get_sprd_qs, get_featured_games, get_live_sports)
+from django.views.generic import View, DetailView
+from .utls import (get_event_qs, get_ml_gs,
+                   get_total_qs, get_sprd_qs,
+                   get_featured_games, get_live_sports,
+                   event_detail_qs)
 from account.models import Account
 from betslip.models import PlacedBet
+from .models import Event, GameOdds
+from django.http import Http404
 
 
 def index(request):
@@ -133,6 +138,20 @@ def base(request):
             return HttpResponse("invalid login details")
 
     return render(request, 'base.html', context={})
+
+
+class EventDetailView(DetailView):
+    model = Event
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        game_id = self.kwargs.get('pk')
+        context['first'] = GameOdds.objects.get_first(game_id)
+        context['last'] = GameOdds.objects.get_last(game_id)
+        context['odds'] = event_detail_qs(game_id)
+        context['slip'] = Slip.objects.new_or_get(self.request)
+        context['sports'] = get_live_sports()
+        return context
 
 
 class BetValuesAjax(View):

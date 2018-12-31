@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from decimal import Decimal
 from django.contrib import admin
-
+from django.db.models import Max, Min
 
 class OddsManager(models.Manager):
     def get_all_active(self):
@@ -115,6 +115,9 @@ class Event(models.Model):
 
     def __str__(self):
         return "{} @ {}".format(self.away, self.home)
+
+    def get_absolute_url(self):
+        return "/sportsbook/{}".format(self.game_id)
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -263,6 +266,20 @@ def update_odds(sender, instance, *args, **kwargs):
 post_save.connect(update_odds, sender=OddsGroup)
 
 
+class GameOddsManager(models.Manager):
+    def get_first(self, event):
+        return self.get_queryset().filter(event=event).earliest('time')
+
+    def get_last(self, event):
+        return self.get_queryset().filter(event=event).latest('time')
+
+    def get_highest_total(self, event):
+        return self.get_queryset().filter(event=event).aggregate(Max('total'))
+
+    def get_lowest_total(self, event):
+        return self.get_queryset().filter(event=event).aggregate(Min('total'))
+
+
 class GameOdds(models.Model):
     handicap = models.DecimalField(max_digits=7, decimal_places=1)
     h_line = models.IntegerField()
@@ -271,8 +288,10 @@ class GameOdds(models.Model):
     time = models.DateTimeField(auto_now=True)
     event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE)
 
+    objects = GameOddsManager()
+
     class Meta:
-        verbose_name_plural = "Odds"
+        verbose_name_plural = "Game Odds"
 
     def __str__(self):
         return "{} {} => {}".format(self.event, self.handicap, self.time)

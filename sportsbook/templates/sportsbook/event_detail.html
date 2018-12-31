@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% timezone "America/Chicago" %}
+<body class="body">
+<div class="main">
+    <div class="columns w-row">
+        <div class="column w-col w-col-2">
+            <div style="width: 100%">
+              <div class="sportsbook-nav">Sports</div>
+                {% for s in sports %}
+                    <a href="/sportsbook/{{ s.lower_sport }}" class="sport-nav w-button">{{ s.sport }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="column-2 w-col w-col-7">
+            <div>
+              <div class="w-layout-grid bet-type-grid">
+                <h1 id="w-node-1d2105c53043-a60b1e96" class="bet-type-headers">{{ event }}</h1>
+              </div>
+            </div>
+            <div id="full-game-bets-wrapper">
+                {% include 'sportsbook/snippets/gameswf.html' with games=odds %}
+            </div>
+            <div id="first-half-bets-wrapper">
+                {% include 'sportsbook/snippets/gameswf.html' with games=odds %}
+            </div>
+            <div>
+                <p>
+                    FIRST: Total={{ first.total }} Home Handicap={{ first.handicap }} Home ML Price={{ first.h_line }}
+                </p>
+                <p>
+                    Last: Total={{ last.total }} Home Handicap={{ last.handicap }} Home ML Price={{ last.h_line }}
+                </p>
+            </div>
+        </div>
+        <div class="column-3 w-col w-col-3 slip-sidebar" id="slip-bets">
+            <div class="scroll-padding">
+                {% include 'sportsbook/sidebar.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="div-block-5">
+    <div class="w-layout-grid grid-5">
+        <div class="btn-group dropup" id="w-node-8ebcc6ffd373-a60b1e96">
+            <button type="button" class="btn dropdown-toggle mobile-betslip-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sports
+            </button>
+            <div class="dropdown-menu">
+            {% for s in sports %}
+                <a href="/sportsbook/{{ s.lower_sport }}" class="w-dropdown-link">{{ s.sport }}</a>
+            {% endfor %}
+            </div>
+        </div>
+        <button id="mobile-betslip-btn" class="mobile-betslip-btn btn">Bet Slip<br /><span id="mobile-bet-number">({{ slip.odds.all.count }} Total)</span></button>
+    </div>
+</div>
+
+</body>
+{% endtimezone %}
+{% endblock %}

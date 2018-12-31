@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 from . import views
 
 app_name = 'sportsbook'
@@ -13,4 +14,5 @@ urlpatterns = [
     url(r'^base', views.base, name='base'),
     url(r'^values', views.event_values, name='event_values'),
     url(r'^event_values_charts', views.BetValuesAjax.as_view(), name='event_values_charts'),
+    path('<slug:pk>/', views.EventDetailView.as_view(), name='event-detail'),
 ]

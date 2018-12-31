@@ -56,7 +56,8 @@
             <div class="text-block">@</div>
         </div>
         <div class="div-block w-node-44f988a09d64-a60b1e96">
-            <div class="text-block-2">{{ game.start_time }}</div>
+            <div class="text-block-2">{{ game.start_time }} Type: {{ game.type }}</div>
+            <a href="{{ game.get_absolute_url }}" >Game Details</a>
         </div>
     </div>
 </div>
