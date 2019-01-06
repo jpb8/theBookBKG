@@ -35,11 +35,15 @@
                     <h1 class="bet-history-header">Bet History</h1>
                     <div class="start-date-div">
                         <label for="history-start-date" class="start-date-label">Start Date</label>
-                        <input type="date" id="history-start-date" name="history-start-date" class="history-start-date w-input" required>
+                        <input type="date" id="history-start-date" name="history-start-date" class="history-start-date w-input" required
+                            {% if start_date %} value="{{ start_date }}" {% endif %}
+                        >
                     </div>
                     <div class="end-date-div">
                         <label for="history-end-date" class="end-date-label">End Date</label>
-                        <input type="date" name="history-end-date" id="history-end-date" class="history-end-date w-input" required>
+                        <input type="date" name="history-end-date" id="history-end-date" class="history-end-date w-input" required
+                            {% if end_date %} value="{{ end_date }}" {% endif %}
+                        >
                     </div>
                     <div class="sport-checkbox">
                         {% for sport in sports_sel %}

@@ -182,6 +182,8 @@ def update_history(request):
                 push = status['dcount']
         if won != 0:
             hit_rate = round(won / (won + lose) * 100, 2)
+        start_date = request.POST.get("history-start-date")
+        end_date = request.POST.get("history-end-date")
         history_dict = {
             'won': won,
             'lose': lose,
@@ -192,6 +194,8 @@ def update_history(request):
             'hit_rate': hit_rate,
             'sports_sel': sports_sel,
             'sports': sports,
+            "start_date": start_date,
+            "end_date": end_date,
         }
     return render(request, 'account/history.html', history_dict)
 
