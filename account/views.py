@@ -129,7 +129,7 @@ def bet_history(request):
     all_settled = PlacedBet.objects.bet_histry(user)
     status_count = all_settled.values('status').annotate(dcount=Count('status'))
     totals = all_settled.aggregate(collected=Sum("collected"), win=Sum("value"))
-    total_won = all_settled.filter(status=1).aggregate(won=Sum('value'))['won']
+    total_won = all_settled.filter(status=2).aggregate(won=Sum('value'))['won']
     sports = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
     roi = 0
     if total_won and totals['collected']:
@@ -158,12 +158,13 @@ def bet_history(request):
 
 
 def update_history(request):
+    history_dict = {}
     if request.method == "POST":
         user = request.user
         all_settled = PlacedBet.objects.bet_histry(user, request)
         status_count = all_settled.values('status').annotate(dcount=Count('status'))
         totals = all_settled.aggregate(collected=Sum("collected"), win=Sum("value"))
-        total_won = all_settled.filter(status=1).aggregate(won=Sum('value'))['won']
+        total_won = all_settled.filter(status=2).aggregate(won=Sum('value'))['won']
         sports = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
         roi = 0
         if total_won and totals['collected']:
