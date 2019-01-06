@@ -130,7 +130,8 @@ def bet_history(request):
     status_count = all_settled.values('status').annotate(dcount=Count('status'))
     totals = all_settled.aggregate(collected=Sum("collected"), win=Sum("value"))
     total_won = all_settled.filter(status=2).aggregate(won=Sum('value'))['won']
-    sports = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
+    sports_sel = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
+    sports = get_live_sports()
     roi = 0
     if total_won and totals['collected']:
         roi = round(((total_won - totals['collected']) / totals['collected']) * 100, 2)
@@ -152,7 +153,8 @@ def bet_history(request):
         'total_won': total_won,
         'roi': roi,
         'hit_rate': hit_rate,
-        'sports_sel': sports,
+        'sports_sel': sports_sel,
+        'sports': sports,
     }
     return render(request, 'account/history.html', history_dict)
 
@@ -165,7 +167,8 @@ def update_history(request):
         status_count = all_settled.values('status').annotate(dcount=Count('status'))
         totals = all_settled.aggregate(collected=Sum("collected"), win=Sum("value"))
         total_won = all_settled.filter(status=2).aggregate(won=Sum('value'))['won']
-        sports = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
+        sports_sel = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
+        sports = get_live_sports()
         roi = 0
         if total_won and totals['collected']:
             roi = round(((total_won - totals['collected']) / totals['collected']) * 100, 2)
@@ -187,7 +190,8 @@ def update_history(request):
             'total_won': total_won,
             'roi': roi,
             'hit_rate': hit_rate,
-            'sports_sel': sports,
+            'sports_sel': sports_sel,
+            'sports': sports,
         }
     return render(request, 'account/history.html', history_dict)
 

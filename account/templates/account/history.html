@@ -2,30 +2,98 @@
 {% load staticfiles %}
 {% block body_block %}
 
-<div style="padding:80px; width:40%; float:left">
-    <form method="POST" action="{% url 'account:update_history' %}">{% csrf_token %}
-        <label for="history-start-date">Start Date</label>
-        <input type="date" name="history-start-date" id="history-start-date">
-        <label for="history-end-date">End Date</label>
-        <input type="date" name="history-end-date" id="history-end-date">
-        <label for="history-sport">Sport</label>
-        <select name="history-sport" id="history-sport">
-            {% for sport in sports_sel %}
-            <option value="{{ sport }}">{{ sport }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Reresh Data</button>
-    </form>
-    <p><h1>{{ won }} - {{ lose }} - {{ push }}</h1></p>
-    <p><h1>Hit Rate = {{ hit_rate }}%</h1></p>
+<!--<div style="padding:80px; width:40%; float:left">-->
+    <!--<form method="POST" action="{% url 'account:update_history' %}">{% csrf_token %}-->
+        <!--<label for="history-start-date">Start Date</label>-->
+        <!--<input type="date" name="history-start-date" id="history-start-date">-->
+        <!--<label for="history-end-date">End Date</label>-->
+        <!--<input type="date" name="history-end-date" id="history-end-date">-->
+        <!--<label for="history-sport">Sport</label>-->
+        <!--<select name="history-sport" id="history-sport">-->
+            <!--{% for sport in sports_sel %}-->
+            <!--<option value="{{ sport }}">{{ sport }}</option>-->
+            <!--{% endfor %}-->
+        <!--</select>-->
+        <!--<button type="submit">Reresh Data</button>-->
+    <!--</form>-->
+    <!--<p><h1>{{ won }} - {{ lose }} - {{ push }}</h1></p>-->
+    <!--<p><h1>Hit Rate = {{ hit_rate }}%</h1></p>-->
+    <!--<canvas id="win-percentage-chart"></canvas>-->
+<!--</div>-->
+<!--<div style="padding:80px; width:40%; float:left">-->
+    <!--<p><h2>Total Risk: {{ totals.collected }}</h2></p>-->
+    <!--<p><h2>Total Possible Winnings: {{ totals.win }}</h2></p>-->
+    <!--<p><h2>Total Won: {{ total_won }}</h2></p>-->
+    <!--<p><h2>ROI: {{ roi }}%</h2></p>-->
+<!--</div>-->
+
+<div class="bet-history-cols w-row">
+    <div class="form-col w-col w-col-4">
+        <div class="bet-history-form-div">
+            <div>
+                <form method="POST" action="{% url 'account:update_history' %}">{% csrf_token %}>
+                    <h1 class="bet-history-header">Bet History</h1>
+                    <div class="start-date-div">
+                        <label for="history-start-date" class="start-date-label">Start Date</label>
+                        <input type="date" id="history-start-date" name="history-start-date" class="history-start-date w-input" required>
+                    </div>
+                    <div class="end-date-div">
+                        <label for="history-end-date" class="end-date-label">End Date</label>
+                        <input type="date" name="history-end-date" id="history-end-date" class="history-end-date w-input" required>
+                    </div>
+                    <div class="sport-checkbox">
+                        {% for sport in sports_sel %}
+                        <div class="w-checkbox">
+                            <input type="checkbox" id="{{ sport }}-ck" name="{{ sport }}" class="w-checkbox-input">
+                            <label for="{{ sport }}" class="w-form-label">{{ sport }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" value="Submit" data-wait="Please wait..." class="submit-button w-button">
+                </form>
+            </div>
+        </div>
+    </div>
+<div class="data-col w-col w-col-8">
+  <div class="w-clearfix">
+    <div class="win-loss">
+      <div class="win-loss-header">
+        <div class="bet-history-header">Record</div>
+        <div class="bet-history-data">{{ won }} - {{ lose }} - {{ push }}</div>
+      </div>
+    </div>
+    <div class="hit-rate">
+      <div class="hit-rate-header">
+        <div class="bet-history-header">Hit Rate</div>
+        <div class="bet-history-data">{{ hit_rate }}</div>
+      </div>
+    </div>
+  </div>
+  <div>
     <canvas id="win-percentage-chart"></canvas>
+  </div>
+  <div class="w-clearfix">
+    <div class="total-risk">
+      <div>Total Risked</div>
+      <div>{{ totals.collected }}</div>
+    </div>
+    <div class="total-risk">
+      <div>Total Pos Winnings</div>
+      <div>{{ totals.win }}</div>
+    </div>
+    <div class="total-risk">
+      <div>Total Won</div>
+      <div>{{ total_won }}</div>
+    </div>
+    <div class="total-risk">
+      <div>ROI</div>
+      <div>{{ roi }}%</div>
+    </div>
+  </div>
 </div>
-<div style="padding:80px; width:40%; float:left">
-    <p><h2>Total Risk: {{ totals.collected }}</h2></p>
-    <p><h2>Total Possible Winnings: {{ totals.win }}</h2></p>
-    <p><h2>Total Won: {{ total_won }}</h2></p>
-    <p><h2>ROI: {{ roi }}%</h2></p>
 </div>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
@@ -54,7 +122,10 @@
         },
 
         // Configuration options go here
-        options: {}
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
     });
 </script>
 
