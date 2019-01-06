@@ -23,15 +23,12 @@
             <div id="full-game-bets-wrapper">
                 {% include 'sportsbook/snippets/gameswf.html' with games=odds %}
             </div>
-            <div id="first-half-bets-wrapper">
-                {% include 'sportsbook/snippets/gameswf.html' with games=odds %}
-            </div>
             <div>
                 <p>
-                    FIRST: Total={{ first.total }} Home Handicap={{ first.handicap }} Home ML Price={{ first.h_line }}
+                    Opening: Total={{ first.total }} Home Handicap={{ first.handicap }} Home ML Price={{ first.h_line }}
                 </p>
                 <p>
-                    Last: Total={{ last.total }} Home Handicap={{ last.handicap }} Home ML Price={{ last.h_line }}
+                    Current: Total={{ last.total }} Home Handicap={{ last.handicap }} Home ML Price={{ last.h_line }}
                 </p>
             </div>
         </div>

@@ -183,6 +183,7 @@ def event_values(request):
     tots = get_total_qs()
     ml = get_ml_gs()
     total = 0
+    # This is terrible, need to fix
     for e in sprd:
         total += e.val
     for e in tots:

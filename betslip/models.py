@@ -9,6 +9,7 @@ from django.db.models import Q
 import uuid
 from sportsbook.models import Odds, Event, OddsGroup
 from account.models import Account
+from datetime import datetime, timedelta
 
 
 class BetSlipManager(models.Manager):
@@ -183,6 +184,16 @@ class PlacedBetpManager(models.Manager):
 
     def total_risk(self):  # Need Raw Sql to get actual risk
         return self.active().aggregate(Sum("value"))
+
+    def bet_histry(self, user, request=None):
+        all_settled = self.get_queryset().filter(user=user).exclude(status=0)
+        if request is not None:
+            start = request.POST.get("history-start-date").split("-")
+            start_dt = datetime(int(start[0]), int(start[1]), int(start[2]))
+            end = request.POST.get("history-end-date").split("-")
+            end_dt = datetime(int(end[0]), int(end[1]), int(end[2]))
+            all_settled = all_settled.filter(start_time__range=(start_dt, end_dt))
+        return all_settled
 
 
 # All placed bets

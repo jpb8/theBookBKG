@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db.models import Count, Sum
 
 from .utls import get_client_ip
 from .models import Account
@@ -120,6 +121,74 @@ def active_bets(request):
         'sports': all_sports,
     }
     return render(request, 'account/active_bets.html', bet_dict)
+
+
+@login_required(login_url="/")
+def bet_history(request):
+    user = request.user
+    all_settled = PlacedBet.objects.bet_histry(user)
+    status_count = all_settled.values('status').annotate(dcount=Count('status'))
+    totals = all_settled.aggregate(collected=Sum("collected"), win=Sum("value"))
+    total_won = all_settled.filter(status=1).aggregate(won=Sum('value'))['won']
+    sports = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
+    roi = 0
+    if total_won and totals['collected']:
+        roi = round(((total_won - totals['collected']) / totals['collected']) * 100, 2)
+    won, lose, push, hit_rate = 0, 0, 0, 0
+    for status in status_count:
+        if status['status'] == 1:
+            won = status['dcount']
+        elif status['status'] == 2:
+            lose = status['dcount']
+        else:
+            push = status['dcount']
+    if won != 0:
+        hit_rate = round(won / (won + lose) * 100, 2)
+    history_dict = {
+        'won': won,
+        'lose': lose,
+        'push': push,
+        'totals': totals,
+        'total_won': total_won,
+        'roi': roi,
+        'hit_rate': hit_rate,
+        'sports_sel': sports,
+    }
+    return render(request, 'account/history.html', history_dict)
+
+
+def update_history(request):
+    if request.method == "POST":
+        user = request.user
+        all_settled = PlacedBet.objects.bet_histry(user, request)
+        status_count = all_settled.values('status').annotate(dcount=Count('status'))
+        totals = all_settled.aggregate(collected=Sum("collected"), win=Sum("value"))
+        total_won = all_settled.filter(status=1).aggregate(won=Sum('value'))['won']
+        sports = ["NLF", "NCAAF", "NBA", "NCAAB", "NHL", "ALL"]
+        roi = 0
+        if total_won and totals['collected']:
+            roi = round(((total_won - totals['collected']) / totals['collected']) * 100, 2)
+        won, lose, push, hit_rate = 0, 0, 0, 0
+        for status in status_count:
+            if status['status'] == 1:
+                won = status['dcount']
+            elif status['status'] == 2:
+                lose = status['dcount']
+            else:
+                push = status['dcount']
+        if won != 0:
+            hit_rate = round(won / (won + lose) * 100, 2)
+        history_dict = {
+            'won': won,
+            'lose': lose,
+            'push': push,
+            'totals': totals,
+            'total_won': total_won,
+            'roi': roi,
+            'hit_rate': hit_rate,
+            'sports_sel': sports,
+        }
+    return render(request, 'account/history.html', history_dict)
 
 
 @login_required(login_url="/")

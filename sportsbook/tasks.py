@@ -127,7 +127,7 @@ def update_results(sport):
         r = requests.get("https://jsonodds.com/api/results/{}".format(sport), headers=headers)
         data = r.content
         json_data = json.loads(data.decode("utf-8"))
-        print("Udating NFL")
+        print("Updating {}".format(sport))
     except requests.exceptions.RequestException:
         print('HTTP Request failed')
     for e in json_data:
@@ -169,7 +169,7 @@ def update_results(sport):
                     group.a_score = int(e["AwayScore"])
                 if e["Final"] and e["FinalType"] == "Finished":
                     group.live_status = 2
-                    print("{} => {}".format(group, event.live_status))
+                    print("{} => {}".format(group, group.live_status))
                 elif e["Final"] and e["FinalType"] != "Finished":
                     print("{} is canceled".format(group))
                     event.live_status = 3

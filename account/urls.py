@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^active_bets', views.active_bets, name='active_bets'),
     url(r'^$', views.account_home, name='account_home'),
     url(r'^password/$', views.change_password, name='change_password'),
+    url(r'^history', views.bet_history, name='history'),
+    url(r'^update_history', views.update_history, name='update_history'),
 ]

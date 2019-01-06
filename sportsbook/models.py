@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.contrib import admin
 from django.db.models import Max, Min
 
+
 class OddsManager(models.Manager):
     def get_all_active(self):
         return self.get_queryset().filter(status=0)
