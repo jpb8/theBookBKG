@@ -3,6 +3,8 @@ from django.utils import timezone
 
 
 def validate_slip(slip, account, post):
+    if not slip.oods.all():
+        return False, "No Bet in Slip"
     if Decimal(post['betlsip-total-risk']) > account.balance:
         return False, "Insufficient Funds"
     start = slip.get_earliest_start_time()
