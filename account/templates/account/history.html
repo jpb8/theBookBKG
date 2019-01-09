@@ -1,32 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block body_block %}
-
-<!--<div style="padding:80px; width:40%; float:left">-->
-    <!--<form method="POST" action="{% url 'account:update_history' %}">{% csrf_token %}-->
-        <!--<label for="history-start-date">Start Date</label>-->
-        <!--<input type="date" name="history-start-date" id="history-start-date">-->
-        <!--<label for="history-end-date">End Date</label>-->
-        <!--<input type="date" name="history-end-date" id="history-end-date">-->
-        <!--<label for="history-sport">Sport</label>-->
-        <!--<select name="history-sport" id="history-sport">-->
-            <!--{% for sport in sports_sel %}-->
-            <!--<option value="{{ sport }}">{{ sport }}</option>-->
-            <!--{% endfor %}-->
-        <!--</select>-->
-        <!--<button type="submit">Reresh Data</button>-->
-    <!--</form>-->
-    <!--<p><h1>{{ won }} - {{ lose }} - {{ push }}</h1></p>-->
-    <!--<p><h1>Hit Rate = {{ hit_rate }}%</h1></p>-->
-    <!--<canvas id="win-percentage-chart"></canvas>-->
-<!--</div>-->
-<!--<div style="padding:80px; width:40%; float:left">-->
-    <!--<p><h2>Total Risk: {{ totals.collected }}</h2></p>-->
-    <!--<p><h2>Total Possible Winnings: {{ totals.win }}</h2></p>-->
-    <!--<p><h2>Total Won: {{ total_won }}</h2></p>-->
-    <!--<p><h2>ROI: {{ roi }}%</h2></p>-->
-<!--</div>-->
-
 <div class="bet-history-cols w-row">
     <div class="form-col w-col w-col-4">
         <div class="bet-history-form-div">
@@ -45,14 +19,14 @@
                             {% if end_date %} value="{{ end_date }}" {% endif %}
                         >
                     </div>
-                    <div class="sport-checkbox">
-                        {% for sport in sports_sel %}
-                        <div class="w-checkbox">
-                            <input type="checkbox" id="{{ sport }}-ck" name="{{ sport }}" class="w-checkbox-input">
-                            <label for="{{ sport }}" class="w-form-label">{{ sport }}</label>
-                        </div>
-                        {% endfor %}
-                    </div>
+                    <!--<div class="sport-checkbox">-->
+                        <!--{% for sport in sports_sel %}-->
+                        <!--<div class="w-checkbox">-->
+                            <!--<input type="checkbox" id="{{ sport }}-ck" name="{{ sport }}" class="w-checkbox-input">-->
+                            <!--<label for="{{ sport }}" class="w-form-label">{{ sport }}</label>-->
+                        <!--</div>-->
+                        <!--{% endfor %}-->
+                    <!--</div>-->
                     <input type="submit" value="Submit" data-wait="Please wait..." class="submit-button w-button">
                 </form>
             </div>
