@@ -112,10 +112,7 @@ def submit_bet(request):
         #   2. Check account balance
         #   3. Check account limits
         valid, message = validate_slip(slip_obj, account, post)  # Returns Bool for valid and error Message
-        if not valid:
-            print(message)
-            HttpResponse(message)
-        else:
+        if valid:
             due = 0
             # Create PlacedBets and BetValues
             if "parlay-checkbox" in post:
@@ -127,6 +124,12 @@ def submit_bet(request):
                 account_for_withdraw = Account.objects.select_for_update().get(user=request.user)
                 account_for_withdraw.balance -= due
                 account_for_withdraw.save()
+        if request.is_ajax:
+            json_data = {
+                "valid": valid,
+                "errorMessage": message,
+            }
+            return JsonResponse(json_data)
     return redirect('account:active_bets')
 
 
