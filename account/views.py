@@ -137,9 +137,9 @@ def bet_history(request):
         roi = round(((total_won - totals['collected']) / totals['collected']) * 100, 2)
     won, lose, push, hit_rate = 0, 0, 0, 0
     for status in status_count:
-        if status['status'] == 1:
+        if status['status'] == 2:
             won = status['dcount']
-        elif status['status'] == 2:
+        elif status['status'] == 1:
             lose = status['dcount']
         else:
             push = status['dcount']
@@ -174,9 +174,9 @@ def update_history(request):
             roi = round(((total_won - totals['collected']) / totals['collected']) * 100, 2)
         won, lose, push, hit_rate = 0, 0, 0, 0
         for status in status_count:
-            if status['status'] == 1:
+            if status['status'] == 2:
                 won = status['dcount']
-            elif status['status'] == 2:
+            elif status['status'] == 1:
                 lose = status['dcount']
             else:
                 push = status['dcount']
