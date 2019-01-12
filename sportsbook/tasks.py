@@ -257,3 +257,16 @@ def update_ncaabb():
         update_results("NCAAB")
     else:
         print("NCAAB is inactive")
+
+@db_periodic_task(crontab(minute='0', hour="*/2"))
+def pull_mma():
+    pull_sport_odds("MMA")
+
+
+@db_periodic_task(crontab(minute='*/10'))
+def update_mma():
+    if active_events("MMA"):
+        print("MMA is active")
+        update_results("MMA")
+    else:
+        print("MMA is inactive")

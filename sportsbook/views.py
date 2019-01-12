@@ -122,6 +122,21 @@ def nba(request):
                  'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
+@login_required(login_url="/")
+def mma(request):
+    game_qs = get_event_qs("MMA", "Game")
+    sport_label = "MMA"
+    slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
+    all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
+    game_dict = {'full_game_bets': game_qs,
+                 'sport_label': sport_label,
+                 'sports': all_sports,
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
+    return render(request, 'sportsbook/sportsbook.html', context=game_dict)
+
 
 def base(request):
     if request.method == 'POST':

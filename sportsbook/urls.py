@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^ncaab', views.ncaab, name='ncaab'),
     url(r'^nhl', views.nhl, name='nhl'),
     url(r'^nba', views.nba, name='nba'),
+    url(r'^mma', views.mma, name='mma'),
     url(r'^base', views.base, name='base'),
     url(r'^values', views.event_values, name='event_values'),
     url(r'^event_values_charts', views.BetValuesAjax.as_view(), name='event_values_charts'),
