@@ -183,9 +183,11 @@ def update_results(sport):
 
 
 def active_events(sport):
+
     latest_event = Event.objects.filter(live_status__in=[0, 1], sport=sport).earliest('start_time')
-    if latest_event.start_time < timezone.now():
-        return True
+    if latest_event:
+        if latest_event.start_time < timezone.now():
+            return True
     return False
 
 
@@ -257,6 +259,7 @@ def update_ncaabb():
         update_results("NCAAB")
     else:
         print("NCAAB is inactive")
+
 
 @db_periodic_task(crontab(minute='0', hour="*/2"))
 def pull_mma():
