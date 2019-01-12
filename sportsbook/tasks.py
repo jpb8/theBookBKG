@@ -183,10 +183,10 @@ def update_results(sport):
 
 
 def active_events(sport):
-
-    latest_event = Event.objects.filter(live_status__in=[0, 1], sport=sport).earliest('start_time')
-    if latest_event:
-        if latest_event.start_time < timezone.now():
+    events = Event.objects.filter(live_status__in=[0, 1], sport=sport).earliest('start_time')
+    if events:
+        earliest = events.earliest('start_time')
+        if earliest.start_time < timezone.now():
             return True
     return False
 
