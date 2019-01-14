@@ -13,6 +13,7 @@ from account.models import Account
 from betslip.models import PlacedBet
 from .models import Event, GameOdds
 from django.http import Http404
+import json
 
 
 def index(request):
@@ -166,7 +167,36 @@ class EventDetailView(DetailView):
         context['odds'] = event_detail_qs(game_id)
         context['slip'] = Slip.objects.new_or_get(self.request)
         context['sports'] = get_live_sports()
+        chart_data = []
+        for odd in GameOdds.objects.get_full_event_qs(game_id):
+            data_point = dict()
+            data_point["x", "y"] = odd.time, odd.total
+            chart_data.append(data_point)
+        context['chart_data'] = chart_data
         return context
+
+
+class EventHistoryAjax(View):
+    def get(self, request, *args, **kwargs):
+        game_id = request.GET.get('game_id')
+        type = request.GET.get('type')
+        data = dict()
+        data['all_data'] =[]
+        if type == "total":
+            for odd in GameOdds.objects.get_full_event_qs(game_id):
+                single_game = dict()
+                single_game['x'] = odd.time
+                single_game['y'] = odd.total
+                data['all_data'].append(single_game)
+            data['title'] = "Game Total History"
+        elif type == "handicap":
+            for odd in GameOdds.objects.get_full_event_qs(game_id):
+                single_game = dict()
+                single_game['x'] = odd.time
+                single_game['y'] = odd.handicap
+                data['all_data'].append(single_game)
+            data['title'] = "Game Handicap History"
+        return JsonResponse(data)
 
 
 class BetValuesAjax(View):

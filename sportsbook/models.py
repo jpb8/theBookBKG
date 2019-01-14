@@ -268,11 +268,14 @@ post_save.connect(update_odds, sender=OddsGroup)
 
 
 class GameOddsManager(models.Manager):
+    def get_full_event_qs(self, event):
+        return self.get_queryset().filter(event=event).exclude(h_line=0, total=0, handicap=0)
+
     def get_first(self, event):
-        return self.get_queryset().filter(event=event).earliest('time')
+        return self.get_full_event_qs(event).earliest('time')
 
     def get_last(self, event):
-        return self.get_queryset().filter(event=event).latest('time')
+        return self.get_full_event_qs(event).latest('time')
 
     def get_highest_total(self, event):
         return self.get_queryset().filter(event=event).aggregate(Max('total'))

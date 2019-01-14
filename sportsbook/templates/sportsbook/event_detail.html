@@ -31,7 +31,10 @@
                     Current: Total={{ last.total }} Home Handicap={{ last.handicap }} Home ML Price={{ last.h_line }}
                 </p>
             </div>
+            <canvas id="event-detail-chart-total" data-game-id="{{ event.game_id }}" class="event-detail-chart" data-type="total"></canvas>
+            <canvas id="event-detail-chart-handicap" data-game-id="{{ event.game_id }}" class="event-detail-chart" data-type="handicap"></canvas>
         </div>
+
         <div class="column-3 w-col w-col-3 slip-sidebar" id="slip-bets">
             <div class="scroll-padding">
                 {% include 'sportsbook/sidebar.html' %}
