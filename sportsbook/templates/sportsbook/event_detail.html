@@ -33,6 +33,7 @@
             </div>
             <canvas id="event-detail-chart-total" data-game-id="{{ event.game_id }}" class="event-detail-chart" data-type="total"></canvas>
             <canvas id="event-detail-chart-handicap" data-game-id="{{ event.game_id }}" class="event-detail-chart" data-type="handicap"></canvas>
+            <canvas id="event-detail-chart-ml" data-game-id="{{ event.game_id }}" class="event-detail-chart" data-type="money-line"></canvas>
         </div>
 
         <div class="column-3 w-col w-col-3 slip-sidebar" id="slip-bets">
@@ -54,7 +55,7 @@
             {% endfor %}
             </div>
         </div>
-        <button id="mobile-betslip-btn" class="mobile-betslip-btn btn">Bet Slip<br /><span id="mobile-bet-number">({{ slip.odds.all.count }} Total)</span></button>
+        <button id="mobile-betslip-btn" class="mobile-betslip-btn btn">Bet Slip<br /><span id="mobile-bet-number">{{ slip.odds.all.count }} Bets</span></button>
     </div>
 </div>
 

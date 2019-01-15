@@ -114,7 +114,7 @@ def pull_sport_odds(sport):
                                                                             })
                 except django.db.utils.IntegrityError:
                     print("Odds Group Integrity Error")
-                if o["OddType"] == "Game" and (sport == "NFL" or sport == "NBA" or sport == "NCAAF"):
+                if o["OddType"] == "Game" and (sport == "NFL" or sport == "NBA" or sport == "NCAAF" or sport == "MMA"):
                     game_stats, new = get_or_create_gameodds(event, o)
                     if new:
                         print(game_stats)

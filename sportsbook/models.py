@@ -272,10 +272,14 @@ class GameOddsManager(models.Manager):
         return self.get_queryset().filter(event=event).exclude(h_line=0, total=0, handicap=0)
 
     def get_first(self, event):
-        return self.get_full_event_qs(event).earliest('time')
+        if self.get_full_event_qs(event).exists():
+            return self.get_full_event_qs(event).earliest('time')
+        return None
 
     def get_last(self, event):
-        return self.get_full_event_qs(event).latest('time')
+        if self.get_full_event_qs(event).exists():
+            return self.get_full_event_qs(event).latest('time')
+        return None
 
     def get_highest_total(self, event):
         return self.get_queryset().filter(event=event).aggregate(Max('total'))

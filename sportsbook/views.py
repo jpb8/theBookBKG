@@ -182,20 +182,27 @@ class EventHistoryAjax(View):
         type = request.GET.get('type')
         data = dict()
         data['all_data'] =[]
-        if type == "total":
+        if type == "total" and GameOdds.objects.get_full_event_qs(game_id) is not None:
             for odd in GameOdds.objects.get_full_event_qs(game_id):
                 single_game = dict()
                 single_game['x'] = odd.time
                 single_game['y'] = odd.total
                 data['all_data'].append(single_game)
             data['title'] = "Game Total History"
-        elif type == "handicap":
+        elif type == "handicap" and GameOdds.objects.get_full_event_qs(game_id) is not None:
             for odd in GameOdds.objects.get_full_event_qs(game_id):
                 single_game = dict()
                 single_game['x'] = odd.time
                 single_game['y'] = odd.handicap
                 data['all_data'].append(single_game)
             data['title'] = "Game Handicap History"
+        elif type == "money-line" and GameOdds.objects.get_full_event_qs(game_id) is not None:
+            for odd in GameOdds.objects.get_full_event_qs(game_id):
+                single_game = dict()
+                single_game['x'] = odd.time
+                single_game['y'] = odd.h_line
+                data['all_data'].append(single_game)
+            data['title'] = "Game Home Money Line History"
         return JsonResponse(data)
 
 
