@@ -29,6 +29,7 @@ bet_list = ["Game", "FirstHalf", "FirstPeriod"]
 
 
 def get_full_game_odds(game):
+    """ loop through list of odds and return game OddsGroup """
     for odds in game["Odds"]:
         if odds["OddType"] == "Game":
             return True, odds
@@ -37,6 +38,7 @@ def get_full_game_odds(game):
 
 # Should probably move this to Class
 def create_or_update_event(event, sport):
+
     try:
         date_time = datetime.datetime.strptime(event["MatchTime"], "%Y-%m-%dT%H:%M:%S")
         utc_date_time = date_time.replace(tzinfo=pytz.utc)
@@ -82,6 +84,7 @@ def get_or_create_gameodds(event, o):
 
 
 def pull_sport_odds(sport):
+    """ pull events for a given sport and create new Event, OddsGroup, and Odds if it doesn't exsist """
     try:
         print("PULLING FROM API")
         r = requests.get("https://jsonodds.com/api/odds/{}".format(sport), headers=headers)
@@ -123,6 +126,7 @@ def pull_sport_odds(sport):
 
 
 def update_results(sport):
+    """ pull results for a given sport from JsonOdds and update events and OddsGroups """
     try:
         r = requests.get("https://jsonodds.com/api/results/{}".format(sport), headers=headers)
         data = r.content
@@ -131,7 +135,7 @@ def update_results(sport):
     except requests.exceptions.RequestException:
         print('HTTP Request failed')
     for e in json_data:
-        if e["OddType"] == "Game":
+        if e["OddType"] == "Game":  # Update Event data with full game data
             try:
                 event = Event.objects.get(pk=e['ID'])
                 time_now = timezone.now()
@@ -156,7 +160,7 @@ def update_results(sport):
                 event.save()
             except Event.DoesNotExist:
                 pass
-        if e["OddType"] in bet_list:
+        if e["OddType"] in bet_list: # Only update Game and First Half
             try:
                 group = OddsGroup.objects.get(pk=e['ID'])
                 if e["HomeScore"] is None or e["HomeScore"] == "":

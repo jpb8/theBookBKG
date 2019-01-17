@@ -22,7 +22,6 @@ def index(request):
     return render(request, 'index.html')
 
 
-@login_required(login_url="/")
 def sportsbook_home(request):
     qs = get_featured_games()
     all_sports = get_live_sports()
@@ -36,7 +35,6 @@ def sportsbook_home(request):
     return render(request, 'sportsbook/index.html', context=game_dict)
 
 
-@login_required(login_url="/")
 def nfl(request):
     game_qs = get_event_qs("NFL", "Game")
     half_qs = get_event_qs("NFL", "FirstHalf")
@@ -54,7 +52,6 @@ def nfl(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
-@login_required(login_url="/")
 def ncaaf(request):
     game_qs = get_event_qs("NCAAF", "Game")
     half_qs = get_event_qs("NCAAF", "FirstHalf")
@@ -72,7 +69,6 @@ def ncaaf(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
-@login_required(login_url="/")
 def nhl(request):
     qs = get_event_qs("NHL", "Game")
     sport_label = "NHL"
@@ -88,7 +84,6 @@ def nhl(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
-@login_required(login_url="/")
 def ncaab(request):
     game_qs = get_event_qs("NCAAB", "Game")
     half_qs = get_event_qs("NCAAB", "FirstHalf")
@@ -106,7 +101,6 @@ def ncaab(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
-@login_required(login_url="/")
 def nba(request):
     game_qs = get_event_qs("NBA", "Game")
     half_qs = get_event_qs("NBA", "FirstHalf")
@@ -123,7 +117,7 @@ def nba(request):
                  'slip_bets': slip_bets}
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
-@login_required(login_url="/")
+
 def mma(request):
     game_qs = get_event_qs("MMA", "Game")
     sport_label = "MMA"
@@ -157,6 +151,7 @@ def base(request):
 
 
 class EventDetailView(DetailView):
+    """ Get Event data """
     model = Event
 
     def get_context_data(self, **kwargs):
@@ -177,11 +172,12 @@ class EventDetailView(DetailView):
 
 
 class EventHistoryAjax(View):
+    """ Retrun chart data for event """
     def get(self, request, *args, **kwargs):
         game_id = request.GET.get('game_id')
         type = request.GET.get('type')
         data = dict()
-        data['all_data'] =[]
+        data['all_data'] = []
         if type == "total" and GameOdds.objects.get_full_event_qs(game_id) is not None:
             for odd in GameOdds.objects.get_full_event_qs(game_id):
                 single_game = dict()
@@ -207,8 +203,9 @@ class EventHistoryAjax(View):
 
 
 class BetValuesAjax(View):
+    """ return  data for total at risk charts """
     def get(self, request, *args, **kwargs):
-        data = {}
+        data = dict()
         data['labels'] = []
         data['data'] = []
         if request.GET.get('type') == 'sprd':
@@ -235,7 +232,6 @@ def event_values(request):
     tots = get_total_qs()
     ml = get_ml_gs()
     total = 0
-    # This is terrible, need to fix
     for e in sprd:
         total += e.val
     for e in tots:

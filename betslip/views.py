@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 
 import json
 
-# Create your views here.
 def slip_home(request):
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     if slip_obj.divider == 0 or slip_obj.odds.count() == 5:

@@ -14,6 +14,10 @@ class OddsManager(models.Manager):
 # connected by one2one keys on event
 # need to add odds Tpye for Gmae, 1st half, 2nd half, ect
 class Odds(models.Model):
+    """
+        Every different possible bet will have its own Odds object
+        Odds will be used to pass to the bet slip and create bets
+     """
     BET_TYPES = (
         ('h_sprd', 'Home Spread'),
         ('a_sprd', 'Away Spread'),
@@ -46,6 +50,7 @@ class Odds(models.Model):
         return "{} Type: {}".format(self.home, self.type)
 
     def get_display_name(self):
+        """ name to properly ID any given bet """
         odd_group = self.get_odd_group()
         event = self.get_event()
         if self.type == "h_sprd":
@@ -64,6 +69,7 @@ class Odds(models.Model):
         return "Unknown"
 
     def get_multiplier(self):
+        """ -150 => 1.5 """
         multiplier = Decimal(0)
         if self.price > 0:
             multiplier = Decimal(self.price / 100 + 1)
@@ -94,6 +100,7 @@ class EventManager(models.Manager):
 
 
 class Event(models.Model):
+    """ Every game will have an Event object where basic info and OddsGroups are held """
 
     LIVE_STATUS_OPTIONS = (
         (0, 'pregame'),
@@ -127,6 +134,10 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class OddsGroup(models.Model):
+    """
+        Odds Groups contain all bets for that group of odds
+        There can be Game, First Half, Second Half, Props ect. types
+     """
     ODDS_GROUP_STATUS_OPTIONS = (
         (0, 'pregame'),
         (1, 'live'),
@@ -153,6 +164,7 @@ class OddsGroup(models.Model):
         return "{} => {}".format(self.event, self.type)
 
     def final_h_line(self):
+        """ get all h_line placed bet values, check if it is a winner, loser or push  and update """
         bets = self.betvalue_set.filter(type='h_line')
         home = int(self.h_score)
         away = int(self.a_score)
@@ -249,6 +261,7 @@ class OddsGroup(models.Model):
 
     # run all bet updates
     def update_game_bets(self):
+        """ if a game is finished, update all bets placed for this OddsGroup """
         if self.live_status == 2:
             self.final_h_line()
             self.final_a_line()
@@ -289,6 +302,7 @@ class GameOddsManager(models.Manager):
 
 
 class GameOdds(models.Model):
+    """ Used to track line movement """
     handicap = models.DecimalField(max_digits=7, decimal_places=1)
     h_line = models.IntegerField()
     a_line = models.IntegerField()

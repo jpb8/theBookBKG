@@ -1,8 +1,0 @@
-1. Game Detail Page
-    - Opening lines
-    - Timeline of line movement (Chart.js)
-
-2. Bet history bag
-    - Add this data to account? or use bet historical data?
-    - Create form where user can filter there bet history and what not
-    - Record and risk/win for a given time range/sport.
