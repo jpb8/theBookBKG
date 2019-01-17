@@ -19,7 +19,11 @@ import json
 def index(request):
     if request.user.is_authenticated:
         return redirect('sportsbook:home')
-    return render(request, 'index.html')
+    all_sports = get_live_sports()
+    index_dict = {
+        all_sports
+    }
+    return render(request, 'index.html', context=index_dict)
 
 
 def sportsbook_home(request):
