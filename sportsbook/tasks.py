@@ -176,8 +176,8 @@ def update_results(sport):
                     print("{} => {}".format(group, group.live_status))
                 elif e["Final"] and e["FinalType"] != "Finished":
                     print("{} is canceled".format(group))
-                    event.live_status = 3
-                elif event.start_time < timezone.now():
+                    group.live_status = 3
+                elif group.event.start_time < timezone.now():
                     group.live_status = 1
                 else:
                     group.live_status = 0

@@ -273,6 +273,15 @@ class OddsGroup(models.Model):
             self.push_all_bets()
 
 
+class OddsInline(admin.StackedInline):
+    model = Odds
+
+
+class OddsGroupAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'type', 'live_status')
+    list_filter = ('live_status', 'type')
+
+
 def update_odds(sender, instance, *args, **kwargs):
     instance.update_game_bets()
 
