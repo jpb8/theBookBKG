@@ -35,7 +35,7 @@ def get_event_qs(sport, odd_type):
         under_id, undr.price as under_id_price
         from sportsbook_event as e 
         left join sportsbook_oddsgroup as og on e.game_id=og.event_id
-        left join sportsbook_odds as h_sprd on og.a_sprd_id=h_sprd.odd_id
+        left join sportsbook_odds as h_sprd on og.h_sprd_id=h_sprd.odd_id
         left join sportsbook_odds as a_sprd on og.a_sprd_id=a_sprd.odd_id
         left join sportsbook_odds as h_line on og.h_line_id=h_line.odd_id
         left join sportsbook_odds as a_line on og.a_line_id=a_line.odd_id
@@ -60,7 +60,7 @@ def event_detail_qs(game_id):
         og."type"
         from sportsbook_event as e 
         left join sportsbook_oddsgroup as og on e.game_id=og.event_id
-        left join sportsbook_odds as h_sprd on og.a_sprd_id=h_sprd.odd_id
+        left join sportsbook_odds as h_sprd on og.h_sprd_id=h_sprd.odd_id
         left join sportsbook_odds as a_sprd on og.a_sprd_id=a_sprd.odd_id
         left join sportsbook_odds as h_line on og.h_line_id=h_line.odd_id
         left join sportsbook_odds as a_line on og.a_line_id=a_line.odd_id
@@ -83,7 +83,7 @@ def get_featured_games():
         under_id, undr.price as under_id_price
         from sportsbook_event as e 
         left join sportsbook_oddsgroup as og on e.game_id=og.event_id
-        left join sportsbook_odds as h_sprd on og.a_sprd_id=h_sprd.odd_id
+        left join sportsbook_odds as h_sprd on og.h_sprd_id=h_sprd.odd_id
         left join sportsbook_odds as a_sprd on og.a_sprd_id=a_sprd.odd_id
         left join sportsbook_odds as h_line on og.h_line_id=h_line.odd_id
         left join sportsbook_odds as a_line on og.a_line_id=a_line.odd_id
