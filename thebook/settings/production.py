@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'huey.contrib.djhuey',
     # 'easy_timezones',
-
+    'rest_framework',
     'storages',
 
     'sportsbook',

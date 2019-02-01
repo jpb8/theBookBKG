@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^sportsbook/', include('sportsbook.urls', namespace='sportsbook')),
     url(r'^account/', include('account.urls', namespace='account')),
     url(r'^betslip/', include('betslip.urls', namespace='betslip')),
+    path('api/', include('api.urls'))
 ]
 
 if settings.DEBUG:
