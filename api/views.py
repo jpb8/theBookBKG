@@ -14,7 +14,7 @@ class ListEventsView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        queryset = get_event_qs("NLF", "Game")
+        queryset = get_event_qs("MMA", "Game")
         sport = self.request.query_params.get('sport', None)
         if sport is not None:
             queryset = get_event_qs(sport, "Game")

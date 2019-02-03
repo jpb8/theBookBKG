@@ -38,7 +38,6 @@ def get_full_game_odds(game):
 
 # Should probably move this to Class
 def create_or_update_event(event, sport):
-
     try:
         date_time = datetime.datetime.strptime(event["MatchTime"], "%Y-%m-%dT%H:%M:%S")
         utc_date_time = date_time.replace(tzinfo=pytz.utc)
@@ -106,13 +105,21 @@ def pull_sport_odds(sport):
                                                                             defaults={
                                                                                 'type': o["OddType"],
                                                                                 'h_sprd': odds_list[0],
+                                                                                'h_sprd_price': o[
+                                                                                    "PointSpreadHomeLine"],
                                                                                 'a_sprd': odds_list[1],
+                                                                                'a_sprd_price': o[
+                                                                                    "PointSpreadAwayLine"],
                                                                                 'handicap': spread,
                                                                                 'h_line': odds_list[2],
+                                                                                'h_line_price': o["MoneyLineHome"],
                                                                                 'a_line': odds_list[3],
+                                                                                'a_line_price': o["MoneyLineAway"],
                                                                                 'total': total,
                                                                                 'over': odds_list[4],
+                                                                                'over_price': o["OverLine"],
                                                                                 'under': odds_list[5],
+                                                                                'under_price': o["UnderLine"],
                                                                                 'event': event
                                                                             })
                 except django.db.utils.IntegrityError:
@@ -160,7 +167,7 @@ def update_results(sport):
                 event.save()
             except Event.DoesNotExist:
                 pass
-        if e["OddType"] in bet_list: # Only update Game and First Half
+        if e["OddType"] in bet_list:  # Only update Game and First Half
             try:
                 group = OddsGroup.objects.get(pk=e['ID'])
                 if e["HomeScore"] is None or e["HomeScore"] == "":
