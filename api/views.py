@@ -1,5 +1,6 @@
 from rest_framework import generics
 from sportsbook.models import Event
+from sportsbook.utls import get_event_qs
 from .serializers import EventSerializer
 
 # Create your views here.
@@ -13,10 +14,10 @@ class ListEventsView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        queryset = Event.objects.filter(live_status=0)
+        queryset = get_event_qs("NLF", "Game")
         sport = self.request.query_params.get('sport', None)
         if sport is not None:
-            queryset = queryset.filter(sport=sport)
+            queryset = get_event_qs(sport, "Game")
         return queryset
 
 
