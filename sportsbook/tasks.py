@@ -202,18 +202,18 @@ def active_events(sport):
     return False
 
 
-@db_periodic_task(crontab(minute='*/30'))
-def pull_nfl():
-    pull_sport_odds("NFL")
-
-
-@db_periodic_task(crontab(minute='*/5'))
-def update_nfl():
-    if active_events("NFL"):
-        print("NFL is active")
-        update_results("NFL")
-    else:
-        print("NFL is inactive")
+# @db_periodic_task(crontab(minute='*/30'))
+# def pull_nfl():
+#     pull_sport_odds("NFL")
+#
+#
+# @db_periodic_task(crontab(minute='*/5'))
+# def update_nfl():
+#     if active_events("NFL"):
+#         print("NFL is active")
+#         update_results("NFL")
+#     else:
+#         print("NFL is inactive")
 
 
 # @db_periodic_task(crontab(minute='*/15'))
@@ -235,7 +235,7 @@ def pull_nhl():
     pull_sport_odds("NHL")
 
 
-@db_periodic_task(crontab(minute='*/30'))
+@db_periodic_task(crontab(minute='*/15'))
 def update_nhl():
     if active_events("NHL"):
         print("NHL is active")
@@ -263,7 +263,7 @@ def pull_nccaabb():
     pull_sport_odds("NCAAB")
 
 
-@db_periodic_task(crontab(minute='*/15'))
+@db_periodic_task(crontab(minute='*/10'))
 def update_ncaabb():
     if active_events("NCAAB"):
         print("NCAAB is active")
