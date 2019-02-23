@@ -17,7 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-
+GEOIP_DATABASE = BASE_DIR + "/GeoLiteCityv6.dat.gz"
+GEOIPV6_DATABASE = BASE_DIR + "/GeoLiteCityv6.dat.gz"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'huey.contrib.djhuey',
-    # 'easy_timezones',
+    'easy_timezones',
     'rest_framework',
     'storages',
 
@@ -89,7 +90,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'easy_timezones.middleware.EasyTimezoneMiddleware',
+    'easy_timezones.middleware.EasyTimezoneMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 

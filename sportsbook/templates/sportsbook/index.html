@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block body_block %}
 {% load tz %}
-{% timezone "America/Chicago" %}
+{% localtime on %}
 <body class="body">
 <div class="main">
     <div class="columns w-row">
@@ -51,6 +51,6 @@
 </div>
 
 </body>
-{% endtimezone %}
+{% endlocaltime %}
 {% endblock %}
 
