@@ -199,8 +199,8 @@ AWS_DEFAULT_ACL = None
 
 LOGIN_URL = '/sportsbook/base'
 LOGIN_REDIRECT_URL = '/sportsbook/'
-GEOIP_DATABASE = os.path.join(BASE_DIR, 'GeoLiteCity.dat.gz')
-GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'GeoLiteCityv6.dat.gz')
+GEOIP_DATABASE = os.path.join(BASE_DIR, 'GeoLiteCity.dat')
+GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'GeoLiteCityv6.dat')
 
 # https settings
 CORS_REPLACE_HTTPS_REFERER = True
