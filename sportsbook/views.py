@@ -61,7 +61,6 @@ def mlb(request):
     all_sports = get_live_sports()
     slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
     game_dict = {'full_game_bets': game_qs,
-                 'first_half_bets': half_qs,
                  'sport_label': sport_label,
                  'sports': all_sports,
                  'slip': slip_obj,
