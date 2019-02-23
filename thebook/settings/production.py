@@ -17,8 +17,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-GEOIP_DATABASE = BASE_DIR + "/GeoLiteCityv6.dat.gz"
-GEOIPV6_DATABASE = BASE_DIR + "/GeoLiteCityv6.dat.gz"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -199,11 +197,10 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_DEFAULT_ACL = None
 
 
-# GEOIP_DATABASE = os.path.join(STATIC_URL, "GeoIP.dat.gz")
-# GEOIPV6_DATABASE = os.path.join(STATIC_URL, "GeoLiteCityv6.dat.gz")
-
 LOGIN_URL = '/sportsbook/base'
 LOGIN_REDIRECT_URL = '/sportsbook/'
+GEOIP_DATABASE = os.path.join(BASE_DIR, 'GeoLiteCity.dat.gz')
+GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'GeoLiteCityv6.dat.gz')
 
 # https settings
 CORS_REPLACE_HTTPS_REFERER = True
