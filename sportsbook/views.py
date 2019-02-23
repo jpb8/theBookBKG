@@ -53,6 +53,21 @@ def nfl(request):
     return render(request, 'sportsbook/sportsbook.html', context=game_dict)
 
 
+def mlb(request):
+    game_qs = get_event_qs("MLB", "Game")
+    slip_obj, new_obj = Slip.objects.new_or_get(request)
+    slip_obj.remove_nonpregame_odds()
+    sport_label = "MLB"
+    all_sports = get_live_sports()
+    slip_bets = slip_obj.odds.all().values_list("odd_id", flat=True)
+    game_dict = {'full_game_bets': game_qs,
+                 'first_half_bets': half_qs,
+                 'sport_label': sport_label,
+                 'sports': all_sports,
+                 'slip': slip_obj,
+                 'slip_bets': slip_bets}
+    return render(request, 'sportsbook/sportsbook.html', context=game_dict)
+
 def ncaaf(request):
     game_qs = get_event_qs("NCAAF", "Game")
     half_qs = get_event_qs("NCAAF", "FirstHalf")
