@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Player, DkGame, Pitching
 from teams.models import Team
 from slate.models import Lineup
-from .tasks import get_lineups, update_batting_order, starting_pitchers, upload_stats
+from .tasks import get_lineups, update_batting_order, starting_pitchers, upload_stats, upload_salaries
 
 
 import csv
@@ -18,7 +18,7 @@ def upload_player(request):
         player_data = dk_csv.read().decode('UTF-8')
         io_string = io.StringIO(player_data)
         next(io_string)
-        Player.upload_dk(csv.reader(io_string, delimiter=','))
+        upload_salaries(csv.reader(io_string, delimiter=','))
     pitchers = Player.objects.all_starters()
     games = Player.objects.get_games()
     lines = Lineup.objects.under_sal(salary=20000)
