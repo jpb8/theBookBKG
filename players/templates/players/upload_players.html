@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Upload a file</label>
+        <input type="file" name="file">
+        <button type="submit" class="btn btn-secondary">Upload Players</button>
+    </form>
+    {% if players %}
+    {% for p in players %}
+        <p>{{ p }} {{ p.order_pos }}</p>
+    {% endfor %}
+    {% endif %}
+
+    {% if lines %}
+    {% for l in lines %}
+        <p>{{ l }}</p>
+    {% endfor %}
+    {% endif %}
+    <form action="{% url 'players:available_lineups' %}" method="POST">{% csrf_token %}
+        <select name="p1">
+            {% if pitchers %}
+            {% for p in pitchers %}
+            <option value="{{ p.id }}">{{ p }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <select name="p2">
+            {% if pitchers %}
+            {% for p in pitchers %}
+            <option value="{{ p.id }}">{{ p }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <button type="submit" class="btn btn-secondary">Upload Players</button>
+    </form>
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}

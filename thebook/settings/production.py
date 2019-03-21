@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'sportsbook',
     'account',
     'betslip',
+    'players',
+    'slate',
+    'teams',
 ]
 
 from redis import ConnectionPool

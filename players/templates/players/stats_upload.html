@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Batting ALL</label>
+        <input type="file" name="ball">
+        <label>Batting vs Right</label>
+        <input type="file" name="br">
+        <label>Batting vs Left</label>
+        <input type="file" name="bl">
+        <label>Batting Streak</label>
+        <input type="file" name="bs">
+        <label>Pitching ALL</label>
+        <input type="file" name="pall">
+        <label>Pitching vs Right</label>
+        <input type="file" name="pr">
+        <label>Pitching vs Left</label>
+        <input type="file" name="pl">
+        <label>Pitching Streak</label>
+        <input type="file" name="ps">
+        <label>Team Batting vs Right</label>
+        <input type="file" name="tr">
+        <label>Team Batting vs Left</label>
+        <input type="file" name="tl">
+        <button type="submit" class="btn btn-secondary">Upload All</button>
+    </form>
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}
