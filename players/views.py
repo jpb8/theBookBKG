@@ -15,10 +15,7 @@ def upload_player(request):
         dk_csv = request.FILES["file"]
         if not dk_csv.name.endswith('.csv'):
             error = True  # ???????
-        player_data = dk_csv.read().decode('UTF-8')
-        io_string = io.StringIO(player_data)
-        next(io_string)
-        upload_salaries(csv.reader(io_string, delimiter=','))
+        upload_salaries(dk_csv)
     pitchers = Player.objects.all_starters()
     games = Player.objects.get_games()
     lines = Lineup.objects.under_sal(salary=20000)
@@ -54,10 +51,7 @@ def available_lineups(request):
 def stats(request):
     if request.method == "POST":
         for f in request.FILES:
-            player_data = request.FILES[f].read().decode('UTF-8')
-            io_string = io.StringIO(player_data)
-            next(io_string)
-            csv_data = csv.reader(io_string, delimiter=',')
-            upload_stats(csv_data, f)
+            player_data = request.FILES[f]
+            upload_stats(player_data, f)
     starting_pitchers()
     return render(request, "players/stats_upload.html", {})

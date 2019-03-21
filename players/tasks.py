@@ -6,6 +6,9 @@ from django.conf import settings
 from jsonodds.odds import Odds
 import json
 
+import csv
+import io
+
 JSONODDS_API_KEY = getattr(settings, "JSONODDS_API_KEY")
 
 stat_type = {
@@ -83,12 +86,19 @@ def starting_pitchers():
 
 
 @db_task()
-def upload_salaries(csv):
-    Player.upload_dk(csv)
+def upload_salaries(dk_csv):
+    player_data = dk_csv.read().decode('UTF-8')
+    io_string = io.StringIO(player_data)
+    next(io_string)
+    Player.upload_dk(csv.reader(io_string, delimiter=','))
 
 
 @db_task()
-def upload_stats(csv_data, filename):
+def upload_stats(player_data, filename):
+    _csv = player_data.read().decode('UTF-8')
+    io_string = io.StringIO(_csv)
+    next(io_string)
+    csv_data = csv.reader(io_string, delimiter=',')
     hand = stat_type[filename]
     print(filename[0])
     if filename[0] == 'p':
