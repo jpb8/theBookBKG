@@ -59,4 +59,5 @@ def stats(request):
             next(io_string)
             csv_data = csv.reader(io_string, delimiter=',')
             upload_stats(csv_data, f)
+    starting_pitchers()
     return render(request, "players/stats_upload.html", {})
