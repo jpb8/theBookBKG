@@ -69,7 +69,7 @@ def update_batting_order(team_orders):
             print(o, n)
             Player.objects.filter(rotowire_name=n).update(order_pos=int(o))
 
-@db_task
+@db_task()
 def starting_pitchers():
     mlb = Odds(JSONODDS_API_KEY).get_odds("MLB")
     data = mlb.content
@@ -82,12 +82,12 @@ def starting_pitchers():
     Player.objects.filter(dk_name__in=pitchers).update(starting=True)
 
 
-@db_task
+@db_task()
 def upload_salaries(csv):
     Player.upload_dk(csv)
 
 
-@db_task
+@db_task()
 def upload_stats(csv_data, filename):
     hand = stat_type[filename]
     print(filename[0])
