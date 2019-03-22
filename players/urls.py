@@ -7,4 +7,5 @@ urlpatterns = [
     path('upload_players', views.upload_player, name='upload_players'),
     path('available_lineups', views.available_lineups, name='available_lineups'),
     path('stats', views.stats, name='stats'),
+    path('starters_order', views.starters_order, name='starters_order')
 ]

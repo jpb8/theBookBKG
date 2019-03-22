@@ -11,17 +11,6 @@
         <input type="file" name="file">
         <button type="submit" class="btn btn-secondary">Upload Players</button>
     </form>
-    {% if players %}
-    {% for p in players %}
-        <p>{{ p }} {{ p.order_pos }}</p>
-    {% endfor %}
-    {% endif %}
-
-    {% if lines %}
-    {% for l in lines %}
-        <p>{{ l }}</p>
-    {% endfor %}
-    {% endif %}
     <form action="{% url 'players:available_lineups' %}" method="POST">{% csrf_token %}
         <select name="p1">
             {% if pitchers %}
@@ -40,6 +29,7 @@
         <button type="submit" class="btn btn-secondary">Upload Players</button>
     </form>
 </div>
+<a href="{% url 'players:starters_order' %}">STARTERS and Batting Order</a>
 </body>
 {% endlocaltime %}
 {% endblock %}

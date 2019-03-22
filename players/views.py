@@ -1,12 +1,7 @@
-from django.shortcuts import render
-from .models import Player, DkGame, Pitching
-from teams.models import Team
+from django.shortcuts import render, redirect
+from .models import Player
 from slate.models import Lineup
-from .tasks import get_lineups, update_batting_order, starting_pitchers, upload_stats, upload_salaries
-
-
-import csv
-import io
+from .tasks import orders, starting_pitchers, upload_stats, upload_salaries
 
 
 # Create your views here.
@@ -55,3 +50,19 @@ def stats(request):
             upload_stats(player_data, f)
     starting_pitchers()
     return render(request, "players/stats_upload.html", {})
+
+
+def starters_order(request):
+    orders()
+    starting_pitchers()
+    pitchers = Player.objects.all_starters()
+    games = Player.objects.get_games()
+    lines = Lineup.objects.under_sal(salary=20000)
+    all_active = Player.objects.exclude(order_pos=0).order_by("team", "order_pos")
+    cont_dict = {
+        "games": games,
+        "pitchers": pitchers,
+        "lines": lines,
+        "players": all_active,
+    }
+    return render(request, "players/upload_players.html", cont_dict)

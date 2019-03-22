@@ -1,10 +1,11 @@
 from .models import Player, Pitching, Batting
-from huey.contrib.djhuey import db_task
+from huey.contrib.djhuey import db_task, db_periodic_task
 from bs4 import BeautifulSoup
 import requests
 from django.conf import settings
 from jsonodds.odds import Odds
 import json
+from huey import crontab
 
 import csv
 import io
@@ -72,6 +73,7 @@ def update_batting_order(team_orders):
             print(o, n)
             Player.objects.filter(rotowire_name=n).update(order_pos=int(o))
 
+
 @db_task()
 def starting_pitchers():
     mlb = Odds(JSONODDS_API_KEY).get_odds("MLB")
@@ -112,3 +114,8 @@ def upload_stats(player_data, filename):
 @db_task()
 def upload_batting_stats(csv_data, hand):
     Pitching.upload(csv_data, hand)
+
+
+@db_task()
+def orders():
+    update_batting_order(get_lineups())
