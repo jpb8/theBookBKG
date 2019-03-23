@@ -1,0 +1,13 @@
+<div style="float: right">
+    <form action="{% url 'slate:remove' %}" method="POST">{% csrf_token %}
+        {% if stacks %}
+        {% for s in stacks %}
+        <h1>{{ s.team }}</h1>
+        {% for p in s.players.all %}
+        <input type="checkbox" name="{{ p.pk }}" value="player"> {{ p }}<br>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Remove Players</button>
+    </form>
+</div>

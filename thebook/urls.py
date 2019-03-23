@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^betslip/', include('betslip.urls', namespace='betslip')),
     path('api/', include('api.urls')),
     path("players/", include('players.urls')),
+    path("slate/", include('slate.urls')),
 ]
 
 if settings.DEBUG:

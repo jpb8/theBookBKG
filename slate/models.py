@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from players.models import Player
+from teams.models import Team
+
 
 class LineupManager(models.Manager):
     def under_sal(self, salary):
@@ -50,3 +53,20 @@ class ExportLineup(models.Model):
     team1 = models.CharField(max_length=10, null=True)
     team2 = models.CharField(max_length=10, null=True)
     lu_type = models.CharField(max_length=10, null=True)
+
+
+class Stack(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{}: {}".format(self.user, self.team)
+
+
+class StackPlayer(models.Model):
+    stack = models.ForeignKey(Stack, on_delete=models.CASCADE, related_name="players")
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    order_spot = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{}: {}".format(self.player, self.order_spot)

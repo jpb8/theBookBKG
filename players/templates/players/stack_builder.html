@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main">
+    <div style="float: left">
+        <form action="{% url 'players:stack_builder' %}" method="POST">{% csrf_token %}
+            <select name="team">
+                {% if teams %}
+                {% for t in teams %}
+                <option value="{{ t }}">{{ t }}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button type="submit" class="btn btn-primary">Get Players</button>
+        </form>
+        <form action="{% url 'slate:stack_add' %}" method="POST">{% csrf_token %}
+            {% if current_team %}
+            <input type="hidden" name="team" value="{{ current_team }}"><br>
+            {% endif %}
+            {% if players %}
+            {% for p in players %}
+            <input type="checkbox" name="{{ p.pk }}" value="player"> {{ p }}: {{ p.order_pos }}<br>
+            {% endfor %}
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Add Players</button>
+        </form>
+    </div>
+    {% include 'players/stack_players.html' %}
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}

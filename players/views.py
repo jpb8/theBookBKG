@@ -3,6 +3,8 @@ from .models import Player
 from slate.models import Lineup
 from .tasks import orders, starting_pitchers, upload_stats, upload_salaries
 
+from teams.models import Team
+from slate.models import Stack
 
 # Create your views here.
 def upload_player(request):
@@ -66,3 +68,22 @@ def starters_order(request):
         "players": all_active,
     }
     return render(request, "players/upload_players.html", cont_dict)
+
+
+def stack_builder(request):
+    players = {}
+    user = request.user
+    current_team = ""
+    if request.method == "POST":
+        team = request.POST.get("team")
+        players = Player.objects.filter(team=team).exclude(position="SP").exclude(position="RP").order_by('-order_pos')
+        current_team = team
+    teams = Team.objects.filter(on_slate=True)
+    stacks = Stack.objects.filter(user=user)
+    cont_dict = {
+        "teams": teams,
+        "players": players,
+        "stacks": stacks,
+        "current_team": current_team,
+    }
+    return render(request, "players/stack_builder.html", cont_dict)

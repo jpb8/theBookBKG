@@ -5,6 +5,17 @@ from decimal import Decimal
 from teams.models import Team
 
 
+pos_codes = {
+    "SP": 0,
+    "RP": 0,
+    "C": 1,
+    "1B": 10,
+    "2B": 100,
+    "3B": 1000,
+    "SS": 10000,
+    "OF": 100000,
+}
+
 # Create your models here.
 class PlayerManager(models.Manager):
     def team_lineup(self, team):
@@ -27,6 +38,9 @@ class Player(models.Model):
     name_id = models.CharField(max_length=124)
     position = models.CharField(max_length=10)
     second_pos = models.CharField(max_length=10)
+    code_1 = models.IntegerField(default=0)
+    code_2 = models.IntegerField(default=0)
+    pts = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     salary = models.IntegerField(default=0)
     game_info = models.CharField(max_length=124)
     team = models.CharField(max_length=10)
@@ -65,7 +79,10 @@ class Player(models.Model):
                     "second_pos": pos_2,
                     "game_info": col[6],
                     "team": col[7],
-                    "salary": col[5]
+                    "salary": col[5],
+                    "code_1": pos_codes[pos_1],
+                    "code_2": pos_codes[pos_2] if pos_2 != "" else 0,
+                    "name_id": col[1]
                 }
             )
         Team.update_slate(teams)
