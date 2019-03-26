@@ -17,16 +17,7 @@ def upload_player(request):
         if not dk_csv.name.endswith('.csv'):
             error = True  # ???????
         upload_salaries(dk_csv)
-    pitchers = Player.objects.all_starters()
-    games = Player.objects.get_games()
-    lines = Lineup.objects.under_sal(salary=20000)
-    all_active = Player.objects.exclude(order_pos=0).order_by("team", "order_pos")
-    cont_dict = {
-        "games": games,
-        "pitchers": pitchers,
-        "lines": lines,
-        "players": all_active,
-    }
+    cont_dict = {}
     return render(request, "players/upload_players.html", cont_dict)
 
 
@@ -73,7 +64,6 @@ def stack_builder(request):
         current_team = team
     teams = Team.objects.filter(on_slate=True)
     stacks = Stack.objects.filter(user=user)
-    projected_orders()
     cont_dict = {
         "teams": teams,
         "players": players,
