@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import StackPlayer, Stack
+from .models import StackPlayer, Stack, Lineup, ExportLineup
 
 from teams.models import Team
 from players.models import Player
@@ -38,3 +38,33 @@ def remove(request):
                     p.order_spot = i
                     p.save()
     return redirect('players:stack_builder')
+
+
+def lineups(request):
+    lines, grouped = None, None
+    p1, p2 = None, None
+    if request.method == "POST":
+        p1_id = request.POST.get("p1")
+        p2_id = request.POST.get("p2")
+        p1 = Player.objects.get(id=p1_id)
+        p2 = Player.objects.get(id=p2_id)
+        t1 = Team.objects.get(dk_name=p1.team)
+        t2 = Team.objects.get(dk_name=p2.team)
+        salary = p1.salary + p2.salary
+        lines = Lineup.objects.under_sal(salary=salary, opp1=t1.opp, opp2=t2.opp)
+        grouped = Lineup.objects.group(salary=salary, opp1=t1.opp, opp2=t2.opp)
+    pitchers = Player.objects.all_starters()
+    cont_dict = {
+        "pitchers": pitchers,
+        "lines": lines,
+        "groups": grouped,
+        "p1": p1,
+        "p2": p2,
+    }
+    return render(request, "slate/lineups.html", cont_dict)
+
+
+def add_lineups(request):
+    if request.method == "POST":
+        print(request.POST)
+    return redirect("slate:lineups")

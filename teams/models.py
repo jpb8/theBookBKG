@@ -26,3 +26,20 @@ class Team(models.Model):
             home, away = g
             cls.objects.filter(dk_name=home).update(opp=away, home=True)
             cls.objects.filter(dk_name=away).update(opp=home)
+
+
+class OrdersManager(models.Manager):
+    def projected(self, team, game_type):
+        return self.get_queryset().filter(game_type=game_type, team__dk_name=team)
+
+
+class DefaultOrders(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="orders")
+    rw_name = models.CharField(max_length=124, null=True)
+    game_type = models.CharField(max_length=10, null=True)
+    order = models.IntegerField(default=0)
+
+    objects = OrdersManager()
+
+    def __str__(self):
+        return "{} {} Bats:{} {}".format(self.rw_name, self.team, self.order, self.game_type)

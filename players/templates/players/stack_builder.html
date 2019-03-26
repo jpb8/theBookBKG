@@ -18,6 +18,7 @@
         </form>
         <form action="{% url 'slate:stack_add' %}" method="POST">{% csrf_token %}
             {% if current_team %}
+            <h1>{{ current_team }}</h1>
             <input type="hidden" name="team" value="{{ current_team }}"><br>
             {% endif %}
             {% if players %}

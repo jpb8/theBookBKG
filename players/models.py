@@ -16,7 +16,7 @@ pos_codes = {
     "OF": 100000,
 }
 
-# Create your models here.
+
 class PlayerManager(models.Manager):
     def team_lineup(self, team):
         return self.get_queryset().filter(team=team).exclude(lineup_pos=0)
@@ -35,6 +35,7 @@ class Player(models.Model):
     dkid = models.IntegerField()
     dk_name = models.CharField(max_length=124)
     rotowire_name = models.CharField(max_length=124)
+    fg_name = models.CharField(max_length=124)
     name_id = models.CharField(max_length=124)
     position = models.CharField(max_length=10)
     second_pos = models.CharField(max_length=10)
@@ -52,6 +53,14 @@ class Player(models.Model):
 
     def __str__(self):
         return "{} {} {}".format(self.dk_name, self.position, self.team)
+
+    @classmethod
+    def team_starter_trows(cls, team):
+        if cls.objects.filter(team=team, starting=True).exists():
+            hand = cls.objects.filter(team=team, starting=True)[0].throws
+        else:
+            hand = "R"
+        return hand
 
     @classmethod
     def upload_dk(cls, data):
@@ -82,11 +91,13 @@ class Player(models.Model):
                     "salary": col[5],
                     "code_1": pos_codes[pos_1],
                     "code_2": pos_codes[pos_2] if pos_2 != "" else 0,
-                    "name_id": col[1]
+                    "name_id": col[1],
+                    "pts": Decimal(col[8])
                 }
             )
         Team.update_slate(teams)
         Team.add_opp(games)
+
 
 
 class DkGame(models.Model):

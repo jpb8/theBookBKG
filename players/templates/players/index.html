@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main">
+    <a href="{% url 'players:upload_players' %}">Upload DK Players</a><br>
+    <a href="{% url 'players:stats' %}">Upload Player Stats</a><br>
+    <a href="{% url 'players:stack_builder' %}">Build Stacks</a><br>
+    <a href="{% url 'players:starters_order' %}">Get Starters and Batting Order</a>
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}

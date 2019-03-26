@@ -1,14 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Count, Q
 
 from players.models import Player
 from teams.models import Team
 
 
 class LineupManager(models.Manager):
-    def under_sal(self, salary):
+    def under_sal(self, salary, opp1, opp2):
         salary = 50000 - salary
-        return self.get_queryset().filter(salary__lte=salary)
+        return self.get_queryset().filter(salary__lte=salary).exclude(
+            Q(all_teams__contains=opp1) | Q(all_teams__contains=opp2))
+
+    def group(self, salary, opp1, opp2):
+        return self.under_sal(salary, opp1, opp2).values("combo").annotate(count=Count('team1'))
 
 
 class Lineup(models.Model):
@@ -26,7 +31,10 @@ class Lineup(models.Model):
     salary = models.IntegerField(default=0)
     team1 = models.CharField(max_length=10, null=True)
     team2 = models.CharField(max_length=10, null=True)
+    all_teams = models.CharField(max_length=124, null=True)
+    pts = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     lu_type = models.CharField(max_length=10, null=True)
+    combo = models.CharField(max_length=10, null=True)
 
     objects = LineupManager()
 
@@ -35,6 +43,14 @@ class Lineup(models.Model):
             return '{} @ {} - {}'.format(self.team1, self.team2, self.lu_type)
         else:
             return '{} - {}'.format(self.team1, self.lu_type)
+
+
+class ExportManager(models.Manager):
+    def users_lus(self, user, opp1, opp2):
+        return self.get_queryset().filter(user=user).exclude(Q(all_teams__contains=opp1) | Q(all_teams__contains=opp2))
+
+    def group(self, user, opp1, opp2):
+        return self.users_lus(user, opp1, opp2).values("combo").annotate(t1=Count('combo'))
 
 
 class ExportLineup(models.Model):
@@ -53,6 +69,9 @@ class ExportLineup(models.Model):
     team1 = models.CharField(max_length=10, null=True)
     team2 = models.CharField(max_length=10, null=True)
     lu_type = models.CharField(max_length=10, null=True)
+    combo = models.CharField(max_length=10, null=True)
+
+    objects = ExportManager()
 
 
 class Stack(models.Model):

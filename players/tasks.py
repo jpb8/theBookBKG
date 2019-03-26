@@ -7,6 +7,8 @@ from jsonodds.odds import Odds
 import json
 from huey import crontab
 
+
+from teams.models import Team, DefaultOrders
 import csv
 import io
 
@@ -74,6 +76,20 @@ def update_batting_order(team_orders):
             Player.objects.filter(rotowire_name=n).update(order_pos=int(o))
 
 
+def projected_orders():
+    Player.objects.all().update(order_pos=0)
+    teams = Team.objects.filter(on_slate=True)
+    for t in teams:
+        throws = Player.team_starter_trows(t.opp)
+        opp = Team.objects.get(dk_name=t.opp)
+        game_type = throws
+        if not t.home and opp.league != t.league:
+            game_type = "IL" + throws
+        p_orders = DefaultOrders.objects.projected(team=t, game_type=game_type)
+        for p in p_orders:
+            Player.objects.filter(rotowire_name=p.rw_name).update(order_pos=p.order)
+            print(p)
+
 @db_task()
 def starting_pitchers():
     mlb = Odds(JSONODDS_API_KEY).get_odds("MLB")
@@ -93,6 +109,7 @@ def upload_salaries(dk_csv):
     io_string = io.StringIO(player_data)
     next(io_string)
     Player.upload_dk(csv.reader(io_string, delimiter=','))
+    projected_orders()
 
 
 @db_task()
@@ -118,4 +135,4 @@ def upload_batting_stats(csv_data, hand):
 
 @db_task()
 def orders():
-    update_batting_order(get_lineups())
+    projected_orders()

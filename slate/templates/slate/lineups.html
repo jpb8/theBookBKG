@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main">
+    <form action="{% url 'slate:lineups' %}" method="POST">{% csrf_token %}
+        <select name="p1">
+            {% if pitchers %}
+            {% for p in pitchers %}
+            <option value="{{ p.id }}">{{ p }} ${{ p.salary }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <select name="p2">
+            {% if pitchers %}
+            {% for p in pitchers %}
+            <option value="{{ p.id }}">{{ p }} ${{ p.salary }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <button type="submit" class="btn btn-secondary">Upload Players</button>
+    </form>
+    {% if groups %}
+    <form>
+        {% if p1 and p2 %}
+        <input type="hidden" name="p1" value="{{ p1.pk }}">
+        <input type="hidden" name="p2" value="{{ p2.pk }}">
+        <h1>{{ p1 }}</h1>
+        <h1>{{ p2 }}</h1>
+        {% endif %}
+    {% for g in groups %}
+        <label for="{{ g.combo }}">{{ g.combo }} - {{ g.count }}</label>
+        <input type="number" id="{{ g.combo }}" name="{{ g.combo }}" value="0">
+    {% endfor %}
+        <button type="submit" class="btn btn-secondary">Upload Players</button>
+    </form>
+    {% endif %}
+    {% if my_lines %}
+    {% for l in my_lines %}
+    <p>{{ l.user }}  {{ l.combo }}</p>
+    {% endfor %}
+    {% endif %}
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}
