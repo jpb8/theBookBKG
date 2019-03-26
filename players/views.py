@@ -22,21 +22,7 @@ def upload_player(request):
 
 
 def available_lineups(request):
-    salary = 0
-    if request.method == "POST":
-        p1_id = request.POST.get("p1")
-        p2_id = request.POST.get("p2")
-        p1 = Player.objects.get(id=p1_id)
-        p2 = Player.objects.get(id=p2_id)
-        salary = p1.salary + p2.salary
-    pitchers = Player.objects.all_starters()
-    games = Player.objects.get_games()
-    lines = Lineup.objects.under_sal(salary=salary)
-    cont_dict = {
-        "games": games,
-        "pitchers": pitchers,
-        "lines": lines,
-    }
+    cont_dict = {}
     return render(request, "players/upload_players.html", cont_dict)
 
 
