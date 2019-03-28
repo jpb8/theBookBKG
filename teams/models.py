@@ -43,3 +43,16 @@ class DefaultOrders(models.Model):
 
     def __str__(self):
         return "{} {} Bats:{} {}".format(self.rw_name, self.team, self.order, self.game_type)
+
+
+class ParkFactor(models.Model):
+    team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name="factor")
+    runs = models.DecimalField(default=1, max_digits=10, decimal_places=3)
+    hr = models.DecimalField(default=1, max_digits=10, decimal_places=3)
+    h = models.DecimalField(default=1, max_digits=10, decimal_places=3)
+    double = models.DecimalField(default=1, max_digits=10, decimal_places=3)
+    triple = models.DecimalField(default=1, max_digits=10, decimal_places=3)
+    bb = models.DecimalField(default=1, max_digits=10, decimal_places=3)
+
+    def __str__(self):
+        return "{} factor: {}".format(self.team, self.runs)
