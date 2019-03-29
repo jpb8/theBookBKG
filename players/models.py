@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import Count
-from django.utils.dateparse import parse_datetime
 from decimal import Decimal
 from teams.models import Team
 
@@ -81,13 +80,13 @@ class Player(models.Model):
                 games.append(g) if g not in games else None
                 print(games)
             player, created = cls.objects.update_or_create(
-                dkid=col[3],
                 dk_name=col[2],
+                team=col[7],
                 defaults={
+                    "dkid": col[3],
                     "position": pos_1,
                     "second_pos": pos_2,
                     "game_info": col[6],
-                    "team": col[7],
                     "salary": col[5],
                     "code_1": pos_codes[pos_1],
                     "code_2": pos_codes[pos_2] if pos_2 != "" else 0,
