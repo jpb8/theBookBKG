@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import StackPlayer, Stack, Lineup, ExportLineup
-from .utls import all_lines
+from .utls import all_lines, fetch_top_lines
 
 from teams.models import Team
 from players.models import Player
@@ -66,5 +66,14 @@ def lineups(request):
 
 def add_lineups(request):
     if request.method == "POST":
-        print(request.POST)
+        p1_id = request.POST.get("p1")
+        p2_id = request.POST.get("p2")
+        p1 = Player.objects.get(id=p1_id)
+        p2 = Player.objects.get(id=p2_id)
+        salary = p1.salary + p2.salary
+        for tm_code, v in request.POST.items():
+            if tm_code not in ('p1', 'p2', 'csrfmiddlewaretoken'):
+                if int(v) != 0:
+                    lines = fetch_top_lines(50000-salary,tm_code,v)
+                    print(lines)
     return redirect("slate:lineups")

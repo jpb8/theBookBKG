@@ -16,3 +16,14 @@ def all_lines(cost):
                         '''.format(cost))
         qs = dictfetchall(cursor)
     return qs
+
+
+def fetch_top_lines(cost, team_code, count):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        select * from bkg_slate_lus l 
+                        where l."TMCODE" = '{}' and l."COST"<={} 
+                        order by l."COST" desc, l."PTS" desc limit {};
+                        '''.format(team_code, cost, count))
+        qs = dictfetchall(cursor)
+    return qs
