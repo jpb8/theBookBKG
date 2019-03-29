@@ -22,32 +22,21 @@
         </select>
         <button type="submit" class="btn btn-secondary">Upload Players</button>
     </form>
-    {% if groups %}
+    {% if lines %}
     <form>
-        {% if p1 and p2 %}
+    {% if p1 and p2 %}
         <input type="hidden" name="p1" value="{{ p1.pk }}">
         <input type="hidden" name="p2" value="{{ p2.pk }}">
         <h1>{{ p1 }}</h1>
         <h1>{{ p2 }}</h1>
-        {% endif %}
-    {% for g in groups %}
-        <label for="{{ g.combo }}">{{ g.combo }} - {{ g.count }}</label>
-        <input type="number" id="{{ g.combo }}" name="{{ g.combo }}" value="0">
+    {% endif %}
+    {% for l in lines %}
+        <label for="{{ l.TMCODE }}">{{ l.TMCODE }} => {{ l.lus }}</label>
+        <input type="number" id="{{ l.TMCODE }}" name="{{ l.TMCODE }}" value="0">
     {% endfor %}
-        <button type="submit" class="btn btn-secondary">Upload Players</button>
+        <button type="submit" class="btn btn-primary">Add LUS</button>
     </form>
     {% endif %}
-    {% if my_lines %}
-    {% for l in my_lines %}
-    <p>{{ l.user }}  {{ l.combo }}</p>
-    {% endfor %}
-    {% endif %}
-    {% if lines %}
-    {% for l in lines %}
-    <p>{{ l.COST }}  {{ l.TM }}</p>
-    {% endfor %}
-    {% endif %}
-
 </div>
 </body>
 {% endlocaltime %}
