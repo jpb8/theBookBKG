@@ -11,6 +11,6 @@ def dictfetchall(cursor):
 
 def all_lines(cost):
     with connection.cursor() as cursor:
-        cursor.execute('''select * from bkg_slate_lus where cost<={}'''.format(cost))
+        cursor.execute('''select * from bkg_slate_lus lu where lu."COST"<={}'''.format(cost))
         qs = dictfetchall(cursor)
     return qs
