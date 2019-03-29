@@ -20,10 +20,10 @@
             {% endfor %}
             {% endif %}
         </select>
-        <button type="submit" class="btn btn-secondary">Upload Players</button>
+        <button type="submit" class="btn btn-secondary">Fetch Lineups</button>
     </form>
     {% if lines %}
-    <form action="{% url 'slate:add_lineups' %}" method="POST">
+    <form action="{% url 'slate:add_lineups' %}" method="POST">{% csrf_token %}
     {% if p1 and p2 %}
         <input type="hidden" name="p1" value="{{ p1.pk }}">
         <input type="hidden" name="p2" value="{{ p2.pk }}">
