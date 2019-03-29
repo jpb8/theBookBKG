@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import StackPlayer, Stack, Lineup, ExportLineup
+from .utls import all_lines
 
 from teams.models import Team
 from players.models import Player
@@ -51,8 +52,7 @@ def lineups(request):
         t1 = Team.objects.get(dk_name=p1.team)
         t2 = Team.objects.get(dk_name=p2.team)
         salary = p1.salary + p2.salary
-        lines = Lineup.objects.under_sal(salary=salary, opp1=t1.opp, opp2=t2.opp)
-        grouped = Lineup.objects.group(salary=salary, opp1=t1.opp, opp2=t2.opp)
+        lines = all_lines(50000-salary)
     pitchers = Player.objects.all_starters()
     cont_dict = {
         "pitchers": pitchers,

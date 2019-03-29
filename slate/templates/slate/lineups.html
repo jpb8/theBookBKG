@@ -42,6 +42,12 @@
     <p>{{ l.user }}  {{ l.combo }}</p>
     {% endfor %}
     {% endif %}
+    {% if lines %}
+    {% for l in lines %}
+    <p>{{ l.COST }}  {{ l.TM }}</p>
+    {% endfor %}
+    {% endif %}
+
 </div>
 </body>
 {% endlocaltime %}
