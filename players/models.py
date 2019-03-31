@@ -13,6 +13,7 @@ pos_codes = {
     "3B": 1000,
     "SS": 10000,
     "OF": 100000,
+    "P": 0,
 }
 
 
@@ -88,7 +89,7 @@ class Player(models.Model):
                     "second_pos": pos_2,
                     "game_info": col[6],
                     "salary": col[5],
-                    "code_1": pos_codes[pos_1],
+                    "code_1": pos_codes[pos_1] if pos_1 in pos_codes else 0,
                     "code_2": pos_codes[pos_2] if pos_2 != "" else 0,
                     "name_id": col[1],
                     "pts": Decimal(col[8])

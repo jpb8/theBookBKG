@@ -4,7 +4,7 @@
 {% load tz %}
 {% localtime on %}
 <body class="body">
-<div class="main">
+<div class="main" style="margin: 20px">
     <form action="{% url 'slate:lineups' %}" method="POST">{% csrf_token %}
         <select name="p1">
             {% if pitchers %}

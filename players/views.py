@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import Player
-from slate.models import Lineup
 from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, projected_orders
 
 from teams.models import Team
