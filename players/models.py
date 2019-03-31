@@ -85,6 +85,8 @@ class Player(models.Model):
                 team=col[7],
                 defaults={
                     "dkid": col[3],
+                    "rotowire_name": col[2],
+                    "fg_name": col[2],
                     "position": pos_1,
                     "second_pos": pos_2,
                     "game_info": col[6],
