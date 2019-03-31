@@ -48,7 +48,7 @@ def remove(request):
 
 @login_required(login_url="/")
 def lineups(request):
-    lines, grouped = None
+    lines = None
     p1, p2 = None, None
     if request.method == "POST":
         p1_id = request.POST.get("p1")
