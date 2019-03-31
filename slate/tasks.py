@@ -36,28 +36,30 @@ def save_lus(post, user):
     p1 = Player.objects.get(id=p1_id)
     p2 = Player.objects.get(id=p2_id)
     salary = p1.salary + p2.salary
-    for k, v in post.items():
-        if k not in ("p1", "p2", "csrfmiddlewaretoken"):
-            lines = fetch_top_lines(50000 - salary, k, v)
-        for lu in lines:
-            lu_dict = build_lineup_dict(lu, p1, p2)
-            ExportLineup(
-                user=user,
-                p1=lu_dict["p1"],
-                p2=lu_dict["p2"],
-                c=lu_dict["C"],
-                fB=lu_dict["1B"],
-                sB=lu_dict["2B"],
-                tB=lu_dict["3B"],
-                ss=lu_dict["SS"],
-                of1=lu_dict["OF1"],
-                of2=lu_dict["OF2"],
-                of3=lu_dict["OF3"],
-                team1=lu.TM1,
-                team2=lu.TM2,
-                combo=lu_dict["TMCODE"],
-                lu_type=lu_dict["source"],
-            )
-            ExportLineup.save()
-
+    for code, count in post.items():
+        if code not in ("p1", "p2", "csrfmiddlewaretoken"):
+            print(code, count)
+            lines = fetch_top_lines(50000 - salary, code, count)
+            print(lines)
+            for lu in lines:
+                lu_dict = build_lineup_dict(lu, p1, p2)
+                print(lu_dict)
+                ExportLineup(
+                    user=user,
+                    p1=lu_dict["p1"],
+                    p2=lu_dict["p2"],
+                    c=lu_dict["C"],
+                    fB=lu_dict["1B"],
+                    sB=lu_dict["2B"],
+                    tB=lu_dict["3B"],
+                    ss=lu_dict["SS"],
+                    of1=lu_dict["OF1"],
+                    of2=lu_dict["OF2"],
+                    of3=lu_dict["OF3"],
+                    team1=lu.TM1,
+                    team2=lu.TM2,
+                    combo=lu_dict["TMCODE"],
+                    lu_type=lu_dict["source"],
+                )
+                ExportLineup.save()
 
