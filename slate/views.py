@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .models import StackPlayer, Stack, Lineup, ExportLineup
-from .utls import all_lines, fetch_top_lines
+from .utls import all_lines
+from .tasks import save_lus
 
 from teams.models import Team
 from players.models import Player
+
+
 # Create your views here.
 
-
+@login_required(login_url="/")
 def stack_add(request):
     if request.method == "POST":
         user = request.user
@@ -24,6 +28,7 @@ def stack_add(request):
     return redirect('players:stack_builder')
 
 
+@login_required(login_url="/")
 def remove(request):
     user = request.user
     if request.method == "POST":
@@ -41,30 +46,32 @@ def remove(request):
     return redirect('players:stack_builder')
 
 
+@login_required(login_url="/")
 def lineups(request):
-    lines, grouped = None, None
+    lines, grouped = None
     p1, p2 = None, None
     if request.method == "POST":
         p1_id = request.POST.get("p1")
         p2_id = request.POST.get("p2")
         p1 = Player.objects.get(id=p1_id)
         p2 = Player.objects.get(id=p2_id)
-        t1 = Team.objects.get(dk_name=p1.team)
-        t2 = Team.objects.get(dk_name=p2.team)
         salary = p1.salary + p2.salary
-        lines = all_lines(50000-salary)
+        lines = all_lines(50000 - salary)
+    user = request.user
     pitchers = Player.objects.all_starters()
+    saved_lus = ExportLineup.objects.group(user)
     cont_dict = {
         "pitchers": pitchers,
         "lines": lines,
-        "groups": grouped,
+        "saveed_lus": saved_lus,
         "p1": p1,
         "p2": p2,
     }
     return render(request, "slate/lineups.html", cont_dict)
 
 
+@login_required(login_url="/")
 def add_lineups(request):
     if request.method == "POST":
-        pass
+        save_lus(request)
     return redirect("slate:lineups")

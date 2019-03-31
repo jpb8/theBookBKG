@@ -1,0 +1,10 @@
+<div style="float: right">
+    <form action="{% url 'slate:remove' %}" method="POST">{% csrf_token %}
+        {% if saved_lus %}
+        {% for l in saved_lus %}
+        <input type="checkbox" name="{{ l.team1 }}" value="line"> {{ l }}<br>
+        {% endfor %}
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Remove Lineups</button>
+    </form>
+</div>

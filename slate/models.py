@@ -46,15 +46,15 @@ class Lineup(models.Model):
 
 
 class ExportManager(models.Manager):
-    def users_lus(self, user, opp1, opp2):
-        return self.get_queryset().filter(user=user).exclude(Q(all_teams__contains=opp1) | Q(all_teams__contains=opp2))
+    def users_lus(self, user):
+        return self.get_queryset().filter(user=user).exclude()
 
-    def group(self, user, opp1, opp2):
-        return self.users_lus(user, opp1, opp2).values("combo").annotate(t1=Count('combo'))
+    def group(self, user):
+        return self.users_lus(user).values("combo").annotate(lu_count=Count('combo'))
 
 
 class ExportLineup(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     p1 = models.CharField(max_length=124, null=True)
     p2 = models.CharField(max_length=124, null=True)
     c = models.CharField(max_length=124, null=True)
@@ -72,6 +72,12 @@ class ExportLineup(models.Model):
     combo = models.CharField(max_length=10, null=True)
 
     objects = ExportManager()
+
+    def __str__(self):
+        if self.team2:
+            return '{} @ {} - {}'.format(self.team1, self.team2, self.lu_type)
+        else:
+            return '{} - {}'.format(self.team1, self.lu_type)
 
 
 class Stack(models.Model):
