@@ -73,5 +73,6 @@ def lineups(request):
 @login_required(login_url="/")
 def add_lineups(request):
     if request.method == "POST":
-        save_lus(request)
+        print(request.POST)
+        save_lus(request.POST, request.user)
     return redirect("slate:lineups")

@@ -30,14 +30,13 @@ def build_lineup_dict(lu, p1, p2):
 
 
 @db_task()
-def save_lus(request):
-    user = request.user
-    p1_id = request.POST.get("p1")
-    p2_id = request.POST.get("p2")
+def save_lus(post, user):
+    p1_id = post.get("p1")
+    p2_id = post.get("p2")
     p1 = Player.objects.get(id=p1_id)
     p2 = Player.objects.get(id=p2_id)
     salary = p1.salary + p2.salary
-    for k, v in request.POST.items():
+    for k, v in post.items():
         if k not in ("p1", "p2", "csrfmiddlewaretoken"):
             lines = fetch_top_lines(50000 - salary, k, v)
         for lu in lines:
