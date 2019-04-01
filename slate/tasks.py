@@ -21,9 +21,9 @@ def build_lineup_dict(lu, p1, p2):
             add_of(lu_dict, name)
         else:
             lu_dict[pos] = name
-    lu_dict["TMCODE"] = lu.TMCODE
-    lu_dict["source"] = lu.Source
-    lu_dict["pts"] = lu.PTS
+    lu_dict["TMCODE"] = lu["TMCODE"]
+    lu_dict["source"] = lu["Source"]
+    lu_dict["pts"] = lu["PTS"]
     lu_dict["p1"] = p1.name_id
     lu_dict["p2"] = p2.name_id
     return lu_dict
