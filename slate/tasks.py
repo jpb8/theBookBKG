@@ -16,7 +16,7 @@ def add_of(lu, p):
 def build_lineup_dict(lu, p1, p2):
     lu_dict = {}
     for i in range(1, 8):
-        pos, name = getattr(lu, "P" + str(i)), getattr(lu, "N" + str(i))
+        pos, name = lu["P"+str(i)], lu["N"+str(i)]
         if pos == "OF":
             add_of(lu_dict, name)
         else:
