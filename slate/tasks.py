@@ -3,6 +3,7 @@ from players.models import Player
 from .models import ExportLineup
 from .utls import fetch_top_lines
 
+
 def add_of(lu, p):
     if "OF2" in lu:
         lu["OF3"] = p
@@ -16,7 +17,7 @@ def add_of(lu, p):
 def build_lineup_dict(lu, p1, p2):
     lu_dict = {}
     for i in range(1, 9):
-        pos, name = lu["P"+str(i)], lu["N"+str(i)]
+        pos, name = lu["P" + str(i)], lu["N" + str(i)]
         if pos == "OF":
             add_of(lu_dict, name)
         else:
@@ -37,14 +38,16 @@ def save_lus(post, user):
     p2 = Player.objects.get(id=p2_id)
     salary = p1.salary + p2.salary
     for code, count in post.items():
-        if code not in ("p1", "p2", "csrfmiddlewaretoken"):
+        if count is None:
+            count = 0
+        if code not in ("p1", "p2", "csrfmiddlewaretoken") and count > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count)
             print(lines)
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
                 print(lu_dict)
-                ExportLineup(
+                new_line = ExportLineup(
                     user=user,
                     p1=lu_dict["p1"],
                     p2=lu_dict["p2"],
@@ -61,5 +64,4 @@ def save_lus(post, user):
                     combo=lu_dict["TMCODE"],
                     lu_type=lu_dict["source"],
                 )
-                ExportLineup.save()
-
+                new_line.save()
