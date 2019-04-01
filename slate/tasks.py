@@ -56,7 +56,7 @@ def save_lus(post, user):
                     of1=lu_dict["OF1"],
                     of2=lu_dict["OF2"],
                     of3=lu_dict["OF3"],
-                    team1=lu["TM1"],
+                    team1=lu["TM"],
                     team2=lu["TM2"],
                     combo=lu_dict["TMCODE"],
                     lu_type=lu_dict["source"],
