@@ -3,7 +3,6 @@ from django.db.models import Count
 from decimal import Decimal
 from teams.models import Team
 
-
 pos_codes = {
     "SP": 0,
     "RP": 0,
@@ -28,7 +27,9 @@ class PlayerManager(models.Manager):
         return self.get_queryset().values("game_info").annotate(pcount=Count('dkid'))
 
     def all_starters(self):
-        return self.get_queryset().filter(position="SP", starting=True)
+        slate_teams = Team.objects.filter(on_slate=True)
+        slate = [x.dk_name for x in slate_teams]
+        return self.get_queryset().filter(position="SP", starting=True, team__in=slate).order_by("-salary")
 
 
 class Player(models.Model):
@@ -99,7 +100,6 @@ class Player(models.Model):
             )
         Team.update_slate(teams)
         Team.add_opp(games)
-
 
 
 class DkGame(models.Model):

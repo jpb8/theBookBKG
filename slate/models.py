@@ -47,9 +47,12 @@ class Lineup(models.Model):
 
 class ExportManager(models.Manager):
     def users_lus(self, user):
-        return self.get_queryset().filter(user=user).exclude()
+        return self.get_queryset().filter(user=user)
 
     def group(self, user):
+        return self.users_lus(user).values("combo").annotate(lu_count=Count('combo'))
+
+    def pitchers(self, user):
         return self.users_lus(user).values("combo").annotate(lu_count=Count('combo'))
 
 

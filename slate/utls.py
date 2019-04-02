@@ -27,3 +27,14 @@ def fetch_top_lines(cost, team_code, count):
                         '''.format(team_code, cost, count))
         qs = dictfetchall(cursor)
     return qs
+
+
+def pitcher_cnt(user):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        with pitch as (select p1 as p from slate_exportlineup where user_id={} 
+                        union all select p2 as p from slate_exportlineup where user_id={})
+                        select count(p) as cnt, p from pitch group by p;
+                        '''.format(user, user))
+        qs = dictfetchall(cursor)
+    return qs
