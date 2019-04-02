@@ -55,6 +55,11 @@ class ExportManager(models.Manager):
     def pitchers(self, user):
         return self.users_lus(user).values("combo").annotate(lu_count=Count('combo'))
 
+    def teams(self, user):
+        t1 = self.users_lus(user).values("team1")
+        t2 = self.users_lus(user).values("team2").exclude(team2=None)
+        return t1.union(t2).annotate(cnt=Count("team1"))
+
 
 class ExportLineup(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

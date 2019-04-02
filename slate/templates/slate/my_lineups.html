@@ -1,4 +1,4 @@
-<div style="float: right">
+<div class="main" style="float: right">
     {% if p_cnt %}
     {% for p in p_cnt %}
     <h3>{{ p.p }} {{ p.cnt }}</h3>
@@ -7,7 +7,7 @@
     <form method="POST">{% csrf_token %}
         {% if saved_lus %}
         {% for l in saved_lus %}
-        <input type="checkbox" name="{{ l.combo }}" value="line"> {{ l.combo }} => {{ l.lu_count }}<br>
+        <input type="checkbox" name="{{ l.tm }}" value="line"> {{ l.tm }} => {{ l.cnt }}<br>
         {% endfor %}
         {% endif %}
         <button type="submit" class="btn btn-primary">Remove Lineups</button>

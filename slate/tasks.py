@@ -25,6 +25,7 @@ def build_lineup_dict(lu, p1, p2):
     lu_dict["TMCODE"] = lu["TMCODE"]
     lu_dict["source"] = lu["Source"]
     lu_dict["pts"] = lu["PTS"]
+    lu_dict["salary"] = lu["Salary"]
     lu_dict["p1"] = p1.name_id
     lu_dict["p2"] = p2.name_id
     return lu_dict
@@ -43,25 +44,28 @@ def save_lus(post, user):
         if code not in ("p1", "p2", "csrfmiddlewaretoken") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count)
-            print(lines)
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
                 print(lu_dict)
-                new_line = ExportLineup(
-                    user=user,
-                    p1=lu_dict["p1"],
-                    p2=lu_dict["p2"],
-                    c=lu_dict["C"],
-                    fB=lu_dict["1B"],
-                    sB=lu_dict["2B"],
-                    tB=lu_dict["3B"],
-                    ss=lu_dict["SS"],
-                    of1=lu_dict["OF1"],
-                    of2=lu_dict["OF2"],
-                    of3=lu_dict["OF3"],
-                    team1=lu["TM"],
-                    team2=lu["TM2"],
-                    combo=lu_dict["TMCODE"],
-                    lu_type=lu_dict["source"],
-                )
-                new_line.save()
+                if int(lu_dict["salary"]) + salary > 40000:
+                    new_line = ExportLineup(
+                        user=user,
+                        p1=lu_dict["p1"],
+                        p2=lu_dict["p2"],
+                        c=lu_dict["C"],
+                        fB=lu_dict["1B"],
+                        sB=lu_dict["2B"],
+                        tB=lu_dict["3B"],
+                        ss=lu_dict["SS"],
+                        of1=lu_dict["OF1"],
+                        of2=lu_dict["OF2"],
+                        of3=lu_dict["OF3"],
+                        team1=lu["TM"],
+                        team2=lu["TM2"],
+                        combo=lu_dict["TMCODE"],
+                        lu_type=lu_dict["source"],
+                    )
+                    new_line.save()
+                    print("saved")
+                else:
+                    print("Salary To Low")

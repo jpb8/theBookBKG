@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import StackPlayer, Stack, Lineup, ExportLineup
-from .utls import all_lines, pitcher_cnt
+from .utls import all_lines, pitcher_cnt, tm_cnt
 from .tasks import save_lus
 
 from teams.models import Team
@@ -59,7 +59,8 @@ def lineups(request):
         lines = all_lines(50000 - salary)
     user = request.user
     pitchers = Player.objects.all_starters()
-    saved_lus = ExportLineup.objects.group(user)
+    saved_lus = tm_cnt(user.pk)
+    print(saved_lus)
     p_cnt = pitcher_cnt(user.pk)
     cont_dict = {
         "pitchers": pitchers,
