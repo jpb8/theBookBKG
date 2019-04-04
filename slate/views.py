@@ -60,7 +60,6 @@ def lineups(request):
     user = request.user
     pitchers = Player.objects.all_starters()
     saved_lus = tm_cnt(user.pk)
-    print(saved_lus)
     p_cnt = pitcher_cnt(user.pk)
     cont_dict = {
         "pitchers": pitchers,
@@ -76,6 +75,5 @@ def lineups(request):
 @login_required(login_url="/")
 def add_lineups(request):
     if request.method == "POST":
-        print(request.POST)
         save_lus(request.POST, request.user)
     return redirect("slate:lineups")
