@@ -8,4 +8,5 @@ urlpatterns = [
     path("remove", views.remove, name="remove"),
     path("lineups", views.lineups, name="lineups"),
     path("add_lineups", views.add_lineups, name="add_lineups"),
+    path("delete_all", views.delete_all, name="delete_all"),
 ]

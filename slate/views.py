@@ -77,3 +77,9 @@ def add_lineups(request):
     if request.method == "POST":
         save_lus(request.POST, request.user)
     return redirect("slate:lineups")
+
+
+@login_required(login_url="/")
+def delete_all(request):
+    ExportLineup.objects.filter(user=request.user).delete()
+    return redirect("slate:lineups")
