@@ -65,7 +65,7 @@ def lineups(request):
     h_cnt = hitter_cnt(user.pk)
     total_lus = 0
     for p in p_cnt:
-        total_lus += int(p.cnt)
+        total_lus += int(p["cnt"])
     total_lus = total_lus * 0.5
     cont_dict = {
         "pitchers": pitchers,
