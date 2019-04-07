@@ -1,4 +1,7 @@
-<div class="main" style="float: right">
+<div class="main" style="float: right;font-size: 1em">
+    {% if total_lus %}
+    <h3>Total: {{ total_lus }}</h3>
+    {% endif %}
     {% if p_cnt %}
     {% for p in p_cnt %}
     <h3>{{ p.p }} {{ p.cnt }}</h3>
@@ -12,4 +15,11 @@
         {% endif %}
         <button type="submit" class="btn btn-primary">Remove Lineups</button>
     </form>
+</div>
+<div class="main" style="float: right">
+    {% if h_cnt %}
+    {% for h in h_cnt %}
+    <p>{{ h.p }} => {{ h.cnt }}</p>
+    {% endfor %}
+    {% endif %}
 </div>

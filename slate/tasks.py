@@ -47,7 +47,7 @@ def save_lus(post, user):
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
                 print(lu_dict)
-                if int(lu_dict["salary"]) + salary > 40000:
+                if int(lu_dict["salary"]) + salary > 49000:
                     new_line = ExportLineup(
                         user=user,
                         p1=lu_dict["p1"],
@@ -60,6 +60,7 @@ def save_lus(post, user):
                         of1=lu_dict["OF1"],
                         of2=lu_dict["OF2"],
                         of3=lu_dict["OF3"],
+                        salary=int(lu_dict["salary"]) + salary,
                         team1=lu["TM"],
                         team2=lu["TM2"],
                         combo=lu_dict["TMCODE"],
