@@ -97,6 +97,6 @@ def delete_all(request):
 
 
 @login_required(login_url="/")
-def update_pro_orders():
+def update_pro_orders(request):
     update_projected()
     return redirect("players:index")
