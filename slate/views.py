@@ -5,6 +5,7 @@ from .utls import all_lines, pitcher_cnt, tm_cnt, hitter_cnt
 from .tasks import save_lus
 
 from teams.models import Team
+from teams.tasks import update_projected
 from players.models import Player
 
 
@@ -48,6 +49,7 @@ def remove(request):
 
 @login_required(login_url="/")
 def lineups(request):
+    update_projected()
     lines = None
     p1, p2 = None, None
     if request.method == "POST":
@@ -92,3 +94,9 @@ def add_lineups(request):
 def delete_all(request):
     ExportLineup.objects.filter(user=request.user).delete()
     return redirect("slate:lineups")
+
+
+@login_required(login_url="/")
+def update_pro_orders():
+    update_projected()
+    return redirect("players:index")

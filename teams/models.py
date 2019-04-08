@@ -1,6 +1,10 @@
 from django.db import models
 
 
+class TeamManager(models.Manager):
+    def on_slate(self):
+        return self.get_queryset().filter(on_slate=True)
+
 # Create your models here.
 class Team(models.Model):
     dk_name = models.CharField(max_length=10, primary_key=True)
@@ -10,6 +14,8 @@ class Team(models.Model):
     opp = models.CharField(max_length=10, null=True)
     home = models.BooleanField(default=False)
     on_slate = models.BooleanField(default=False)
+
+    objects = TeamManager()
 
     def __str__(self):
         return self.dk_name
