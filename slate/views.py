@@ -49,7 +49,6 @@ def remove(request):
 
 @login_required(login_url="/")
 def lineups(request):
-    update_projected()
     lines = None
     p1, p2 = None, None
     if request.method == "POST":
