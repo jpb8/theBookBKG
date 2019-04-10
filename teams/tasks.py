@@ -1,8 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 from .models import Team, DefaultOrders
-from huey.contrib.djhuey import db_task
-
+from players.models import Player
+from huey.contrib.djhuey import db_task, db_periodic_task
+from huey import crontab
 
 matchup_mapper = {
     "Default vs. RHP": "R",
@@ -22,13 +23,14 @@ def get_pro_lineups(team):
 def get_names(pro_lineups):
     dict = {}
     for l in pro_lineups:
-        type = l.find('div', class_="border-tb heading-primary bg-cod-gray white pad-5-10").text.strip()
-        dict[type] = {}
+        lu_type = l.find('div', class_="border-tb heading-primary bg-cod-gray white pad-5-10").text.strip()
+        dict[lu_type] = {}
         player = l.find_all("li", class_="md-text")
         for i, p in enumerate(player, start=1):
             a = p.find("a")
-            dict[type][i] = a.text.strip()
+            dict[lu_type][i] = a.text.strip()
     return dict
+
 
 @db_task()
 def update_projected():
@@ -46,3 +48,16 @@ def update_projected():
                         game_type=game_type,
                         order=o
                     ).update(rw_name=p)
+
+
+@db_periodic_task(crontab(minute='*/10', hour='20-23'))
+def update_live_lus():
+    on_slate = Team.objects.on_slate()
+    for t in on_slate:
+        projected_lineups = get_pro_lineups(t.dk_name)
+        order = projected_lineups["Today's Lineup"] if "Today's Lineup" in projected_lineups else None
+        if order is not None:
+            Player.objects.filter(team=t.dk_name).update(order_pos=0)
+            for o, p in order.items():
+                print(o, p, t)
+                Player.objects.filter(rotowire_name=p, team=t.dk_name).update(order_pos=o)

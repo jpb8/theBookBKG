@@ -5,6 +5,7 @@ class TeamManager(models.Manager):
     def on_slate(self):
         return self.get_queryset().filter(on_slate=True)
 
+
 # Create your models here.
 class Team(models.Model):
     dk_name = models.CharField(max_length=10, primary_key=True)

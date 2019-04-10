@@ -272,18 +272,18 @@ def update_mlb():
         print("NBA is inactive")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/2"))
-def pull_nccaabb():
-    pull_sport_odds("NCAAB")
-
-
-@db_periodic_task(crontab(minute='*/10'))
-def update_ncaabb():
-    if active_events("NCAAB"):
-        print("NCAAB is active")
-        update_results("NCAAB")
-    else:
-        print("NCAAB is inactive")
+# @db_periodic_task(crontab(minute='0', hour="*/2"))
+# def pull_nccaabb():
+#     pull_sport_odds("NCAAB")
+#
+#
+# @db_periodic_task(crontab(minute='*/10'))
+# def update_ncaabb():
+#     if active_events("NCAAB"):
+#         print("NCAAB is active")
+#         update_results("NCAAB")
+#     else:
+#         print("NCAAB is inactive")
 
 
 @db_periodic_task(crontab(minute='0', hour="*/2"))

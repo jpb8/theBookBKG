@@ -4,7 +4,7 @@
         {% for s in stacks %}
         <h1>{{ s.team }}</h1>
         {% for p in s.players.all %}
-        <input type="checkbox" name="{{ p.pk }}" value="player"> {{ p }}<br>
+        <input type="checkbox" name="{{ p.pk }}" value="player">{{ p }}<br>
         {% endfor %}
         {% endfor %}
         {% endif %}

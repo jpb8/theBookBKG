@@ -53,7 +53,10 @@ class Player(models.Model):
     objects = PlayerManager()
 
     def __str__(self):
-        return "{} {} {}".format(self.dk_name, self.position, self.team)
+        if self.second_pos:
+            return "{} {}/{} {}".format(self.dk_name, self.position, self.second_pos, self.team)
+        else:
+            return "{} {} {}".format(self.dk_name, self.position, self.team)
 
     @classmethod
     def team_starter_trows(cls, team):

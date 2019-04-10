@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import StackPlayer, Stack, Lineup, ExportLineup
+from .models import StackPlayer, Stack, ExportLineup
 from .utls import all_lines, pitcher_cnt, tm_cnt, hitter_cnt
 from .tasks import save_lus
 
