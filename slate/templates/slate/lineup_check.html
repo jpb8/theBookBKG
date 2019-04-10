@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main" style="margin: 20px; font-size: 2em">
+    <div style="text-align: center">
+        <h1>Not In Start Lineup</h1>
+        {% if players %}
+        {% for p in players %}
+        <p>{{ p.p }} In {{ p.cnt }} Lineups</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}

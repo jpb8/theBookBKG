@@ -1,5 +1,6 @@
 from django.db import connection
 
+
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
     columns = [col[0] for col in cursor.description]
@@ -63,3 +64,18 @@ def hitter_cnt(user):
                         '''.format(user))
         qs = dictfetchall(cursor)
     return qs
+
+
+def not_in_order_players(user):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        with t as (select * from slate_exportlineup where user_id={}),
+                        a as (select "fB" as p from t union all select "sB" as p from t 
+                        union all select "tB" as p from t union all select ss from t
+                        union all select of1 from t as p union all select of2 as p from t 
+                        union all select of3 as p from t union all select c as p from t)
+                        select p, count(p) as cnt from a group by p 
+                        having p not in (select name_id from players_player where order_pos > 0);
+                        '''.format(user))
+        qs = dictfetchall(cursor)
+        return qs

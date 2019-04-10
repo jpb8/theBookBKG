@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import StackPlayer, Stack, ExportLineup
-from .utls import all_lines, pitcher_cnt, tm_cnt, hitter_cnt
+from .utls import *
 from .tasks import save_lus
 
 from teams.models import Team
@@ -99,3 +99,10 @@ def delete_all(request):
 def update_pro_orders(request):
     update_projected()
     return redirect("players:index")
+
+@login_required(login_url="/")
+def lineup_check(request):
+    cont_dict = {
+        "players": not_in_order_players(request.user.pk)
+    }
+    return render(request, "slate/lineup_check.html", cont_dict)

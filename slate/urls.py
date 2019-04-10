@@ -10,4 +10,5 @@ urlpatterns = [
     path("add_lineups", views.add_lineups, name="add_lineups"),
     path("delete_all", views.delete_all, name="delete_all"),
     path("update_orders", views.update_pro_orders, name="update_pro_orders"),
+    path("lineup_check", views.lineup_check, name="lineup_check"),
 ]
