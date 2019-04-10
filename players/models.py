@@ -49,6 +49,7 @@ class Player(models.Model):
     starting = models.BooleanField(default=False)
     order_pos = models.IntegerField(default=0)
     throws = models.CharField(max_length=5, null=True)
+    active = models.BooleanField(default=True)
 
     objects = PlayerManager()
 
@@ -96,7 +97,8 @@ class Player(models.Model):
                     "code_1": pos_codes[pos_1] if pos_1 in pos_codes else 0,
                     "code_2": pos_codes[pos_2] if pos_2 != "" else 0,
                     "name_id": col[1],
-                    "pts": Decimal(col[8])
+                    "pts": Decimal(col[8]),
+                    "active": True if pos_1 != "RP" else False
                 }
             )
         Team.update_slate(teams)
