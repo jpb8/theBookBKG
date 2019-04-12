@@ -72,7 +72,7 @@ def save_lus(post, user):
                         team2=lu["TM2"],
                         combo=lu_dict["TMCODE"],
                         lu_type=lu_dict["source"],
-                        dedupe=int(lu_dict["dedupe"]),
+                        dedupe=lu_dict["dedupe"],
                     )
                     new_line.save()
                     print("saved")
