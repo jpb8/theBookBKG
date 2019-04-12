@@ -29,7 +29,9 @@
             {% endif %}
             <button type="submit" class="btn btn-primary">Add Players</button>
         </form>
-        <a href="{% url 'slate:refresh_lus' %}" class="btn">Update Projected Orders</a>
+        <form action="{% url 'slate:refresh_lus' %}">
+            <button type="submit">Refresh Big Kahuna</button>
+        </form>
     </div>
     {% include 'players/stack_players.html' %}
 </div>
