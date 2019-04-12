@@ -7,12 +7,19 @@
     <h3>{{ p.p }} {{ p.cnt }}</h3>
     {% endfor %}
     {% endif %}
+    {% if saved_lus %}
+    <h3>Total team count</h3>
+    {% for l in saved_lus %}
+    <p>{{ l.tm }} => {{ l.cnt }</p>
+    {% endfor %}
+    {% endif %}
+    {% if groups %}
+    <h3>Total Combo Count</h3>
+    {% for g in groups %}
+    <p>{{ g.combo }} => {{ g.lu_count }</p>
+    {% endfor %}
+    {% endif %}
     <form action="{% url 'slate:delete_all' %}" method="POST">{% csrf_token %}
-        {% if saved_lus %}
-        {% for l in saved_lus %}
-        <input type="checkbox" name="{{ l.tm }}" value="line"> {{ l.tm }} => {{ l.cnt }}<br>
-        {% endfor %}
-        {% endif %}
         <button type="submit" class="btn btn-primary">Remove Lineups</button>
     </form>
 </div>

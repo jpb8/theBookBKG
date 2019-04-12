@@ -75,7 +75,13 @@ def not_in_order_players(user):
                         union all select of1 from t as p union all select of2 as p from t 
                         union all select of3 as p from t union all select c as p from t)
                         select p, count(p) as cnt from a group by p 
-                        having p not in (select name_id from players_player where order_pos > 0);
+                        having p not in (select name_id from players_player where order_pos > 0)
+                        order by count(p) desc;
                         '''.format(user))
         qs = dictfetchall(cursor)
         return qs
+
+
+def refresh_materialized_bkg():
+    with connection.cursor() as cursor:
+        cursor.execute('''REFRESH MATERIALIZED VIEW bkg_slate_lus;''')

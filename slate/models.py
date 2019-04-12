@@ -35,6 +35,7 @@ class Lineup(models.Model):
     pts = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     lu_type = models.CharField(max_length=10, null=True)
     combo = models.CharField(max_length=10, null=True)
+    dedupe = models.IntegerField()
 
     objects = LineupManager()
 

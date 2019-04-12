@@ -100,9 +100,15 @@ def update_pro_orders(request):
     update_projected()
     return redirect("players:index")
 
+
 @login_required(login_url="/")
 def lineup_check(request):
     cont_dict = {
         "players": not_in_order_players(request.user.pk)
     }
     return render(request, "slate/lineup_check.html", cont_dict)
+
+
+def refresh_materialized_view():
+    refresh_materialized_bkg()
+    return redirect("slate:lineups")

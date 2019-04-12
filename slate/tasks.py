@@ -4,6 +4,13 @@ from .models import ExportLineup
 from .utls import fetch_top_lines
 
 
+def check_lineup(lu_dict):
+    if ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], dedupe=lu_dict["dedupe"]).exists():
+        return False
+    else:
+        return True
+
+
 def add_of(lu, p):
     if "OF2" in lu:
         lu["OF3"] = p
@@ -28,6 +35,7 @@ def build_lineup_dict(lu, p1, p2):
     lu_dict["salary"] = lu["COST"]
     lu_dict["p1"] = p1.name_id
     lu_dict["p2"] = p2.name_id
+    lu_dict["dedupe"] = lu["DUPE"]
     return lu_dict
 
 
@@ -47,7 +55,7 @@ def save_lus(post, user):
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
                 print(lu_dict)
-                if int(lu_dict["salary"]) + salary > 49000:
+                if int(lu_dict["salary"]) + salary > 49000 and check_lineup(lu_dict):
                     new_line = ExportLineup(
                         user=user,
                         p1=lu_dict["p1"],
@@ -65,6 +73,7 @@ def save_lus(post, user):
                         team2=lu["TM2"],
                         combo=lu_dict["TMCODE"],
                         lu_type=lu_dict["source"],
+                        dedupe=lu_dict["dedupe"],
                     )
                     new_line.save()
                     print("saved")
