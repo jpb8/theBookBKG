@@ -10,13 +10,13 @@
     {% if saved_lus %}
     <h3>Total team count</h3>
     {% for l in saved_lus %}
-    <p>{{ l.tm }} => {{ l.cnt }</p>
+    <p>{{ l.tm }} => {{ l.cnt }}</p>
     {% endfor %}
     {% endif %}
     {% if groups %}
     <h3>Total Combo Count</h3>
     {% for g in groups %}
-    <p>{{ g.combo }} => {{ g.lu_count }</p>
+    <p>{{ g.combo }} => {{ g.lu_count }}</p>
     {% endfor %}
     {% endif %}
     <form action="{% url 'slate:delete_all' %}" method="POST">{% csrf_token %}
