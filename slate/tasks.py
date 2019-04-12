@@ -39,7 +39,6 @@ def build_lineup_dict(lu, p1, p2):
     return lu_dict
 
 
-@db_task()
 def save_lus(post, user):
     p1_id = post.get("p1")
     p2_id = post.get("p2")
@@ -73,7 +72,7 @@ def save_lus(post, user):
                         team2=lu["TM2"],
                         combo=lu_dict["TMCODE"],
                         lu_type=lu_dict["source"],
-                        dedupe=lu_dict["dedupe"],
+                        dedupe=int(lu_dict["dedupe"]),
                     )
                     new_line.save()
                     print("saved")
