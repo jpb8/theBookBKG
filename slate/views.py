@@ -109,6 +109,6 @@ def lineup_check(request):
     return render(request, "slate/lineup_check.html", cont_dict)
 
 
-def refresh_materialized_view():
+def refresh_materialized_view(request):
     refresh_materialized_bkg()
     return redirect("slate:lineups")
