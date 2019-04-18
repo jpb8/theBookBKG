@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .models import StackPlayer, Stack, ExportLineup, Punt
 from .utls import *
 from .tasks import save_lus, refresh_bkg
@@ -7,6 +8,15 @@ from .tasks import save_lus, refresh_bkg
 from teams.models import Team
 from teams.tasks import update_projected
 from players.models import Player
+
+
+pos_swap = {
+    "C": "c",
+    "1B": "fB",
+    "2B": "sB",
+    "3B": "tB",
+    "SS": "ss",
+}
 
 
 # Create your views here.
@@ -148,7 +158,21 @@ def delete_bad_lines(request):
         player = Player.objects.get(name_id=p["p"])
         pos = player.position
         pos2 = player.position
-        ExportLineup.objects.filter(**{pos: player.name_id}).delete()
+        if pos == "OF":
+            ExportLineup.objects.filter(
+                Q(of1=player.name_id) |
+                Q(of2=player.name_id) |
+                Q(of3=player.name_id)
+            ).delete()
+        else:
+            ExportLineup.objects.filter(**{pos_swap[pos]: player.name_id}).delete()
         if pos2 != "":
-            ExportLineup.objects.filter(**{pos2: player.name_id}).delete()
+            if pos2 == "OF":
+                ExportLineup.objects.filter(
+                    Q(of1=player.name_id) |
+                    Q(of2=player.name_id) |
+                    Q(of3=player.name_id)
+                ).delete()
+            else:
+                ExportLineup.objects.filter(**{pos_swap[pos2]: player.name_id}).delete()
     return redirect("slate:lineups")
