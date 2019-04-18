@@ -11,7 +11,7 @@ urlpatterns = [
     path("delete_all", views.delete_all, name="delete_all"),
     path("update_orders", views.update_pro_orders, name="update_pro_orders"),
     path("lineup_check", views.lineup_check, name="lineup_check"),
-    path("refresh_lus", views.refresh_bkg, name="refresh_lus"),
+    path("refresh_lus", views.refresh_big_kahuna, name="refresh_lus"),
     path("add_punts", views.add_punts, name="add_punts"),
     path("remove_punts", views.remove_punts, name="remove_punts"),
 ]

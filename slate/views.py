@@ -110,7 +110,7 @@ def lineup_check(request):
 
 
 @login_required(login_url="/")
-def refresh_bkg(request):
+def refresh_big_kahuna(request):
     refresh_bkg()
     return redirect("slate:lineups")
 

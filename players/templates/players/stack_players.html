@@ -15,7 +15,7 @@
     <form action="{% url 'slate:remove_punts' %}" method="POST">{% csrf_token %}
         {% if punts %}
         {% for p in punts %}
-        <input type="checkbox" name="{{ p.pk }}" value="player">{{ p }}{{ p.name_id }}<br>
+        <input type="checkbox" name="{{ p.pk }}" value="player">{{ p }}<br>
         {% endfor %}
         {% endif %}
         <button type="submit" class="btn btn-primary">Remove punt</button>
