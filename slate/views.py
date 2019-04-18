@@ -139,3 +139,15 @@ def remove_punts(request):
             if key == "player":
                 Punt.objects.get(pk=int(p_id)).delete()
     return redirect('players:stack_builder')
+
+
+@login_required(login_url="/")
+def delete_bad_line(request):
+    bad_players = not_in_order_players(request.user.pk)
+    for p in bad_players:
+        player = Player.objects.get(name_id=p.p)
+        pos = player.position
+        pos2 = player.position
+        ExportLineup.objects.filter(**{pos: player.name_id}).delete()
+        if pos2 != "":
+            ExportLineup.objects.filter(**{pos2: player.name_id}).delete()

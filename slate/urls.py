@@ -14,4 +14,5 @@ urlpatterns = [
     path("refresh_lus", views.refresh_big_kahuna, name="refresh_lus"),
     path("add_punts", views.add_punts, name="add_punts"),
     path("remove_punts", views.remove_punts, name="remove_punts"),
+    path("delete_bad_line", views.delete_bad_line, name="delete_bad_line"),
 ]

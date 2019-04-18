@@ -49,7 +49,7 @@ def save_lus(post, user):
     for code, count in post.items():
         if count is None:
             count = 0
-        if code not in ("p1", "p2", "csrfmiddlewaretoken") and int(count) > 0:
+        if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count, punt)
             for lu in lines:
