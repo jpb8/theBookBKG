@@ -105,3 +105,14 @@ class StackPlayer(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.player, self.order_spot)
+
+
+class Punt(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    dkid = models.IntegerField()
+    name_id = models.CharField(max_length=124)
+    position = models.CharField(max_length=10)
+    salary = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{} {} ${}".format(self.name_id, self.position, self.salary)

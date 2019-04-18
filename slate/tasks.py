@@ -1,7 +1,7 @@
 from huey.contrib.djhuey import db_task
 from players.models import Player
 from .models import ExportLineup
-from .utls import fetch_top_lines
+from .utls import fetch_top_lines, refresh_materialized_bkg
 
 
 def check_lineup(lu_dict):
@@ -78,3 +78,8 @@ def save_lus(post, user):
                     print("saved")
                 else:
                     print("Salary To Low")
+
+
+@db_task()
+def refresh_bkg():
+    refresh_materialized_bkg()

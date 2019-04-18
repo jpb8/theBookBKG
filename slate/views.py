@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import StackPlayer, Stack, ExportLineup
+from .models import StackPlayer, Stack, ExportLineup, Punt
 from .utls import *
-from .tasks import save_lus
+from .tasks import save_lus, refresh_bkg
 
 from teams.models import Team
 from teams.tasks import update_projected
@@ -111,5 +111,29 @@ def lineup_check(request):
 
 @login_required(login_url="/")
 def refresh_bkg(request):
-    refresh_materialized_bkg()
+    refresh_bkg()
     return redirect("slate:lineups")
+
+
+@login_required(login_url="/")
+def add_punts(request):
+    if request.method == "POST":
+        user = request.user
+        for p_id, key in request.POST.items():
+            if key == "player":
+                p = Player.objects.get(id=int(p_id))
+                if not Punt.objects.filter(user=user, dkid=p.dkid).exists():
+                    sp = Punt(user=user, dkid=p.dkid, name_id=p.name_id, position=p.position, salary=p.salary)
+                    sp.save()
+                else:
+                    Punt.objects.filter(user=user, dkid=p.dkid).delete()
+    return redirect('players:stack_builder')
+
+
+@login_required(login_url="/")
+def remove_punts(request):
+    if request.method == "POST":
+        for p_id, key in request.POST.items():
+            if key == "player":
+                Punt.objects.get(pk=int(p_id)).delete()
+    return redirect('players:stack_builder')

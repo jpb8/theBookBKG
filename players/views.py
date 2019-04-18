@@ -3,7 +3,7 @@ from .models import Player
 from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, projected_orders
 
 from teams.models import Team
-from slate.models import Stack
+from slate.models import Stack, Punt
 
 
 def index(request):
@@ -49,10 +49,12 @@ def stack_builder(request):
         current_team = team
     teams = Team.objects.filter(on_slate=True)
     stacks = Stack.objects.filter(user=user)
+    punts = Punt.objects.filter(user=user)
     cont_dict = {
         "teams": teams,
         "players": players,
         "stacks": stacks,
+        "punts": punts,
         "current_team": current_team,
     }
     return render(request, "players/stack_builder.html", cont_dict)

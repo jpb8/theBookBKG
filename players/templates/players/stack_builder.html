@@ -28,6 +28,7 @@
             {% endfor %}
             {% endif %}
             <button type="submit" class="btn btn-primary">Add Players</button>
+            <input type="submit" class="btn btn-primary" value="Add Punts" formaction="{% url 'slate:add_punts' %}">
         </form>
         <form action="{% url 'slate:refresh_lus' %}">
             <button type="submit">Refresh Big Kahuna</button>
