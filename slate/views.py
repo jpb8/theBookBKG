@@ -9,7 +9,6 @@ from teams.models import Team
 from teams.tasks import update_projected
 from players.models import Player
 
-
 pos_swap = {
     "C": "c",
     "1B": "fB",
