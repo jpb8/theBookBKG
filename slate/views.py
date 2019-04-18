@@ -57,8 +57,8 @@ def lineups(request):
         p1 = Player.objects.get(id=p1_id)
         p2 = Player.objects.get(id=p2_id)
         salary = p1.salary + p2.salary
-        lines = all_lines(50000 - salary, "normal")
-        pplay = all_lines(50000 - salary, "punt")
+        lines = all_lines(50000 - salary, punt=False)
+        pplay = all_lines(50000 - salary, punt=True)
     user = request.user
     pitchers = Player.objects.all_starters()
     groups = ExportLineup.objects.group(user)
