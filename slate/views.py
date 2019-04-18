@@ -49,7 +49,7 @@ def remove(request):
 
 @login_required(login_url="/")
 def lineups(request):
-    lines = None
+    lines, pplay = None, None
     p1, p2 = None, None
     if request.method == "POST":
         p1_id = request.POST.get("p1")
@@ -57,7 +57,8 @@ def lineups(request):
         p1 = Player.objects.get(id=p1_id)
         p2 = Player.objects.get(id=p2_id)
         salary = p1.salary + p2.salary
-        lines = all_lines(50000 - salary)
+        lines = all_lines(50000 - salary, "normal")
+        pplay = all_lines(50000 - salary, "punt")
     user = request.user
     pitchers = Player.objects.all_starters()
     groups = ExportLineup.objects.group(user)
@@ -71,6 +72,7 @@ def lineups(request):
     cont_dict = {
         "pitchers": pitchers,
         "lines": lines,
+        "pplays": pplay,
         "saved_lus": saved_lus,
         "p_cnt": p_cnt,
         "total_lus": total_lus,

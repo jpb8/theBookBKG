@@ -40,6 +40,7 @@ def build_lineup_dict(lu, p1, p2):
 
 
 def save_lus(post, user):
+    punt = True if post.get('punt', "all") == "punt" else False
     p1_id = post.get("p1")
     p2_id = post.get("p2")
     p1 = Player.objects.get(id=p1_id)
@@ -50,7 +51,7 @@ def save_lus(post, user):
             count = 0
         if code not in ("p1", "p2", "csrfmiddlewaretoken") and int(count) > 0:
             print(code, count)
-            lines = fetch_top_lines(50000 - salary, code, count)
+            lines = fetch_top_lines(50000 - salary, code, count, punt)
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
                 print(lu_dict)
