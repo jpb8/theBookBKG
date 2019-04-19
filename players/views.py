@@ -47,7 +47,7 @@ def stack_builder(request):
         team = request.POST.get("team")
         players = Player.objects.filter(team=team).exclude(position="SP").exclude(position="RP").order_by('-order_pos')
         current_team = team
-    teams = Team.objects.filter(on_slate=True)
+    teams = Team.objects.filter(on_slate=True).order_by("dk_name")
     stacks = Stack.objects.filter(user=user)
     punts = Punt.objects.filter(user=user)
     cont_dict = {

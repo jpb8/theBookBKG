@@ -48,7 +48,7 @@ def tm_cnt(user):
     with connection.cursor() as cursor:
         cursor.execute('''
                         with tms as (select team1 as tm from slate_exportlineup where user_id={}
-                        union all select team2 as tm from slate_exportlineup where user_id={} and lu_type='Dual')
+                        union all select team2 as tm from slate_exportlineup where user_id={} and lu_type<>'5Man')
                         select count(tm) as cnt, tm from tms group by tm;
                         '''.format(user, user))
         qs = dictfetchall(cursor)
