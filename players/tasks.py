@@ -103,11 +103,14 @@ def starting_pitchers():
         away = e["AwayPitcher"] if "AwayPitcher" in e else None
         date_time = dt.strptime(e["MatchTime"], "%Y-%m-%dT%H:%M:%S")
         utc_dt = date_time.replace(tzinfo=pytz.utc)
-        p = Player.objects.filter(dk_name=home)[0]
-        start = Team.objects.get(dk_name=p.team).start_time
-        print(p, start, utc_dt)
-        if start == utc_dt:
-            Player.objects.filter(Q(dk_name=home) | Q(dk_name=away)).update(starting=True)
+        if Player.objects.filter(dk_name=home).exists():
+            p = Player.objects.filter(dk_name=home)[0]
+            start = Team.objects.get(dk_name=p.team).start_time
+            print(p, start, utc_dt)
+            if start == utc_dt:
+                Player.objects.filter(Q(dk_name=home) | Q(dk_name=away)).update(starting=True)
+        else:
+            print("{} does not exist".format(home))
 
 
 @db_task()
