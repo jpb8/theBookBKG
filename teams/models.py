@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import Q
+from datetime import datetime as dt
+import pytz
 
 
 class TeamManager(models.Manager):
@@ -15,6 +18,7 @@ class Team(models.Model):
     opp = models.CharField(max_length=10, null=True)
     home = models.BooleanField(default=False)
     on_slate = models.BooleanField(default=False)
+    start_time = models.DateTimeField(null=True)
 
     objects = TeamManager()
 
@@ -24,7 +28,17 @@ class Team(models.Model):
     @classmethod
     def update_slate(cls, teams):
         cls.objects.all().update(on_slate=False)
-        cls.objects.filter(dk_name__in=teams).update(on_slate=True)
+        new_york_tz = pytz.timezone("America/New_York")
+        for t in teams:
+            info = t.split(" ")
+            date_str = info[1] + " " + info[2]
+            date_obj = dt.strptime(date_str, '%m/%d/%Y %I:%M%p')
+            dt_tz_obj = new_york_tz.localize(date_obj)
+            utc_dt = dt_tz_obj.astimezone(pytz.utc)
+            print(utc_dt)
+            cls.objects.filter(
+                Q(dk_name=info[0].split("@")[1]) | Q(dk_name=info[0].split("@")[0])
+            ).update(on_slate=True, start_time=utc_dt)
 
     @classmethod
     def add_opp(cls, games):

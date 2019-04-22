@@ -78,7 +78,7 @@ class Player(models.Model):
             if len(positions) == 2:
                 pos_2 = positions[1]
             print(col[5])
-            t = col[7]
+            t = col[6]
             if t not in teams:
                 teams.append(t)
                 info = col[6].split(" ")

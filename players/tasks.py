@@ -3,10 +3,11 @@ from huey.contrib.djhuey import db_task, db_periodic_task
 from bs4 import BeautifulSoup
 import requests
 from django.conf import settings
+from django.db.models import Q
 from jsonodds.odds import Odds
 import json
-from huey import crontab
-
+from datetime import datetime as dt
+import pytz
 
 from teams.models import Team, DefaultOrders
 import csv
@@ -90,17 +91,23 @@ def projected_orders():
             Player.objects.filter(rotowire_name=p.rw_name).update(order_pos=p.order)
             print(p)
 
+
 @db_task()
 def starting_pitchers():
     mlb = Odds(JSONODDS_API_KEY).get_odds("MLB")
     data = mlb.content
     json_data = json.loads(data.decode("utf-8"))
-    pitchers = []
-    for e in json_data:
-        pitchers.append(e["HomePitcher"]) if "HomePitcher" in e else None
-        pitchers.append(e["AwayPitcher"]) if "AwayPitcher" in e else None
     Player.objects.all().update(starting=False)
-    Player.objects.filter(dk_name__in=pitchers).update(starting=True)
+    for e in json_data:
+        home = e["HomePitcher"] if "HomePitcher" in e else None
+        away = e["AwayPitcher"] if "AwayPitcher" in e else None
+        date_time = dt.strptime(e["MatchTime"], "%Y-%m-%dT%H:%M:%S")
+        utc_dt = date_time.replace(tzinfo=pytz.utc)
+        p = Player.objects.filter(dk_name=home)[0]
+        start = Team.objects.get(dk_name=p.team).start_time
+        print(p, start, utc_dt)
+        if start == utc_dt:
+            Player.objects.filter(Q(dk_name=home) | Q(dk_name=away)).update(starting=True)
 
 
 @db_task()
