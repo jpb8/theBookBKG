@@ -152,8 +152,8 @@ class Pitching(models.Model):
     def upload(cls, data, hand):
         for r in data:
             try:
-                player = Player.objects.filter(f=r[0])[:1].get()
-                _s, new = cls.objects.update_or_create(fg_name=player,
+                player = Player.objects.filter(fg_name=r[0])[:1].get()
+                _s, new = cls.objects.update_or_create(player=player,
                                                        vs=hand,
                                                        defaults={
                                                            "kk_p9": Decimal(r[2]),
@@ -199,8 +199,8 @@ class Batting(models.Model):
     def upload(cls, data, hand):
         for r in data:
             try:
-                player = Player.objects.filter(dk_name=r[0])[:1].get()
-                _s, new = cls.objects.update_or_create(fg_name=player,
+                player = Player.objects.filter(fg_name=r[0])[:1].get()
+                _s, new = cls.objects.update_or_create(player=player,
                                                        vs=hand,
                                                        defaults={
                                                            "pa": int(r[2]),
