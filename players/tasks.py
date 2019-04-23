@@ -83,7 +83,7 @@ def projected_orders():
     for t in teams:
         throws = Player.team_starter_trows(t.opp)
         opp = Team.objects.get(dk_name=t.opp)
-        game_type = throws
+        game_type = throws if throws != "" else "R"
         if not t.home and opp.league != t.league:
             game_type = "IL" + throws
         p_orders = DefaultOrders.objects.projected(team=t, game_type=game_type)
@@ -99,18 +99,16 @@ def starting_pitchers():
     json_data = json.loads(data.decode("utf-8"))
     Player.objects.all().update(starting=False)
     for e in json_data:
+        start = Team.objects.get(fg_name=e["HomeTeam"]).start_time
         home = e["HomePitcher"] if "HomePitcher" in e else None
         away = e["AwayPitcher"] if "AwayPitcher" in e else None
         date_time = dt.strptime(e["MatchTime"], "%Y-%m-%dT%H:%M:%S")
         utc_dt = date_time.replace(tzinfo=pytz.utc)
-        if Player.objects.filter(dk_name=home).exists():
-            p = Player.objects.filter(dk_name=home)[0]
-            start = Team.objects.get(dk_name=p.team).start_time
-            print(p, start, utc_dt)
-            if start == utc_dt:
-                Player.objects.filter(Q(dk_name=home) | Q(dk_name=away)).update(starting=True)
+        if start == utc_dt:
+            print("{} and {} starting for {} and {} @ {}".format(home, away, e["HomeTeam"],e["AwayTeam"], start))
+            Player.objects.filter(Q(dk_name=home) | Q(dk_name=away)).update(starting=True)
         else:
-            print("{} does not exist".format(home))
+            print("Game Not on slate")
 
 
 @db_task()
