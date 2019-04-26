@@ -53,6 +53,9 @@ def update_projected():
 @db_periodic_task(crontab(minute='*/10', hour='19-22'))
 def update_live_lus():
     on_slate = Team.objects.on_slate()
+    non_slate_teams = Team.objects.filter(on_slate=False)
+    for t in non_slate_teams:
+        Player.objects.filter(team=t.dk_name).update(order_pos=0)
     for t in on_slate:
         projected_lineups = get_pro_lineups(t.dk_name)
         order = projected_lineups["Today's Lineup"] if "Today's Lineup" in projected_lineups else None
