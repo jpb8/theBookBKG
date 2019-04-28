@@ -88,7 +88,7 @@ def projected_orders():
             game_type = "IL" + throws
         p_orders = DefaultOrders.objects.projected(team=t, game_type=game_type)
         for p in p_orders:
-            Player.objects.filter(rotowire_name=p.rw_name).update(order_pos=p.order)
+            Player.objects.filter(rotowire_name=p.rw_name, active=True).update(order_pos=p.order)
             print(p)
 
 
