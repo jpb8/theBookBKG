@@ -15,5 +15,5 @@ urlpatterns = [
     path("add_punts", views.add_punts, name="add_punts"),
     path("remove_punts", views.remove_punts, name="remove_punts"),
     path("delete_bad_lines", views.delete_bad_lines, name="delete_bad_lines"),
-    path("update_line_lineups", views.update_live_lus, name="update_live_lineups"),
+    path("update_line_lineups", views.update_live_lineups, name="update_live_lineups"),
 ]
