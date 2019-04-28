@@ -50,8 +50,6 @@ def update_projected():
                     ).update(rw_name=p)
 
 
-@db_task()
-@db_periodic_task(crontab(minute='*/10', hour='19-22'))
 def update_live_lus():
     on_slate = Team.objects.on_slate()
     non_slate_teams = Team.objects.filter(on_slate=False)
@@ -65,3 +63,13 @@ def update_live_lus():
             for o, p in order.items():
                 print(o, p, t)
                 Player.objects.filter(rotowire_name=p, team=t.dk_name).update(order_pos=o)
+
+
+@db_periodic_task(crontab(minute='*/10', hour='19-22'))
+def scheduled_live_lu_update():
+    update_live_lus()
+
+
+@db_task()
+def manual_live_lu_update():
+    update_live_lus()

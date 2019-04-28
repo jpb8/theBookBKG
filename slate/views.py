@@ -6,7 +6,7 @@ from .utls import *
 from .tasks import save_lus, refresh_bkg
 
 from teams.models import Team
-from teams.tasks import update_projected, update_live_lus
+from teams.tasks import update_projected, manual_live_lu_update
 from players.models import Player
 
 pos_swap = {
@@ -179,5 +179,5 @@ def delete_bad_lines(request):
 
 @login_required(login_url="/")
 def update_live_lineups(request):
-    update_live_lus()
+    manual_live_lu_update()
     return redirect('players:stack_builder')
