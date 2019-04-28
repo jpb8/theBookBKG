@@ -6,7 +6,7 @@ from .utls import *
 from .tasks import save_lus, refresh_bkg
 
 from teams.models import Team
-from teams.tasks import update_projected
+from teams.tasks import update_projected, update_live_lus
 from players.models import Player
 
 pos_swap = {
@@ -175,3 +175,9 @@ def delete_bad_lines(request):
             else:
                 ExportLineup.objects.filter(**{pos_swap[pos2]: player.name_id}).delete()
     return redirect("slate:lineups")
+
+
+@login_required(login_url="/")
+def update_live_lineups(request):
+    update_live_lus()
+    return redirect('players:stack_builder')

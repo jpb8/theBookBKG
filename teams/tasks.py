@@ -50,6 +50,7 @@ def update_projected():
                     ).update(rw_name=p)
 
 
+@db_task()
 @db_periodic_task(crontab(minute='*/10', hour='19-22'))
 def update_live_lus():
     on_slate = Team.objects.on_slate()
