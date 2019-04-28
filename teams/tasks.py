@@ -56,6 +56,7 @@ def update_live_lus():
     for nt in non_slate_teams:
         Player.objects.filter(team=nt.dk_name).update(order_pos=0)
     for t in on_slate:
+        print("Pulling {}".format(t))
         projected_lineups = get_pro_lineups(t.dk_name)
         order = projected_lineups["Today's Lineup"] if "Today's Lineup" in projected_lineups else None
         if len(order) > 1:

@@ -55,6 +55,7 @@ def nfl(request):
 
 def mlb(request):
     game_qs = get_event_qs("MLB", "Game")
+    half_qs = get_event_qs("MLB", "FirstFiveInnings")
     slip_obj, new_obj = Slip.objects.new_or_get(request)
     slip_obj.remove_nonpregame_odds()
     sport_label = "MLB"

@@ -25,7 +25,7 @@ odds_dict = {
     "under": "UnderLine"
 }
 
-bet_list = ["Game", "FirstHalf", "FirstPeriod"]
+bet_list = ["Game", "FirstHalf", "FirstPeriod", "FirstFiveInnings"]
 
 
 def get_full_game_odds(game):
@@ -124,8 +124,7 @@ def pull_sport_odds(sport):
                                                                             })
                 except django.db.utils.IntegrityError:
                     print("Odds Group Integrity Error")
-                if o["OddType"] == "Game" and (
-                        sport == "NFL" or sport == "NBA" or sport == "NCAAF" or sport == "MMA" or sport == "MLB"):
+                if o["OddType"] == "Game" and sport in ("NFL", "NBA", "NCAAF", "MMA", "MLB"):
                     game_stats, new = get_or_create_gameodds(event, o)
                     if new:
                         print(game_stats)
