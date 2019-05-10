@@ -10,4 +10,5 @@ urlpatterns = [
     path('starters_order', views.starters_order, name='starters_order'),
     path('stack_builder', views.stack_builder, name='stack_builder'),
     path('', views.index, name='index'),
+    path('pitching', views.pitching_stats, name='pitching'),
 ]

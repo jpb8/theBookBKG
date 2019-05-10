@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main" style="margin: 20px">
+    <table id="example" class="display compact order-column stripe row-border" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Team</th>
+                <th>H/A</th>
+                <th>Throws</th>
+                <th>Sal</th>
+                <th>Ave</th>
+                <th>ERA</th>
+                <th>WHIP</th>
+                <th>Kp 9</th>
+                <th>HRp 9</th>
+                <th>K%</th>
+                <th>OPP</th>
+                <th>OPP K%</th>
+                <th>OPP ISO</th>
+                <th>OPP wOBA</th>
+                <th>Park Runs</th>
+                <th>Park HR</th>
+                <th>Pfx</th>
+                <th>SwStr%</th>
+                <th>Soft</th>
+                <th>Hard</th>
+                <th>FB</th>
+                <th>GB</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if pitchers %}
+        {% for p in pitchers %}
+            <tr>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.Team %}</td>
+                <td>{% p.H/A %}</td>
+                <td>{% p.throws %}</td>
+                <td>{% p.salary %}</td>
+                <td>{% p.ave %}</td>
+                <td>{% p.era %}</td>
+                <td>{% p.whip %}</td>
+                <td>{% p.kk_p9 %}</td>
+                <td>{% p.kp %}</td>
+                <td>{% p.opp %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+                <td>{% p.dk_name %}</td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Team</th>
+                <th>H/A</th>
+                <th>Throws</th>
+                <th>Sal</th>
+                <th>Ave</th>
+                <th>ERA</th>
+                <th>WHIP</th>
+                <th>Kp 9</th>
+                <th>HRp 9</th>
+                <th>K%</th>
+                <th>OPP</th>
+                <th>OPP K%</th>
+                <th>OPP ISO</th>
+                <th>OPP wOBA</th>
+                <th>Park Runs</th>
+                <th>Park HR</th>
+                <th>Pfx</th>
+                <th>SwStr%</th>
+                <th>Soft</th>
+                <th>Hard</th>
+                <th>FB</th>
+                <th>GB</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+</body>
+
+<script type="text/javascript" charset="utf8">
+    $(document).ready(function() {
+        $('#example').dataTable();
+    } );
+</script>
+{% endlocaltime %}
+{% endblock %}

@@ -82,9 +82,27 @@ def not_in_order_players(user):
                         order by count(p) desc;
                         '''.format(user))
         qs = dictfetchall(cursor)
-        return qs
+    return qs
 
 
 def refresh_materialized_bkg():
     with connection.cursor() as cursor:
         cursor.execute('''REFRESH MATERIALIZED VIEW bkg_slate_lus;''')
+
+
+def todays_pitchers():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        Select * from adv_pitch;
+                        ''')
+        qs = dictfetchall(cursor)
+    return qs
+
+
+def stacks_stats():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        Select * from stack_stats;
+                        ''')
+        qs = dictfetchall(cursor)
+    return qs

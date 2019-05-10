@@ -4,6 +4,7 @@ from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, pro
 
 from teams.models import Team
 from slate.models import Stack, Punt
+from slate.utls import stacks_stats, todays_pitchers
 
 
 def index(request):
@@ -58,3 +59,12 @@ def stack_builder(request):
         "current_team": current_team,
     }
     return render(request, "players/stack_builder.html", cont_dict)
+
+
+def pitching_stats(request):
+    pitchers = todays_pitchers()
+    print(pitchers)
+    cont_dict = {
+        "pitchers": pitchers
+    }
+    return render(request, "players/pitcher_stats.html", cont_dict)
