@@ -5,6 +5,11 @@
 {% localtime on %}
 <body class="body">
 <div class="main" style="margin: 20px">
+    {% if pitchers %}
+    {% for p in pitchers %}
+        {{ p }}
+    {% endfor %}
+    {% endif %}
     <table id="example" class="display compact order-column stripe row-border" style="width:100%">
         <thead>
             <tr>
