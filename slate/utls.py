@@ -106,3 +106,12 @@ def stacks_stats():
                         ''')
         qs = dictfetchall(cursor)
     return qs
+
+
+def tp_utils():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        Select * from tp_utils;
+                        ''')
+        qs = dictfetchall(cursor)
+    return qs

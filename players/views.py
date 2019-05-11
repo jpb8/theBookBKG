@@ -6,7 +6,7 @@ from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, pro
 
 from teams.models import Team
 from slate.models import Stack, Punt
-from slate.utls import stacks_stats, todays_pitchers
+from slate.utls import stacks_stats, todays_pitchers, tp_utils
 
 
 def index(request):
@@ -64,15 +64,28 @@ def stack_builder(request):
 
 
 def pitching_stats(request):
-    pitchers = todays_pitchers()
-    cols = {
-        6: {
-            "var_arr": [0.2, 0.22, 0.25, 0.275],
-            "opac_arr": [1, 0.75, 0.5, 0.25]
-        }
-    }
+    # pitchers = todays_pitchers()
+    tp_data = tp_utils()
+    cols = []
+    for t in tp_data:
+        col = {}
+        col["row"] = int(t["numb"])
+        col["var_arr"], col["opac_arr"] = opacity(10, t["min"], t["max"])
+        cols.append(col)
+    print(cols)
     cont_dict = {
-        "pitchers": pitchers,
         'cols': json.dumps(cols)
     }
     return render(request, "players/pitcher_stats.html", cont_dict)
+
+
+def opacity(n, minn, maxx):
+    diff = maxx - minn
+    var_div = diff / n
+    opac_div = round(1 / n, 2)
+    var_arr = []
+    opac_arr = []
+    for i in range(n - 1):
+        var_arr.append(round(float(var_div * (i + 1) + minn), 4))
+        opac_arr.append(round(float(opac_div * (i + 1)), 2))
+    return var_arr, opac_arr
