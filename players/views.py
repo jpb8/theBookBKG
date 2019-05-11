@@ -64,7 +64,7 @@ def stack_builder(request):
 
 
 def pitching_stats(request):
-    # pitchers = todays_pitchers()
+    pitchers = todays_pitchers()
     tp_data = tp_utils()
     cols = []
     for t in tp_data:
@@ -74,6 +74,7 @@ def pitching_stats(request):
         cols.append(col)
     print(cols)
     cont_dict = {
+        'pitchers': pitchers,
         'cols': json.dumps(cols)
     }
     return render(request, "players/pitcher_stats.html", cont_dict)
