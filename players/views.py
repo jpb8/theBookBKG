@@ -65,11 +65,14 @@ def stack_builder(request):
 
 def pitching_stats(request):
     pitchers = todays_pitchers()
-    val_arr = [0.2, 0.22, 0.25, 0.275]
-    opac_arr = [1, 0.75, 0.5, 0.25]
+    cols = {
+        6: {
+            "var_arr": [0.2, 0.22, 0.25, 0.275],
+            "opac_arr": [1, 0.75, 0.5, 0.25]
+        }
+    }
     cont_dict = {
         "pitchers": pitchers,
-        'val_arr': json.dumps(val_arr),
-        'opac_arr': json.dumps(opac_arr)
+        'cols': json.dumps(cols)
     }
     return render(request, "players/pitcher_stats.html", cont_dict)

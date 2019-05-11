@@ -101,17 +101,16 @@
             paging: false
         } );
 
-        var val_arr = {{ val_arr|safe }};
-        var opac_arr = {{ opac_arr|safe }};
-
         $('table td:nth-child(6)').each(function() {
+            var val_arr = {{ col.6.val_arr|safe }};
+            var opac_arr = {{ col.6.opac_arr|safe }};
+            console.log(val_arr);
+            console.log(opac_arr);
             var val = $(this).text();
             var opacity = 0;
             for (var i = 0; i < val_arr.length; i++) {
                 if (val < val_arr[i]) {
                     opacity = opac_arr[i];
-                    console.log(val_arr[i]);
-                    console.log(opacity);
                     break;
                 }
             }
