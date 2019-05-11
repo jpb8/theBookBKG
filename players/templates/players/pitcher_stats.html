@@ -109,7 +109,7 @@
             var col = cols[i].row;
             console.log(col);
 
-            $('table td:nth-child(col)').each(function() {
+            $('table td:nth-child(' + col + ')').each(function() {
                 var val = $(this).text();
 
                 var opacity = 0;
@@ -123,12 +123,6 @@
             });
 
         }
-
-
-
-
-
-
 
     } );
 </script>
