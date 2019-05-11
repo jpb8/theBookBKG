@@ -108,9 +108,12 @@
             var val = $(this).text();
             var opacity = 0;
             for (var i = 0; i < val_arr.length; i++) {
-                console.log(val_arr[i]);
                 if (val < val_arr[i]) {
-                    opacity = opac_arr[i]
+                    opacity = opac_arr[i];
+                    console.log(val_arr[i]);
+                    console.log(opac_arr[i]);
+                    colsole.log(opacity);
+                    break;
                 }
             }
 
