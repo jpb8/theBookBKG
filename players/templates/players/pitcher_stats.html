@@ -42,7 +42,7 @@
                 <td>{{ p.Home }}</td>
                 <td>{{ p.throws }}</td>
                 <td>{{ p.salary }}</td>
-                <td>{{ p.ave }}</td>
+                <td>{{ p.avg }}</td>
                 <td>{{ p.era }}</td>
                 <td>{{ p.whip }}</td>
                 <td>{{ p.kk_p9 }}</td>
@@ -98,6 +98,27 @@
 <script type="text/javascript" charset="utf8">
     $(document).ready(function() {
         $('#example').dataTable();
+
+        $('table td:nth-child(5)').each(function() {
+            var val = $(this).text();
+
+            if ((val > 0) && (val < 2)) {
+                $(this).css('backgroundColor', '#f76e6e');
+                $(this).css('opacity', 1);
+            }
+            else if((val > 2) && (val < 2.2)) {
+                $(this).css('backgroundColor', '#edb949');
+                $(this).css('opacity', .8);
+            }
+            else if((val > 2.2) && (val < 2.5)) {
+                $(this).css('backgroundColor', '#f2f381');
+                $(this).css('opacity', .6);
+            }
+            else {
+                $(this).css('backgroundColor', '#99faa0');
+                $(this).css('opacity', .4);
+            }
+        });
     } );
 </script>
 {% endlocaltime %}
