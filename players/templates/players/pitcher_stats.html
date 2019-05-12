@@ -114,7 +114,7 @@
             } else if ( diff > 0 && !low ) {
                 var color = 'rgba(0,255,0,' + opac + ')'
             } else {
-                var color = 'rgba(0,255,0,' + opac + ')'
+                var color = 'rgba(255,0,0,' + opac + ')'
             }
             return color;
         };
@@ -126,15 +126,10 @@
             var std = cols[i].std;
             var col = cols[i].numb;
             var low = cols[i].low;
-            console.log(avg);
-            console.log(std);
-            console.log(col);
-            console.log(low);
 
             $('table td:nth-child(' + col + ')').each(function() {
                 var val = $(this).text();
                 var color = opacityGetter(avg, std, low, val)
-                console.log(color)
                 $(this).css('backgroundColor', color);
             });
 
