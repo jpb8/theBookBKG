@@ -103,12 +103,16 @@
 
         function opacityGetter(avg, std, low, val) {
             var diff = val - avg
-            var opac = Math.abs((diff / std) / 3)
+            var opac = Math.abs((diff / std) / 2.5)
             if ( opac > 1 ) {
                 opac = 1;
             };
             if ( diff > 0 && low ) {
                 var color = 'rgba(255,0,0,' + opac + ')'
+            } elif ( diff <= 0 && low ) {
+                var color = 'rgba(0,255,0,' + opac + ')'
+            } elif ( diff > 0 && !low ) {
+                var color = 'rgba(0,255,0,' + opac + ')'
             } else {
                 var color = 'rgba(0,255,0,' + opac + ')'
             }
