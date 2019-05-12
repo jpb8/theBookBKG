@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 import json
 
 from .models import Player
-from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, projected_orders
+from .tasks import orders, starting_pitchers, upload_stats, upload_salaries
 
 from teams.models import Team
 from slate.models import Stack, Punt
-from slate.utls import stacks_stats, todays_pitchers, tp_utils
+from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils
 
 
 def index(request):
@@ -74,6 +74,16 @@ def pitching_stats(request):
     cont_dict = {
         'pitchers': pitchers,
         'cols': json.dumps(tp_data)
+    }
+    return render(request, "players/pitcher_stats.html", cont_dict)
+
+
+def stacks_stats(request):
+    stacks = todays_stacks()
+    stacks_utils = stack_utils()
+    cont_dict = {
+        'pitchers': stacks,
+        'cols': json.dumps(stacks_utils)
     }
     return render(request, "players/pitcher_stats.html", cont_dict)
 

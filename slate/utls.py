@@ -99,10 +99,10 @@ def todays_pitchers():
     return qs
 
 
-def stacks_stats():
+def todays_stacks():
     with connection.cursor() as cursor:
         cursor.execute('''
-                        Select * from stack_stats;
+                        Select * from stacks_web;
                         ''')
         qs = dictfetchall(cursor)
     return qs
@@ -112,6 +112,15 @@ def tp_utils():
     with connection.cursor() as cursor:
         cursor.execute('''
                         Select * from tp_utils;
+                        ''')
+        qs = dictfetchall(cursor)
+    return qs
+
+
+def stack_utils():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        Select * from stacks_utils;
                         ''')
         qs = dictfetchall(cursor)
     return qs
