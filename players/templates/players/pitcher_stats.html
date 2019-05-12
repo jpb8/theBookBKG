@@ -101,25 +101,37 @@
             paging: false
         } );
 
+        function opacityGetter(avg, std, low, val) {
+            var diff = val - avg
+            var opac = Math.abs((diff / std) / 3)
+            if ( opac > 1 ) {
+                opac = 1;
+            };
+            if ( diff > 0 && low ) {
+                var color = 'rgba(255,0,0,' + opac + ')'
+            } else {
+                var color = 'rgba(0,255,0,' + opac + ')'
+            }
+            return color;
+        };
+
         var cols = {{ cols|safe }};
 
         for (var i = 0; i < cols.length; i++) {
-            var val_arr = cols[i].var_arr;
-            var opac_arr = cols[i].opac_arr;
-            var col = cols[i].row;
+            var avg = cols[i].avg;
+            var std = cols[i].std;
+            var col = cols[i].numb;
+            var low = cols[i].low;
+            console.log(avg);
+            console.log(std);
             console.log(col);
+            console.log(low);
 
             $('table td:nth-child(' + col + ')').each(function() {
                 var val = $(this).text();
-
-                var opacity = 0;
-                for (var i = 0; i < val_arr.length; i++) {
-                    if (val < val_arr[i]) {
-                        opacity = opac_arr[i];
-                        break;
-                    }
-                }
-                $(this).css('backgroundColor', 'rgba(0,255,0,' + opacity + ')');
+                var color = opacityGetter(avg, std, low, val)
+                console.log(color)
+                $(this).css('backgroundColor', color);
             });
 
         }
