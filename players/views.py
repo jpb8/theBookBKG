@@ -87,9 +87,9 @@ def stacks_stats(request):
         r['avg'] = float(r['avg'])
         r['std'] = float(r['std'])
     cont_dict = {
-        'pitchers': stacks,
+        'stacks': stacks,
         'cols': json.dumps(stacks_utils)
     }
-    return render(request, "players/pitcher_stats.html", cont_dict)
+    return render(request, "players/stack_stats.html", cont_dict)
 
 
