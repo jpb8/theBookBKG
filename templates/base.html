@@ -59,6 +59,17 @@
                     <a href="{% url 'slate:lineup_check' %}" class="w-dropdown-link">Line Checker</a>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" style="font-size:2em">
+                    Player Stats
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a href="{% url 'players:pitchers' %}" class="w-dropdown-link">Pitchers</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'players:stacks' %}" class="w-dropdown-link">Stacks</a>
+                </div>
+            </li>
         </ul>
 
         {% if user.is_authenticated %}
