@@ -81,6 +81,11 @@ def pitching_stats(request):
 def stacks_stats(request):
     stacks = todays_stacks()
     stacks_utils = stack_utils()
+    for r in stacks_utils:
+        r['min'] = float(r['min'])
+        r['max'] = float(r['max'])
+        r['avg'] = float(r['avg'])
+        r['std'] = float(r['std'])
     cont_dict = {
         'pitchers': stacks,
         'cols': json.dumps(stacks_utils)
