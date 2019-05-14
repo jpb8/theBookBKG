@@ -210,8 +210,8 @@ class Batting(models.Model):
                                                            "ops": Decimal(r[9]),
                                                            "iso": Decimal(r[10]),
                                                            "woba": Decimal(r[18]) if hand == 2 else Decimal(r[15]),
-                                                           "hard_p": Decimal(r[20][:-1]) if hand == 2 and len(
-                                                               r[20]) != 0 else 0
+                                                           "hard_p": Decimal(r[20][:-1]) if (hand == 2 or hand == 3)
+                                                                                            and len(r[20]) != 0 else 0
                                                        })
                 print(player, new)
             except Player.DoesNotExist:
