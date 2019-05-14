@@ -129,7 +129,7 @@ def stack_utils():
 def pstats(team):
     with connection.cursor() as cursor:
         cursor.execute('''
-                        Select * from pstats where team = {};
+                        Select * from pstats where team={};
                         '''.format(team))
         qs = dictfetchall(cursor)
     return qs
