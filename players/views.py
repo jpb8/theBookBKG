@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 import json
 
 from .models import Player
@@ -7,6 +10,7 @@ from .tasks import orders, starting_pitchers, upload_stats, upload_salaries
 from teams.models import Team
 from slate.models import Stack, Punt
 from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats
+
 
 
 def index(request):
@@ -94,6 +98,14 @@ def stacks_stats(request):
 
 
 def team_stats(request):
+    team = request.POST.get("team")
+    if request.is_ajax:
+        cont_dict = {
+            'players': pstats(team)
+        }
+        html = render_to_string("players/pstats.html", cont_dict, request=request)
+        response_data = {"html": html}
+        return JsonResponse(response_data)
     cont_dict = {
         'players': pstats("KC")
     }

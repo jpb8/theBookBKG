@@ -36,7 +36,9 @@
         {% if stacks %}
         {% for p in stacks %}
             <tr>
-                <td><a href="#" data-toggle="modal" data-target="#bannerformmodal">{{ p.team }}</a></td>
+                <td>
+                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.team }}" data-target="#bannerformmodal">{{ p.team }}</a>
+                </td>
                 <td>{{ p.home }}</td>
                 <td>{{ p.COST }}</td>
                 <td>{{ p.slg }}</td>
@@ -91,8 +93,7 @@
     </table>
     <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          ...
+        <div class="modal-content" id="pstats-modal">
         </div>
       </div>
     </div>
@@ -138,6 +139,26 @@
             });
 
         }
+
+        $.('.team-stats').click(function() {
+            var team = $(this).text
+            var url = '/players/pstats';
+            var method = 'GET'
+            var data = {"team": team}
+            $.ajax({
+                url: url,
+                method: method,
+                data: data,
+                success: function(responseData){
+                    $( "#pstats-modal" ).html(data.html);
+                    $('#pstats').dataTable( {
+                        paging: false
+                    } );
+                }, error: function(error){
+                    console.log(error);
+                }
+            })
+        });
 
     } );
 </script>
