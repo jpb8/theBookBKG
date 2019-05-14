@@ -6,7 +6,7 @@ from .tasks import orders, starting_pitchers, upload_stats, upload_salaries
 
 from teams.models import Team
 from slate.models import Stack, Punt
-from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils
+from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats
 
 
 def index(request):
@@ -91,5 +91,12 @@ def stacks_stats(request):
         'cols': json.dumps(stacks_utils)
     }
     return render(request, "players/stack_stats.html", cont_dict)
+
+
+def team_stats(request):
+    cont_dict = {
+        'players': pstats("KC")
+    }
+    return render(request, "players/pstats.html", cont_dict)
 
 

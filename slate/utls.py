@@ -124,3 +124,12 @@ def stack_utils():
                         ''')
         qs = dictfetchall(cursor)
     return qs
+
+
+def pstats(team):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        Select * from pstats where team = {};
+                        '''.format(team))
+        qs = dictfetchall(cursor)
+    return qs

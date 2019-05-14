@@ -25,113 +25,48 @@
             </tr>
         </thead>
         <tbody>
-        {% if stacks %}
-        {% for p in stacks %}
+        {% if players %}
+        {% for p in players %}
             <tr>
                 <td><a href="#" data-toggle="modal" data-target="#bannerformmodal">{{ p.team }}</a></td>
-                <td>{{ p.home }}</td>
-                <td>{{ p.COST }}</td>
+                <td>{{ p.dk_name }}</td>
+                <td>{{ p.salary }}</td>
+                <td>{{ p.position }}</td>
+                <td>{{ p.second_position }}</td>
+                <td>{{ p.team }}</td>
+                <td>{{ p.order_pos }}</td>
+                <td>{{ p.avg }}</td>
                 <td>{{ p.slg }}</td>
                 <td>{{ p.ops }}</td>
                 <td>{{ p.iso }}</td>
                 <td>{{ p.woba }}</td>
                 <td>{{ p.hard_p }}</td>
-                <td>{{ p.wobaD }}</td>
-                <td>{{ p.isoD }}</td>
-                <td>{{ p.isoS }}</td>
-                <td>{{ p.wobaS }}</td>
-                <td>{{ p.hardS }}</td>
-                <td>{{ p.opp }}</td>
-                <td>{{ p.PKruns }}</td>
-                <td>{{ p.PKhr }}</td>
-                <td>{{ p.pitcher }}</td>
-                <td>{{ p.pHR }}</td>
-                <td>{{ p.whip }}</td>
-                <td>{{ p.Tfx }}</td>
-                <td>{{ p.BPhr }}</td>
-                <td>{{ p.BPwhip }}</td>
+                <td>{{ p.wobaDiff }}</td>
+                <td>{{ p.isoDiff }}</td>
             </tr>
         {% endfor %}
         {% endif %}
         </tbody>
         <tfoot>
             <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>POS</th>
+                <th>Pos2</th>
                 <th>Team</th>
-                <th>Home</th>
-                <th>Cost</th>
+                <th>Order</th>
+                <th>AVG</th>
                 <th>SLG</th>
                 <th>OPS</th>
                 <th>ISO</th>
                 <th>wOBA</th>
-                <th>Hard %</th>
+                <th>HARD%</th>
                 <th>wOBAd</th>
                 <th>ISOd</th>
-                <th>ISOs</th>
-                <th>wOBAs</th>
-                <th>HARDs</th>
-                <th>OPP</th>
-                <th>PKruns</th>
-                <th>PKhr</th>
-                <th>Pitcher</th>
-                <th>pHR/9</th>
-                <th>WHIP</th>
-                <th>Tfx</th>
-                <th>BPhr9</th>
-                <th>BPwhip</th>
             </tr>
         </tfoot>
     </table>
-    <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          ...
-        </div>
-      </div>
-    </div>
 </div>
 </body>
-
-<script type="text/javascript" charset="utf8">
-    $(document).ready(function() {
-        $('#example').dataTable( {
-            paging: false
-        } );
-
-        function opacityGetter(avg, std, low, val) {
-            var diff = val - avg
-            var opac = Math.abs((diff / std) / 2.5)
-            if ( opac > 1 ) {
-                opac = 1;
-            };
-            if ( diff > 0 && low ) {
-                var color = 'rgba(255,0,0,' + opac + ')'
-            } else if ( diff <= 0 && low ) {
-                var color = 'rgba(0,255,0,' + opac + ')'
-            } else if ( diff > 0 && !low ) {
-                var color = 'rgba(0,255,0,' + opac + ')'
-            } else {
-                var color = 'rgba(255,0,0,' + opac + ')'
-            }
-            return color;
-        };
-
-        var cols = {{ cols|safe }};
-
-        for (var i = 0; i < cols.length; i++) {
-            var avg = cols[i].avg;
-            var std = cols[i].std;
-            var col = cols[i].numb;
-            var low = cols[i].low;
-
-            $('table td:nth-child(' + col + ')').each(function() {
-                var val = $(this).text();
-                var color = opacityGetter(avg, std, low, val)
-                $(this).css('backgroundColor', color);
-            });
-
-        }
-
-    } );
-</script>
 {% endlocaltime %}
 {% endblock %}
