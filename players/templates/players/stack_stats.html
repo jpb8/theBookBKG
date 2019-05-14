@@ -141,7 +141,7 @@
         }
 
         $('.team-stats').click(function() {
-            var team = $(this).text
+            var team = $(this).attr('data-team')
             var url = '{% url 'players:pstats' %}';
             var method = 'POST'
             var data = {"team": team}
@@ -150,7 +150,7 @@
                 method: method,
                 data: data,
                 success: function(responseData){
-                    $( "#pstats-modal" ).html(data.html);
+                    $( "#pstats-modal" ).html(responseData.html);
                     $('#pstats').dataTable( {
                         paging: false
                     } );
