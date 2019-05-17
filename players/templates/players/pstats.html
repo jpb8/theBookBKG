@@ -1,60 +1,66 @@
-<table id="pstats" class="display compact order-column stripe row-border" style="width:100%">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Salary</th>
-            <th>POS</th>
-            <th>Pos2</th>
-            <th>Team</th>
-            <th>Order</th>
-            <th>AVG</th>
-            <th>SLG</th>
-            <th>OPS</th>
-            <th>ISO</th>
-            <th>wOBA</th>
-            <th>HARD%</th>
-            <th>wOBAd</th>
-            <th>ISOd</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% if players %}
-    {% for p in players %}
-        <tr>
-            <td>{{ p.dk_name }}</td>
-            <td>{{ p.salary }}</td>
-            <td>{{ p.position }}</td>
-            <td>{{ p.second_pos }}</td>
-            <td>{{ p.team }}</td>
-            <td>{{ p.order_pos }}</td>
-            <td>{{ p.avg }}</td>
-            <td>{{ p.slg }}</td>
-            <td>{{ p.ops }}</td>
-            <td>{{ p.iso }}</td>
-            <td>{{ p.woba }}</td>
-            <td>{{ p.hard_p }}</td>
-            <td>{{ p.wobaDiff }}</td>
-            <td>{{ p.isoDiff }}</td>
-        </tr>
-    {% endfor %}
-    {% endif %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <th>Name</th>
-            <th>Salary</th>
-            <th>POS</th>
-            <th>Pos2</th>
-            <th>Team</th>
-            <th>Order</th>
-            <th>AVG</th>
-            <th>SLG</th>
-            <th>OPS</th>
-            <th>ISO</th>
-            <th>wOBA</th>
-            <th>HARD%</th>
-            <th>wOBAd</th>
-            <th>ISOd</th>
-        </tr>
-    </tfoot>
-</table>
+<form action="{% url 'slate:stack_add' %}" method="POST">{% csrf_token %}
+    <table id="pstats" class="display compact order-column stripe row-border">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>POS</th>
+                <th>Pos2</th>
+                <th>Team</th>
+                <th>Order</th>
+                <th>AVG</th>
+                <th>SLG</th>
+                <th>OPS</th>
+                <th>ISO</th>
+                <th>wOBA</th>
+                <th>HARD%</th>
+                <th>wOBAd</th>
+                <th>ISOd</th>
+                <th>Add</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if players %}
+        {% for p in players %}
+            <tr>
+                <td>{{ p.dk_name }}</td>
+                <td>{{ p.salary }}</td>
+                <td>{{ p.position }}</td>
+                <td>{{ p.second_pos }}</td>
+                <td>{{ p.team }}</td>
+                <td>{{ p.order_pos }}</td>
+                <td>{{ p.avg }}</td>
+                <td>{{ p.slg }}</td>
+                <td>{{ p.ops }}</td>
+                <td>{{ p.iso }}</td>
+                <td>{{ p.woba }}</td>
+                <td>{{ p.hard_p }}</td>
+                <td>{{ p.wobaDiff }}</td>
+                <td>{{ p.isoDiff }}</td>
+                <td><input style="padding; 3px" type="checkbox" name="{{ p.pk }}" value="player"></td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>POS</th>
+                <th>Pos2</th>
+                <th>Team</th>
+                <th>Order</th>
+                <th>AVG</th>
+                <th>SLG</th>
+                <th>OPS</th>
+                <th>ISO</th>
+                <th>wOBA</th>
+                <th>HARD%</th>
+                <th>wOBAd</th>
+                <th>ISOd</th>
+            </tr>
+        </tfoot>
+    </table>
+    <button type="submit" class="btn btn-primary">Add Players</button>
+    <input type="submit" class="btn btn-primary" value="Add Punts" formaction="{% url 'slate:add_punts' %}">
+</form>
