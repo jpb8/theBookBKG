@@ -101,13 +101,14 @@ def team_stats(request):
     team = request.POST.get("team")
     if request.is_ajax:
         cont_dict = {
-            'players': pstats(team)
+            'players': pstats(team),
+            'current_team': team
         }
         html = render_to_string("players/pstats.html", cont_dict, request=request)
         response_data = {"html": html}
         return JsonResponse(response_data)
     cont_dict = {
-        'players': pstats("KC")
+        'players': pstats(team)
     }
     return render(request, "players/pstats.html", cont_dict)
 
