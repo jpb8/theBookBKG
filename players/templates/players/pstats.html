@@ -1,4 +1,7 @@
 <form action="{% url 'slate:stack_add' %}" method="POST">{% csrf_token %}
+    {% if current_team %}
+    <input type="hidden" name="team" value="{{ current_team }}"><br>
+    {% endif %}
     <table id="pstats" class="display compact order-column stripe row-border">
         <thead>
             <tr>
