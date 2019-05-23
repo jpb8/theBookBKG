@@ -9,7 +9,6 @@
                 <th>Salary</th>
                 <th>POS</th>
                 <th>Pos2</th>
-                <th>Team</th>
                 <th>Order</th>
                 <th>AVG</th>
                 <th>SLG</th>
@@ -19,6 +18,8 @@
                 <th>HARD%</th>
                 <th>wOBAd</th>
                 <th>ISOd</th>
+                <th>K%</th>
+                <th>PAs</th>
                 <th>Add</th>
             </tr>
         </thead>
@@ -30,7 +31,6 @@
                 <td>{{ p.salary }}</td>
                 <td>{{ p.position }}</td>
                 <td>{{ p.second_pos }}</td>
-                <td>{{ p.team }}</td>
                 <td>{{ p.order_pos }}</td>
                 <td>{{ p.avg }}</td>
                 <td>{{ p.slg }}</td>
@@ -40,6 +40,8 @@
                 <td>{{ p.hard_p }}</td>
                 <td>{{ p.wobaDiff }}</td>
                 <td>{{ p.isoDiff }}</td>
+                <td>{{ p.kp }}</td>
+                <td>{{ p.pa }}</td>
                 <td><input style="padding; 3px" type="checkbox" name="{{ p.id }}" value="player"></td>
             </tr>
         {% endfor %}
@@ -51,7 +53,6 @@
                 <th>Salary</th>
                 <th>POS</th>
                 <th>Pos2</th>
-                <th>Team</th>
                 <th>Order</th>
                 <th>AVG</th>
                 <th>SLG</th>
@@ -61,6 +62,8 @@
                 <th>HARD%</th>
                 <th>wOBAd</th>
                 <th>ISOd</th>
+                <th>K%</th>
+                <th>PAs</th>
                 <th>Add</th>
             </tr>
         </tfoot>

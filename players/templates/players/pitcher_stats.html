@@ -48,7 +48,9 @@
                 <td>{{ p.kk_p9 }}</td>
                 <td>{{ p.hr_p9 }}</td>
                 <td>{{ p.kp }}</td>
-                <td>{{ p.opp }}</td>
+                <td>
+                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.opp }}">{{ p.opp }}</a>
+                </td>
                 <td>{{ p.OPP_K }}</td>
                 <td>{{ p.OPP_ISO }}</td>
                 <td>{{ p.OPP_wOBA }}</td>
@@ -92,6 +94,12 @@
             </tr>
         </tfoot>
     </table>
+    <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" style="width:1500px">
+        <div class="modal-content" id="pstats-modal" style="width:1000px">
+        </div>
+      </div>
+    </div>
 </div>
 </body>
 
@@ -134,6 +142,27 @@
             });
 
         }
+
+        $('.team-stats').click(function() {
+            var team = $(this).attr('data-team')
+            var url = '{% url 'players:pstats' %}';
+            var method = 'POST'
+            var data = {"team": team}
+            $.ajax({
+                url: url,
+                method: method,
+                data: data,
+                success: function(responseData){
+                    $( "#pstats-modal" ).html(responseData.html);
+                    $('#pstats').dataTable( {
+                        paging: false
+                    } );
+                    $('#bannerformmodal').modal('show');
+                }, error: function(error){
+                    console.log(error);
+                }
+            })
+        });
 
     } );
 </script>
