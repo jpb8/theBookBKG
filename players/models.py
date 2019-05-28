@@ -210,7 +210,8 @@ class Batting(models.Model):
                                                            "slg": Decimal(r[8]),
                                                            "ops": Decimal(r[9]),
                                                            "iso": Decimal(r[10]),
-                                                           "woba": Decimal(r[18]) if hand == 2 else Decimal(r[15]),
+                                                           "woba": Decimal(
+                                                               r[18]) if hand == 2 or hand == 3 else Decimal(r[15]),
                                                            "hard_p": Decimal(r[20][:-1]) if (hand == 2 or hand == 3)
                                                                                             and len(r[20]) != 0 else 0
                                                        })
