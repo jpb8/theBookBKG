@@ -39,7 +39,7 @@ class Player(models.Model):
     fg_name = models.CharField(max_length=124)
     name_id = models.CharField(max_length=124)
     position = models.CharField(max_length=10)
-    second_pos = models.CharField(max_length=10)
+    second_pos = models.CharField(max_length=10, null=True)
     code_1 = models.IntegerField(default=0)
     code_2 = models.IntegerField(default=0)
     pts = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
@@ -50,6 +50,7 @@ class Player(models.Model):
     order_pos = models.IntegerField(default=0)
     throws = models.CharField(max_length=5, null=True)
     active = models.BooleanField(default=True)
+    bats = models.CharField(max_length=1, null=True)
 
     objects = PlayerManager()
 

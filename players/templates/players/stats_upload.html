@@ -29,6 +29,12 @@
         <input type="file" name="tl">
         <button type="submit" class="btn btn-secondary">Upload All</button>
     </form>
+    <form method="post" enctype="multipart/form-data" action="{% url 'players:player_bats' %}">
+        {% csrf_token %}
+        <label>Upload a file</label>
+        <input type="file" name="file">
+        <button type="submit" class="btn btn-secondary">Batting Hands</button>
+    </form>
 </div>
 </body>
 {% endlocaltime %}

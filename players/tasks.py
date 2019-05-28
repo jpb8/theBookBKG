@@ -144,3 +144,16 @@ def upload_batting_stats(csv_data, hand):
 @db_task()
 def orders():
     projected_orders()
+
+
+@db_task()
+def upload_batting_hands(player_data):
+    _csv = player_data.read().decode('UTF-8')
+    io_string = io.StringIO(_csv)
+    next(io_string)
+    csv_data = csv.reader(io_string, delimiter=',')
+    for r in csv_data:
+        try:
+            Player.objects.filter(fg_name=r[0]).update(bats=r[1])
+        except Player.DoesNotExist:
+            print("No player")

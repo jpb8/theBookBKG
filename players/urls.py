@@ -12,5 +12,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('pitching', views.pitching_stats, name='pitching'),
     path('stacks', views.stacks_stats, name='stacks'),
-    path('pstats', views.team_stats, name='pstats')
+    path('pstats', views.team_stats, name='pstats'),
+    path('player_bats', views.player_bats, name='player_bats')
 ]
