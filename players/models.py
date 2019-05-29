@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.db.models import Count
 from decimal import Decimal
 from teams.models import Team
@@ -104,6 +105,11 @@ class Player(models.Model):
             )
         Team.update_slate(teams)
         Team.add_opp(games)
+
+
+class PlayerAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'starting', 'order_pos', 'team')
+    list_filter = ('position', 'team', 'starting')
 
 
 class DkGame(models.Model):
