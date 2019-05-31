@@ -1,10 +1,4 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% block body_block %}
-{% load tz %}
-{% localtime on %}
-<body class="body">
-<div class="main" style="margin: 20px; font-size: 2em">
+<div class="main">
     <div style="float: left">
         <h1>Pitcher Combos</h1>
         {% if p_combo %}
@@ -30,6 +24,3 @@
         {% endif %}
     </div>
 </div>
-</body>
-{% endlocaltime %}
-{% endblock %}
