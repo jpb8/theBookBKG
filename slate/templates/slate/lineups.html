@@ -69,7 +69,7 @@
 <script type="text/javascript" charset="utf8">
     $(document).ready(function() {
 
-        $('.team-stats').click(function() {
+        $('.team-bd').click(function() {
             var team = $(this).attr('data-team')
             var url = '{% url 'slate:team_breakdown' %}';
             var method = 'POST'
