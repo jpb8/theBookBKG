@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<body class="body">
+<div class="main" style="margin: 20px; font-size: 2em">
+    <div style="float: left">
+        <h1>Pitcher Combos</h1>
+        {% if p_combo %}
+        {% for p in p_combo %}
+        <p>{{ p.p1 }} - {{ p.p2 }} {{ p.cnt }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div style="float: left">
+        <h1>Batters</h1>
+        {% if batters %}
+        {% for p in batters %}
+        <p>{{ p.p }} - {{ p.cnt }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div style="float: left">
+        <h1>Pitchers</h1>
+        {% if pitchers %}
+        {% for p in pitchers %}
+        <p>{{ p.p }} - {{ p.cnt }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+</body>
+{% endlocaltime %}
+{% endblock %}

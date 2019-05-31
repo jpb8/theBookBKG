@@ -133,3 +133,38 @@ def pstats(team):
                         '''.format(team))
         qs = dictfetchall(cursor)
     return qs
+
+
+def team_breakdown_data(team, user):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        with team_lines as (
+                            select * from slate_exportlineup where slate_exportlineup.combo like '%{}%' and user_id={}
+                        )
+                        select p1, p2, count(p1) as cnt from team_lines group by p1, p2 order by p1;
+                        '''.format(team, user))
+        p_combo = dictfetchall(cursor)
+        cursor.execute('''
+                        with t as (
+                            select * from slate_exportlineup where slate_exportlineup.combo like '%{}%' and user_id={}
+                        ),
+                        a as (
+                            select "fB" as p from t union all select "sB" as p from t 
+                            union all select "tB" as p from t union all select ss from t
+                            union all select of1 from t as p union all select of2 as p from t 
+                            union all select of3 as p from t union all select c as p from t
+                        )
+                        select count(p) as cnt, p from a group by p order by cnt desc;
+                        '''.format(team, user))
+        batters = dictfetchall(cursor)
+        cursor.execute('''
+                        with t as (
+                            select * from slate_exportlineup where slate_exportlineup.combo like '%{}%' and user_id={}
+                        ),
+                        a as (
+                            select "p1" as p from t union all select "p2" as p from t 
+                        )
+                        select count(p) as cnt, p from a group by p order by cnt desc;
+                        '''.format(team, user))
+        pitchers = dictfetchall(cursor)
+    return p_combo, batters, pitchers

@@ -59,6 +59,35 @@
     {% endif %}
 </div>
 {% include 'slate/my_lineups.html' %}
+<div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" id="pstats-modal">
+    </div>
+  </div>
+</div>
 </body>
+<script type="text/javascript" charset="utf8">
+    $(document).ready(function() {
+
+        $('.team-stats').click(function() {
+            var team = $(this).attr('data-team')
+            var url = '{% url 'slate:team_breakdown' %}';
+            var method = 'POST'
+            var data = {"team": team}
+            $.ajax({
+                url: url,
+                method: method,
+                data: data,
+                success: function(responseData){
+                    $( "#pstats-modal" ).html(responseData.html);
+                    $('#bannerformmodal').modal('show');
+                }, error: function(error){
+                    console.log(error);
+                }
+            })
+        });
+
+    } );
+</script>
 {% endlocaltime %}
 {% endblock %}

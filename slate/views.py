@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 from .models import StackPlayer, Stack, ExportLineup, Punt
 from .utls import *
 from .tasks import save_lus, refresh_bkg
@@ -181,3 +184,20 @@ def delete_bad_lines(request):
 def update_live_lineups(request):
     manual_live_lu_update()
     return redirect('players:stack_builder')
+
+
+@login_required(login_url="/")
+def team_breakdown(request):
+    if request.is_ajax:
+        user = request.user
+        team_id = request.POST.get("team")
+        p_combo, batters, pitchers = team_breakdown_data(team_id, user)
+        cont_dict = {
+            "p_combo": p_combo,
+            "batters": batters,
+            "pitchers": pitchers
+        }
+        html = render_to_string("slate/team_breakdown.html", cont_dict, request=request)
+        response_data = {"html": html}
+        return JsonResponse(response_data)
+    return redirect("slate:lineups")

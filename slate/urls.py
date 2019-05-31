@@ -16,4 +16,5 @@ urlpatterns = [
     path("remove_punts", views.remove_punts, name="remove_punts"),
     path("delete_bad_lines", views.delete_bad_lines, name="delete_bad_lines"),
     path("update_line_lineups", views.update_live_lineups, name="update_live_lineups"),
+    path("team_breakdown", views.team_breakdown, name="team_breakdown"),
 ]

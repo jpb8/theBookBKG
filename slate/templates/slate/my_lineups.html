@@ -10,7 +10,7 @@
     {% if saved_lus %}
     <h3>Total team count</h3>
     {% for l in saved_lus %}
-    <p>{{ l.tm }} => {{ l.cnt }}</p>
+    <p><a href="#" data-toggle="modal" class="team-bd"  data-team="{{ l.tm }}">{{ l.tm }} => {{ l.cnt }}</a></p>
     {% endfor %}
     {% endif %}
     {% if groups %}
