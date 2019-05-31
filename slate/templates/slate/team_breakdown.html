@@ -1,4 +1,4 @@
-<div class="main" style="margin: 20px; font-size: 1.5em">
+<div class="main" style="margin: 20px; font-size: 1.33em">
     <div style="float: left">
         <h1>Pitcher Combos</h1>
         {% if p_combo %}
@@ -6,19 +6,17 @@
         <p>{{ p.p1 }} - {{ p.p2 }} {{ p.cnt }}</p>
         {% endfor %}
         {% endif %}
-    </div>
-    <div style="float: left">
-        <h1>Batters</h1>
-        {% if batters %}
-        {% for p in batters %}
+        <h1>Totals</h1>
+        {% if pitchers %}
+        {% for p in pitchers %}
         <p>{{ p.p }} - {{ p.cnt }}</p>
         {% endfor %}
         {% endif %}
     </div>
-    <div style="float: left">
-        <h1>Pitchers</h1>
-        {% if pitchers %}
-        {% for p in pitchers %}
+    <div style="float: right">
+        <h1>Batters</h1>
+        {% if batters %}
+        {% for p in batters %}
         <p>{{ p.p }} - {{ p.cnt }}</p>
         {% endfor %}
         {% endif %}
