@@ -191,7 +191,7 @@ def team_breakdown(request):
     if request.is_ajax:
         user = request.user
         team_id = request.POST.get("team")
-        p_combo, batters, pitchers = team_breakdown_data(team_id, user)
+        p_combo, batters, pitchers = team_breakdown_data(team_id, user.pk)
         cont_dict = {
             "p_combo": p_combo,
             "batters": batters,
