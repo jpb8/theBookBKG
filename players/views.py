@@ -104,8 +104,8 @@ def team_stats(request):
         pr, pl = indy_pitcher(pitcher)
         cont_dict = {
             'players': pstats(team),
-            'pl': pstats(pl),
-            'pr': pstats(pr),
+            'pl': pl,
+            'pr': pr,
             'current_team': team
         }
         html = render_to_string("players/pstats.html", cont_dict, request=request)
