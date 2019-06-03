@@ -2,6 +2,62 @@
     {% if current_team %}
     <input type="hidden" name="team" value="{{ current_team }}"><br>
     {% endif %}
+    <table id="indy-pitcher" class="display compact order-column stripe row-border">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>VS</th>
+                <th>ERA</th>
+                <th>AVE</th>
+                <th>WHIP</th>
+                <th>BB/9</th>
+                <th>KK/9</th>
+                <th>HR/9</th>
+                <th>K%</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if pr %}
+            <tr>
+                <td>{{ pr.dk_name }}</td>
+                <td>R</td>
+                <td>{{ pr.era }}</td>
+                <td>{{ pr.ave }}</td>
+                <td>{{ pr.whip }}</td>
+                <td>{{ pr.bb_p9 }}</td>
+                <td>{{ pr.kk_p9 }}</td>
+                <td>{{ pr.hr_p9 }}</td>
+                <td>{{ pr.kp }}</td>
+            </tr>
+        {% endif %}
+        {% if pl %}
+            <tr>
+                <td>{{ pl.dk_name }}</td>
+                <td>L</td>
+                <td>{{ pl.era }}</td>
+                <td>{{ pl.ave }}</td>
+                <td>{{ pl.whip }}</td>
+                <td>{{ pl.bb_p9 }}</td>
+                <td>{{ pl.kk_p9 }}</td>
+                <td>{{ pl.hr_p9 }}</td>
+                <td>{{ pl.kp }}</td>
+            </tr>
+        {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>VS</th>
+                <th>ERA</th>
+                <th>AVE</th>
+                <th>WHIP</th>
+                <th>BB/9</th>
+                <th>KK/9</th>
+                <th>HR/9</th>
+                <th>K%</th>
+            </tr>
+        </tfoot>
+    </table>
     <table id="pstats" class="display compact order-column stripe row-border">
         <thead>
             <tr>
@@ -27,7 +83,7 @@
         {% if players %}
         {% for p in players %}
             <tr>
-                <td>{{ p.dk_name }}</td>
+                <td>{{ p.dk_name }} ({{ p.bats }}</td>
                 <td>{{ p.salary }}</td>
                 <td>{{ p.position }}</td>
                 <td>{{ p.second_pos }}</td>

@@ -49,7 +49,7 @@
                 <td>{{ p.hr_p9 }}</td>
                 <td>{{ p.kp }}</td>
                 <td>
-                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.opp }}">{{ p.opp }}</a>
+                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.opp }}" data-pitcher="{{ p.dk_name }}">{{ p.opp }}</a>
                 </td>
                 <td>{{ p.OPP_K }}</td>
                 <td>{{ p.OPP_ISO }}</td>
@@ -145,9 +145,10 @@
 
         $('.team-stats').click(function() {
             var team = $(this).attr('data-team')
+            var pitcher = $(this).attr('data-pitcher')
             var url = '{% url 'players:pstats' %}';
             var method = 'POST'
-            var data = {"team": team}
+            var data = {"team": team, "pitcher": pitcher}
             $.ajax({
                 url: url,
                 method: method,
@@ -155,6 +156,9 @@
                 success: function(responseData){
                     $( "#pstats-modal" ).html(responseData.html);
                     $('#pstats').dataTable( {
+                        paging: false
+                    } );
+                    $('#indy-pitcher').dataTable( {
                         paging: false
                     } );
                     $('#bannerformmodal').modal('show');

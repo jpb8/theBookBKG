@@ -198,6 +198,7 @@ class Batting(models.Model):
     iso = models.DecimalField(default=0.00, max_digits=10, decimal_places=3)
     woba = models.DecimalField(default=0.00, max_digits=10, decimal_places=3)
     hard_p = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    bbp = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def __str__(self):
         return "{} vs {}".format(self.player, self.vs)

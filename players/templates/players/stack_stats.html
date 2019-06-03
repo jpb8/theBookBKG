@@ -37,7 +37,7 @@
         {% for p in stacks %}
             <tr>
                 <td>
-                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.team }}">{{ p.team }}</a>
+                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.team }}" data-pitcher="{{ p.pitcher }}">{{ p.team }}</a>
                 </td>
                 <td>{{ p.home }}</td>
                 <td>{{ p.COST }}</td>
@@ -142,9 +142,10 @@
 
         $('.team-stats').click(function() {
             var team = $(this).attr('data-team')
+            var pitcher = $(this).attr('data-pitcher')
             var url = '{% url 'players:pstats' %}';
             var method = 'POST'
-            var data = {"team": team}
+            var data = {"team": team, "pitcher": pitcher}
             $.ajax({
                 url: url,
                 method: method,
@@ -152,6 +153,9 @@
                 success: function(responseData){
                     $( "#pstats-modal" ).html(responseData.html);
                     $('#pstats').dataTable( {
+                        paging: false
+                    } );
+                    $('#indy-pitcher').dataTable( {
                         paging: false
                     } );
                     $('#bannerformmodal').modal('show');

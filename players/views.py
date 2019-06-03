@@ -9,7 +9,7 @@ from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, upl
 
 from teams.models import Team
 from slate.models import Stack, Punt
-from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats
+from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher
 
 
 
@@ -99,9 +99,13 @@ def stacks_stats(request):
 
 def team_stats(request):
     team = request.POST.get("team")
+    pitcher = request.POST.get("pitcher")
     if request.is_ajax:
+        pr, pl = indy_pitcher(pitcher)
         cont_dict = {
             'players': pstats(team),
+            'pl': pstats(pl),
+            'pr': pstats(pr),
             'current_team': team
         }
         html = render_to_string("players/pstats.html", cont_dict, request=request)

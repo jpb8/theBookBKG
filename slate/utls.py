@@ -168,3 +168,16 @@ def team_breakdown_data(team, user):
                         '''.format(team, user))
         pitchers = dictfetchall(cursor)
     return p_combo, batters, pitchers
+
+
+def indy_pitcher(pitcher):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        select * from pl where dk_name = '{}';
+                        '''.format(pitcher))
+        pl_qs = dictfetchall(cursor)
+        cursor.execute('''
+                        select * from pr where dk_name = '{}';
+                        '''.format(pitcher))
+        pr_qs = dictfetchall(cursor)
+    return pr_qs, pl_qs
