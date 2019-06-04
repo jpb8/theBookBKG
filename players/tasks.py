@@ -155,9 +155,6 @@ def upload_batting_hands(player_data):
     for r in csv_data:
         try:
             Player.objects.filter(rotowire_name=r[0]).update(bats=r[1])
-            p = Player.objects.get(rotowire_name=r[0])
-            p.bats = r[1]
-            p.save()
-            print(p.rotowire_name, p.bats)
+            print(Player.objects.filter(rotowire_name=r[0]), r[0], r[1])
         except Player.DoesNotExist:
             print("No player")
