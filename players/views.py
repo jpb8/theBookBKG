@@ -106,8 +106,8 @@ def team_stats(request):
         print(pl)
         cont_dict = {
             'players': pstats(team),
-            'pl': pl,
-            'pr': pr,
+            'pl': pl[0],
+            'pr': pr[0],
             'current_team': team
         }
         print(cont_dict)
