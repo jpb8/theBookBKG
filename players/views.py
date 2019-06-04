@@ -102,15 +102,12 @@ def team_stats(request):
     pitcher = request.POST.get("pitcher")
     if request.is_ajax:
         pr, pl = indy_pitcher(pitcher)
-        print(pr)
-        print(pl)
         cont_dict = {
             'players': pstats(team),
             'pl': pl[0],
             'pr': pr[0],
             'current_team': team
         }
-        print(cont_dict)
         html = render_to_string("players/pstats.html", cont_dict, request=request)
         response_data = {"html": html}
         return JsonResponse(response_data)
