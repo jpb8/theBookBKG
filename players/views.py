@@ -128,4 +128,4 @@ def player_bats(request):
 
 def pull_projections(request):
     update_projections()
-    redirect("players:stack_builder")
+    return redirect("players:stack_builder")
