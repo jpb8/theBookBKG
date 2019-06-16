@@ -16,7 +16,7 @@
     {% if groups %}
     <h3>Total Combo Count</h3>
     {% for g in groups %}
-    <p>{{ g.combo }} => {{ g.lu_count }}</p>
+    <p><a href="#" data-toggle="modal" class="team-bd"  data-team="{{ g.combo }}">{{ g.combo }} => {{ g.lu_count }}</a></p>
     {% endfor %}
     {% endif %}
     <form action="{% url 'slate:delete_all' %}" method="POST">{% csrf_token %}

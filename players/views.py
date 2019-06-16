@@ -70,10 +70,10 @@ def pitching_stats(request):
     pitchers = todays_pitchers()
     tp_data = tp_utils()
     for r in tp_data:
-        r['min'] = float(r['min'])
-        r['max'] = float(r['max'])
-        r['avg'] = float(r['avg'])
-        r['std'] = float(r['std'])
+        r['min'] = float(r['min']) if r['min'] is not None else 0
+        r['max'] = float(r['max']) if r['max'] is not None else 0
+        r['avg'] = float(r['avg']) if r['avg'] is not None else 0
+        r['std'] = float(r['std']) if r['std'] is not None else 0
     cont_dict = {
         'pitchers': pitchers,
         'cols': json.dumps(tp_data)
@@ -85,10 +85,10 @@ def stacks_stats(request):
     stacks = todays_stacks()
     stacks_utils = stack_utils()
     for r in stacks_utils:
-        r['min'] = float(r['min'])
-        r['max'] = float(r['max'])
-        r['avg'] = float(r['avg'])
-        r['std'] = float(r['std'])
+        r['min'] = float(r['min']) if r['min'] is not None else 0
+        r['max'] = float(r['max']) if r['max'] is not None else 0
+        r['avg'] = float(r['avg']) if r['avg'] is not None else 0
+        r['std'] = float(r['std']) if r['std'] is not None else 0
     cont_dict = {
         'stacks': stacks,
         'cols': json.dumps(stacks_utils)
