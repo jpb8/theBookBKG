@@ -162,6 +162,7 @@ def upload_batting_hands(player_data):
             print("No player")
 
 
+@db_task()
 def update_projections():
     url = "https://rotogrinders.com/projected-stats/mlb-hitter.csv?site=draftkings"
     data = requests.get(url)
@@ -169,3 +170,4 @@ def update_projections():
     csv_data = csv.reader(io_string, delimiter=',')
     for p in csv_data:
         Player.objects.filter(rotowire_name=str(p[0])).update(pts=Decimal(p[7]))
+        print(p[0], p[7])
