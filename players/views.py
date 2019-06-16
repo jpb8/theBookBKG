@@ -131,12 +131,12 @@ def pull_projections(request):
     return redirect("players:stack_builder")
 
 
-def stacks(request):
+def stacks_call(request):
     user = request.user
-    stacks = Stack.objects.filter(user=user)
+    stack = Stack.objects.filter(user=user)
     punts = Punt.objects.filter(user=user)
     cont_dict = {
-        "stacks": stacks,
+        "stacks": stack,
         "punts": punts,
     }
     if request.is_ajax:
