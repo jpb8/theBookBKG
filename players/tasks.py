@@ -165,8 +165,7 @@ def upload_batting_hands(player_data):
 def update_projections():
     url = "https://rotogrinders.com/projected-stats/mlb-hitter.csv?site=draftkings"
     data = requests.get(url)
-    _csv = data.read().decode('UTF-8')
-    io_string = io.StringIO(_csv)
+    io_string = io.StringIO(data.text)
     csv_data = csv.reader(io_string, delimiter=',')
     for p in csv_data:
         Player.objects.filter(rotowire_name=str(p[0])).update(pts=Decimal(p[7]))
