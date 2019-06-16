@@ -5,9 +5,11 @@ import requests
 from django.conf import settings
 from django.db.models import Q
 from jsonodds.odds import Odds
+
 import json
 from datetime import datetime as dt
 import pytz
+from decimal import Decimal
 
 from teams.models import Team, DefaultOrders
 import csv
@@ -105,7 +107,7 @@ def starting_pitchers():
         date_time = dt.strptime(e["MatchTime"], "%Y-%m-%dT%H:%M:%S")
         utc_dt = date_time.replace(tzinfo=pytz.utc)
         if start == utc_dt:
-            print("{} and {} starting for {} and {} @ {}".format(home, away, e["HomeTeam"],e["AwayTeam"], start))
+            print("{} and {} starting for {} and {} @ {}".format(home, away, e["HomeTeam"], e["AwayTeam"], start))
             Player.objects.filter(Q(dk_name=home) | Q(dk_name=away)).update(starting=True)
         else:
             print("Game Not on slate")
@@ -155,10 +157,16 @@ def upload_batting_hands(player_data):
     for r in csv_data:
         try:
             Player.objects.filter(rotowire_name=str(r[0])).update(bats=str(r[1]))
-            Player.objects.filter(dk_name=str(r[0])).update(bats=str(r[1]))
-            Player.objects.filter(fg_name=str(r[0])).update(bats=str(r[1]))
             print(Player.objects.filter(rotowire_name=str(r[0])), r[0], r[1])
-            print(Player.objects.filter(dk_name=str(r[0])), r[0], r[1])
-            print(Player.objects.filter(fg_name=str(r[0])), r[0], r[1])
         except Player.DoesNotExist:
             print("No player")
+
+
+def update_projections():
+    url = "https://rotogrinders.com/projected-stats/mlb-hitter.csv?site=draftkings"
+    data = requests.get(url)
+    _csv = data.read().decode('UTF-8')
+    io_string = io.StringIO(_csv)
+    csv_data = csv.reader(io_string, delimiter=',')
+    for p in csv_data:
+        Player.objects.filter(rotowire_name=str(p[0])).update(pts=Decimal(p[7]))

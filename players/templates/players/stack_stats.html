@@ -5,6 +5,7 @@
 {% localtime on %}
 <body class="body">
 <div class="main" style="margin: 20px">
+    <a href="#" data-toggle="modal" id="stack-modal-getter">Get Stacks</a>
     <table id="example" class="display compact order-column stripe row-border">
         <thead>
             <tr>
@@ -97,6 +98,12 @@
         </div>
       </div>
     </div>
+    <div class="modal fade bd-example-modal-lg" id="stack-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="stacks-modal">
+        </div>
+      </div>
+    </div>
 </div>
 </body>
 
@@ -124,7 +131,7 @@
             return color;
         };
 
-        var cols = {{ cols|safe }};
+        var cols = {{ cols|safe }}
 
         for (var i = 0; i < cols.length; i++) {
             var avg = cols[i].avg;
@@ -141,11 +148,11 @@
         }
 
         $('.team-stats').click(function() {
-            var team = $(this).attr('data-team')
-            var pitcher = $(this).attr('data-pitcher')
-            var url = '{% url 'players:pstats' %}';
-            var method = 'POST'
-            var data = {"team": team, "pitcher": pitcher}
+            var team = $(this).attr('data-team');
+            var pitcher = $(this).attr('data-pitcher');
+            var url = "{% url 'players:pstats' %}";
+            var method = 'POST';
+            var data = {"team": team, "pitcher": pitcher};
             $.ajax({
                 url: url,
                 method: method,
