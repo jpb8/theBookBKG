@@ -129,3 +129,18 @@ def player_bats(request):
 def pull_projections(request):
     update_projections()
     return redirect("players:stack_builder")
+
+
+def stacks(request):
+    user = request.user
+    stacks = Stack.objects.filter(user=user)
+    punts = Punt.objects.filter(user=user)
+    cont_dict = {
+        "stacks": stacks,
+        "punts": punts,
+    }
+    if request.is_ajax:
+        html = render_to_string("players/stack_players.html", cont_dict, request=request)
+        response_data = {"html": html}
+        return JsonResponse(response_data)
+    return render(request, "players/stack_players.html", cont_dict)

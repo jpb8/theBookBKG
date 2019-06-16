@@ -98,7 +98,7 @@
         </div>
       </div>
     </div>
-    <div class="modal fade bd-example-modal-lg" id="stack-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="stack-modal-banner" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content" id="stacks-modal">
         </div>
@@ -166,6 +166,21 @@
                         paging: false
                     } );
                     $('#bannerformmodal').modal('show');
+                }, error: function(error){
+                    console.log(error);
+                }
+            })
+        });
+
+        $('#stack-modal-getter').click(function() {
+            var url = "{% url 'players:stacks' %}";
+            var method = 'POST';
+            $.ajax({
+                url: url,
+                method: method,
+                success: function(responseData){
+                    $( "#stacks-modal" ).html(responseData.html);
+                    $('#stack-modal-banner').modal('show');
                 }, error: function(error){
                     console.log(error);
                 }
