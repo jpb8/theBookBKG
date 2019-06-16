@@ -142,5 +142,6 @@ def stacks(request):
     if request.is_ajax:
         html = render_to_string("players/stack_players.html", cont_dict, request=request)
         response_data = {"html": html}
+        print(response_data)
         return JsonResponse(response_data)
     return render(request, "players/stack_players.html", cont_dict)

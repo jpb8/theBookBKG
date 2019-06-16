@@ -8,122 +8,126 @@
     <a href="#" data-toggle="modal" id="stack-modal-getter">Get Stacks</a>
     <table id="example" class="display compact order-column stripe row-border">
         <thead>
-            <tr>
-                <th>Team</th>
-                <th>Home</th>
-                <th>Cost</th>
-                <th>SLG</th>
-                <th>OPS</th>
-                <th>ISO</th>
-                <th>wOBA</th>
-                <th>Hard %</th>
-                <th>wOBAd</th>
-                <th>ISOd</th>
-                <th>ISOs</th>
-                <th>wOBAs</th>
-                <th>HARDs</th>
-                <th>OPP</th>
-                <th>PKruns</th>
-                <th>PKhr</th>
-                <th>Pitcher</th>
-                <th>pHR/9</th>
-                <th>WHIP</th>
-                <th>Tfx</th>
-                <th>BPhr9</th>
-                <th>BPwhip</th>
-            </tr>
+        <tr>
+            <th>Team</th>
+            <th>Home</th>
+            <th>Cost</th>
+            <th>SLG</th>
+            <th>OPS</th>
+            <th>ISO</th>
+            <th>wOBA</th>
+            <th>Hard %</th>
+            <th>wOBAd</th>
+            <th>ISOd</th>
+            <th>ISOs</th>
+            <th>wOBAs</th>
+            <th>HARDs</th>
+            <th>OPP</th>
+            <th>PKruns</th>
+            <th>PKhr</th>
+            <th>Pitcher</th>
+            <th>pHR/9</th>
+            <th>WHIP</th>
+            <th>Tfx</th>
+            <th>BPhr9</th>
+            <th>BPwhip</th>
+        </tr>
         </thead>
         <tbody>
         {% if stacks %}
         {% for p in stacks %}
-            <tr>
-                <td>
-                    <a href="#" data-toggle="modal" class="team-stats"  data-team="{{ p.team }}" data-pitcher="{{ p.pitcher }}">{{ p.team }}</a>
-                </td>
-                <td>{{ p.home }}</td>
-                <td>{{ p.COST }}</td>
-                <td>{{ p.slg }}</td>
-                <td>{{ p.ops }}</td>
-                <td>{{ p.iso }}</td>
-                <td>{{ p.woba }}</td>
-                <td>{{ p.hard_p }}</td>
-                <td>{{ p.wobaD }}</td>
-                <td>{{ p.isoD }}</td>
-                <td>{{ p.isoS }}</td>
-                <td>{{ p.wobaS }}</td>
-                <td>{{ p.hardS }}</td>
-                <td>{{ p.opp }}</td>
-                <td>{{ p.PKruns }}</td>
-                <td>{{ p.PKhr }}</td>
-                <td>{{ p.pitcher }}</td>
-                <td>{{ p.pHR }}</td>
-                <td>{{ p.whip }}</td>
-                <td>{{ p.Tfx }}</td>
-                <td>{{ p.BPhr }}</td>
-                <td>{{ p.BPwhip }}</td>
-            </tr>
+        <tr>
+            <td>
+                <a href="#" data-toggle="modal" class="team-stats" data-team="{{ p.team }}"
+                   data-pitcher="{{ p.pitcher }}">{{ p.team }}</a>
+            </td>
+            <td>{{ p.home }}</td>
+            <td>{{ p.COST }}</td>
+            <td>{{ p.slg }}</td>
+            <td>{{ p.ops }}</td>
+            <td>{{ p.iso }}</td>
+            <td>{{ p.woba }}</td>
+            <td>{{ p.hard_p }}</td>
+            <td>{{ p.wobaD }}</td>
+            <td>{{ p.isoD }}</td>
+            <td>{{ p.isoS }}</td>
+            <td>{{ p.wobaS }}</td>
+            <td>{{ p.hardS }}</td>
+            <td>{{ p.opp }}</td>
+            <td>{{ p.PKruns }}</td>
+            <td>{{ p.PKhr }}</td>
+            <td>{{ p.pitcher }}</td>
+            <td>{{ p.pHR }}</td>
+            <td>{{ p.whip }}</td>
+            <td>{{ p.Tfx }}</td>
+            <td>{{ p.BPhr }}</td>
+            <td>{{ p.BPwhip }}</td>
+        </tr>
         {% endfor %}
         {% endif %}
         </tbody>
         <tfoot>
-            <tr>
-                <th>Team</th>
-                <th>Home</th>
-                <th>Cost</th>
-                <th>SLG</th>
-                <th>OPS</th>
-                <th>ISO</th>
-                <th>wOBA</th>
-                <th>Hard %</th>
-                <th>wOBAd</th>
-                <th>ISOd</th>
-                <th>ISOs</th>
-                <th>wOBAs</th>
-                <th>HARDs</th>
-                <th>OPP</th>
-                <th>PKruns</th>
-                <th>PKhr</th>
-                <th>Pitcher</th>
-                <th>pHR/9</th>
-                <th>WHIP</th>
-                <th>Tfx</th>
-                <th>BPhr9</th>
-                <th>BPwhip</th>
-            </tr>
+        <tr>
+            <th>Team</th>
+            <th>Home</th>
+            <th>Cost</th>
+            <th>SLG</th>
+            <th>OPS</th>
+            <th>ISO</th>
+            <th>wOBA</th>
+            <th>Hard %</th>
+            <th>wOBAd</th>
+            <th>ISOd</th>
+            <th>ISOs</th>
+            <th>wOBAs</th>
+            <th>HARDs</th>
+            <th>OPP</th>
+            <th>PKruns</th>
+            <th>PKhr</th>
+            <th>Pitcher</th>
+            <th>pHR/9</th>
+            <th>WHIP</th>
+            <th>Tfx</th>
+            <th>BPhr9</th>
+            <th>BPwhip</th>
+        </tr>
         </tfoot>
     </table>
-    <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" style="width:1500px">
-        <div class="modal-content" id="pstats-modal" style="width:1000px">
+    <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="width:1500px">
+            <div class="modal-content" id="pstats-modal" style="width:1000px">
+            </div>
         </div>
-      </div>
     </div>
-    <div class="modal fade bd-example-modal-lg" id="stack-modal-banner" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="stacks-modal">
+    <div class="modal fade bd-example-modal-lg" id="stack-modal-banner" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="stacks-modal">
+            </div>
         </div>
-      </div>
     </div>
 </div>
 </body>
 
 <script type="text/javascript" charset="utf8">
-    $(document).ready(function() {
-        $('#example').dataTable( {
+    $(document).ready(function () {
+        $('#example').dataTable({
             paging: false
-        } );
+        });
 
         function opacityGetter(avg, std, low, val) {
             var diff = val - avg
             var opac = Math.abs((diff / std) / 2.5)
-            if ( opac > 1 ) {
+            if (opac > 1) {
                 opac = 1;
-            };
-            if ( diff > 0 && low ) {
+            }
+            ;
+            if (diff > 0 && low) {
                 var color = 'rgba(255,0,0,' + opac + ')'
-            } else if ( diff <= 0 && low ) {
+            } else if (diff <= 0 && low) {
                 var color = 'rgba(0,255,0,' + opac + ')'
-            } else if ( diff > 0 && !low ) {
+            } else if (diff > 0 && !low) {
                 var color = 'rgba(0,255,0,' + opac + ')'
             } else {
                 var color = 'rgba(255,0,0,' + opac + ')'
@@ -131,7 +135,7 @@
             return color;
         };
 
-        var cols = {{ cols|safe }}
+        var cols = {{ cols | safe }}
 
         for (var i = 0; i < cols.length; i++) {
             var avg = cols[i].avg;
@@ -139,7 +143,7 @@
             var col = cols[i].numb;
             var low = cols[i].low;
 
-            $('table td:nth-child(' + col + ')').each(function() {
+            $('table td:nth-child(' + col + ')').each(function () {
                 var val = $(this).text();
                 var color = opacityGetter(avg, std, low, val)
                 $(this).css('backgroundColor', color);
@@ -147,7 +151,7 @@
 
         }
 
-        $('.team-stats').click(function() {
+        $('.team-stats').click(function () {
             var team = $(this).attr('data-team');
             var pitcher = $(this).attr('data-pitcher');
             var url = "{% url 'players:pstats' %}";
@@ -157,37 +161,38 @@
                 url: url,
                 method: method,
                 data: data,
-                success: function(responseData){
-                    $( "#pstats-modal" ).html(responseData.html);
-                    $('#pstats').dataTable( {
+                success: function (responseData) {
+                    $("#pstats-modal").html(responseData.html);
+                    $('#pstats').dataTable({
                         paging: false
-                    } );
-                    $('#indy-pitcher').dataTable( {
+                    });
+                    $('#indy-pitcher').dataTable({
                         paging: false
-                    } );
+                    });
                     $('#bannerformmodal').modal('show');
-                }, error: function(error){
+                }, error: function (error) {
                     console.log(error);
                 }
             })
         });
 
-        $('#stack-modal-getter').click(function() {
+        $('#stack-modal-getter').click(function () {
             var url = "{% url 'players:stacks' %}";
             var method = 'POST';
             $.ajax({
                 url: url,
                 method: method,
-                success: function(responseData){
-                    $( "#stacks-modal" ).html(responseData.html);
+                success: function (responseData) {
+                    $("#stacks-modal").html(responseData.html);
+                    console.log(responseData.html);
                     $('#stack-modal-banner').modal('show');
-                }, error: function(error){
+                }, error: function (error) {
                     console.log(error);
                 }
             })
         });
 
-    } );
+    });
 </script>
 {% endlocaltime %}
 {% endblock %}
