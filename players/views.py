@@ -5,12 +5,11 @@ from django.template.loader import render_to_string
 import json
 
 from .models import Player
-from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands
+from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands, update_projections
 
 from teams.models import Team
 from slate.models import Stack, Punt
 from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher
-
 
 
 def index(request):
@@ -127,3 +126,6 @@ def player_bats(request):
     return render(request, "players/stats_upload.html", cont_dict)
 
 
+def pull_projections(request):
+    update_projections()
+    redirect("slate:stack_builder")
