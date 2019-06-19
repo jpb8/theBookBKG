@@ -186,7 +186,6 @@
                 data: data,
                 success: function (responseData) {
                     $("#stacks-modal").html(responseData.html);
-                    console.log(responseData.html);
                     $('#stack-modal-banner').modal('show');
                 }, error: function (error) {
                     console.log(error);

@@ -125,7 +125,7 @@
         </tfoot>
     </table>
     <button type="submit" class="btn btn-primary" id="submit-stack">Add Players</button>
-    <input type="submit" class="btn btn-primary" value="Add Punts" formaction="{% url 'slate:add_punts' %}">
+    <input type="submit" class="btn btn-primary" value="Add Punts" id="punt-submit">
 </form>
 <script type="text/javascript" charset="utf8">
     $(document).ready(function () {
@@ -141,12 +141,30 @@
                 data: data,
                 success: function (responseData) {
                     $("#stacks-modal").html(responseData.html);
-                    console.log(responseData.html);
                     $('#stack-modal-banner').modal('show');
                 }, error: function (error) {
                     console.log(error);
                 }
             })
         });
+
+        $('#punt-submit').click(function () {
+            var url = "{% url 'slate:add_punts' %}";
+            var method = 'POST';
+            var data = $('#stack-builder').serializeArray();
+            console.log(data);
+            $.ajax({
+                url: url,
+                method: method,
+                data: data,
+                success: function (responseData) {
+                    $("#stacks-modal").html(responseData.html);
+                    $('#stack-modal-banner').modal('show');
+                }, error: function (error) {
+                    console.log(error);
+                }
+            })
+        });
+
     });
 </script>

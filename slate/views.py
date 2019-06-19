@@ -20,6 +20,17 @@ pos_swap = {
     "SS": "ss",
 }
 
+def get_stack_html(r):
+    user = r.user
+    stack = Stack.objects.filter(user=user)
+    punts = Punt.objects.filter(user=user)
+    cont_dict = {
+        "stacks": stack,
+        "punts": punts,
+    }
+    html = render_to_string("players/stack_players.html", cont_dict, request=r)
+    return {"html": html}
+
 
 # Create your views here.
 
@@ -153,6 +164,9 @@ def add_punts(request):
                     sp.save()
                 else:
                     Punt.objects.filter(user=user, dkid=p.dkid).delete()
+        if request.is_ajax():
+            response_data = get_stack_html(request)
+            return JsonResponse(response_data)
     return redirect('players:stack_builder')
 
 
@@ -162,6 +176,9 @@ def remove_punts(request):
         for p_id, key in request.POST.items():
             if key == "player":
                 Punt.objects.get(pk=int(p_id)).delete()
+        if request.is_ajax():
+            response_data = get_stack_html(request)
+            return JsonResponse(response_data)
     return redirect('players:stack_builder')
 
 
