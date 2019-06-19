@@ -38,6 +38,18 @@ def stack_add(request):
                     sp = StackPlayer(stack=stack, player=p, order_spot=i)
                     sp.save()
                     i += 1
+        if request.is_ajax():
+            user = request.user
+            stack = Stack.objects.filter(user=user)
+            punts = Punt.objects.filter(user=user)
+            cont_dict = {
+                "stacks": stack,
+                "punts": punts,
+            }
+            html = render_to_string("players/stack_players.html", cont_dict, request=request)
+            response_data = {"html": html}
+            print(response_data)
+            return JsonResponse(response_data)
     return redirect('players:stack_builder')
 
 

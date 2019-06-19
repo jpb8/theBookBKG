@@ -1,4 +1,4 @@
-<form action="{% url 'slate:stack_add' %}" method="POST">{% csrf_token %}
+<form action="{% url 'slate:stack_add' %}" method="POST" id="stack-builder">{% csrf_token %}
     {% if current_team %}
     <input type="hidden" name="team" value="{{ current_team }}"><br>
     {% endif %}
@@ -124,6 +124,6 @@
             </tr>
         </tfoot>
     </table>
-    <button type="submit" class="btn btn-primary">Add Players</button>
+    <button type="submit" class="btn btn-primary" id="submit-stack">Add Players</button>
     <input type="submit" class="btn btn-primary" value="Add Punts" formaction="{% url 'slate:add_punts' %}">
 </form>
