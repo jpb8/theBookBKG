@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^account/', include('account.urls', namespace='account')),
     url(r'^betslip/', include('betslip.urls', namespace='betslip')),
     path('api/', include('api.urls')),
-    path("players/", include('players.urls')),
-    path("slate/", include('slate.urls')),
+    path("players/", include('players.urls', namespace='players')),
+    path("slate/", include('slate.urls', namespace='slate')),
 ]
 
 if settings.DEBUG:
