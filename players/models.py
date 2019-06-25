@@ -30,7 +30,7 @@ class PlayerManager(models.Manager):
     def all_starters(self):
         slate_teams = Team.objects.filter(on_slate=True)
         slate = [x.dk_name for x in slate_teams]
-        return self.get_queryset().filter(position="SP", starting=True, team__in=slate).order_by("-salary")
+        return self.get_queryset().filter(starting=True, team__in=slate).order_by("-salary")
 
 
 class Player(models.Model):
