@@ -50,16 +50,7 @@ def stack_add(request):
                     sp.save()
                     i += 1
         if request.is_ajax():
-            user = request.user
-            stack = Stack.objects.filter(user=user)
-            punts = Punt.objects.filter(user=user)
-            cont_dict = {
-                "stacks": stack,
-                "punts": punts,
-            }
-            html = render_to_string("players/stack_players.html", cont_dict, request=request)
-            response_data = {"html": html}
-            print(response_data)
+            response_data = get_stack_html(request)
             return JsonResponse(response_data)
     return redirect('players:stack_builder')
 
@@ -79,6 +70,9 @@ def remove(request):
                 for i, p in enumerate(s.players.all(), start=1):
                     p.order_spot = i
                     p.save()
+        if request.is_ajax():
+            response_data = get_stack_html(request)
+            return JsonResponse(response_data)
     return redirect('players:stack_builder')
 
 
