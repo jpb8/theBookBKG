@@ -71,8 +71,9 @@
                     <a href="{% url 'players:stacks' %}" class="w-dropdown-link">Stacks</a>
                 </div>
             </li>
+            {% endif %}
         </ul>
-        {% endif %}
+
 
         {% if user.is_authenticated %}
         <div class="dropdown dropleft">
