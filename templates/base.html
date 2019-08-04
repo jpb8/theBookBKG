@@ -42,6 +42,7 @@
                 </div>
             </li>
             {% endif %}
+            {% if request.user.is_staff %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false" style="font-size:2em">
@@ -71,6 +72,7 @@
                 </div>
             </li>
         </ul>
+        {% endif %]
 
         {% if user.is_authenticated %}
         <div class="dropdown dropleft">

@@ -20,6 +20,7 @@ pos_swap = {
     "SS": "ss",
 }
 
+
 def get_stack_html(r):
     user = r.user
     stack = Stack.objects.filter(user=user)
@@ -86,8 +87,8 @@ def lineups(request):
         p1 = Player.objects.get(id=p1_id)
         p2 = Player.objects.get(id=p2_id)
         salary = p1.salary + p2.salary
-        lines = all_lines(50000 - salary, punt=False)
-        pplay = all_lines(50000 - salary, punt=True)
+        lines = stack_add(all_lines(50000 - salary, punt=False))
+        pplay = stack_add(all_lines(50000 - salary, punt=True))
     user = request.user
     pitchers = Player.objects.all_starters()
     groups = ExportLineup.objects.group(user)
