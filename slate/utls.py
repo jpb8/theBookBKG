@@ -32,8 +32,7 @@ def all_lines(cost, punt):
                         group by l."TMCODE";
                         '''.format(cost, inn))
         qs = dictfetchall(cursor)
-        lines = append_stacks(qs)
-    return lines
+    return qs
 
 
 def fetch_top_lines(cost, team_code, count, punt):
