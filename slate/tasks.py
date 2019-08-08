@@ -68,42 +68,38 @@ def save_lus(post, user):
         if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count, punt)
-            fetched_line_count = lines.count()
             added = 0
-            loops = 0
-            print(added, count, loops, fetched_line_count)
-            while added <= count or loops <= fetched_line_count:
-                print(added, count, loops, fetched_line_count)
-                for lu in lines:
-                    lu_dict = build_lineup_dict(lu, p1, p2)
-                    uploaded = ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], combo=lu_dict["TMCODE"])
-                    line_is_unique = validate_uniqueness(lu_dict, uploaded, unique)
-                    if int(lu_dict["salary"]) + salary > 49000 and check_lineup(lu_dict) and line_is_unique:
-                        new_line = ExportLineup(
-                            user=user,
-                            p1=lu_dict["p1"],
-                            p2=lu_dict["p2"],
-                            c=lu_dict["C"],
-                            fB=lu_dict["1B"],
-                            sB=lu_dict["2B"],
-                            tB=lu_dict["3B"],
-                            ss=lu_dict["SS"],
-                            of1=lu_dict["OF1"],
-                            of2=lu_dict["OF2"],
-                            of3=lu_dict["OF3"],
-                            salary=int(lu_dict["salary"]) + salary,
-                            team1=lu["TM"],
-                            team2=lu["TM2"],
-                            combo=lu_dict["TMCODE"],
-                            lu_type=lu_dict["source"],
-                            dedupe=lu_dict["dedupe"],
-                        )
-                        new_line.save()
-                        added += 1
-                        print("saved")
-                    else:
-                        print("Salary To Low")
-                    loops += 1
+            for lu in lines:
+                lu_dict = build_lineup_dict(lu, p1, p2)
+                uploaded = ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], combo=lu_dict["TMCODE"])
+                line_is_unique = validate_uniqueness(lu_dict, uploaded, unique)
+                if int(lu_dict["salary"]) + salary > 49000 and check_lineup(lu_dict) and line_is_unique:
+                    new_line = ExportLineup(
+                        user=user,
+                        p1=lu_dict["p1"],
+                        p2=lu_dict["p2"],
+                        c=lu_dict["C"],
+                        fB=lu_dict["1B"],
+                        sB=lu_dict["2B"],
+                        tB=lu_dict["3B"],
+                        ss=lu_dict["SS"],
+                        of1=lu_dict["OF1"],
+                        of2=lu_dict["OF2"],
+                        of3=lu_dict["OF3"],
+                        salary=int(lu_dict["salary"]) + salary,
+                        team1=lu["TM"],
+                        team2=lu["TM2"],
+                        combo=lu_dict["TMCODE"],
+                        lu_type=lu_dict["source"],
+                        dedupe=lu_dict["dedupe"],
+                    )
+                    new_line.save()
+                    added += 1
+                    print("saved")
+                else:
+                    print("Salary To Low")
+                if added >= count:
+                    break
 
 
 @db_task()
