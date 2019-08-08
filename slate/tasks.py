@@ -70,7 +70,6 @@ def save_lus(post, user):
         if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt", "unique") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count, punt)
-            print(lines.count())
             added = 0
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
