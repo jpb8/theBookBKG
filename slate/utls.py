@@ -41,8 +41,8 @@ def fetch_top_lines(cost, team_code, count, punt):
         cursor.execute('''
                         select * from bkg_slate_lus l 
                         where l."TMCODE" = '{}' and l."COST"<={} and l."Source" {} ('5Man', 'Dual')
-                        order by l."COST" desc, l."PTS" desc limit {};
-                        '''.format(team_code, cost, inn, count))
+                        order by l."PTS" desc, l."COST" desc;
+                        '''.format(team_code, cost, inn))
         qs = dictfetchall(cursor)
     return qs
 
