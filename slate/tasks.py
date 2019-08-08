@@ -41,15 +41,17 @@ def build_lineup_dict(lu, p1, p2):
 def build_player_set(lu):
     return {lu.c, lu.fB, lu.sB, lu.tB, lu.ss, lu.of1, lu.of2, lu.of3}
 
+
 def build_player_set_from_dict(lu):
     return {lu["C"], lu["1B"], lu["2B"], lu["3B"], lu["SS"], lu["OF1"], lu["OF2"], lu["OF3"]}
+
 
 def validate_uniqueness(lu, uploaded, unique):
     unique_set = build_player_set_from_dict(lu)
     for u in uploaded:
         u_set = build_player_set(u)
-        print(unique_set, u_set)
         if len(unique_set - u_set) <= unique:
+            print("not Unique", unique_set - u_set)
             return False
     return True
 
@@ -68,6 +70,7 @@ def save_lus(post, user):
         if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt", "unique") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count, punt)
+            print(lines.count())
             added = 0
             for lu in lines:
                 lu_dict = build_lineup_dict(lu, p1, p2)
@@ -99,6 +102,7 @@ def save_lus(post, user):
                 else:
                     print("Salary To Low")
                 if int(added) >= int(count):
+                    print("broke")
                     break
 
 
