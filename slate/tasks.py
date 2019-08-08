@@ -68,9 +68,10 @@ def save_lus(post, user):
         if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count, punt)
-            fetched_line_count = len(lines)
+            fetched_line_count = lines.count()
             added = 0
             loops = 0
+            print(added, count, loops, fetched_line_count)
             while added <= count or loops <= fetched_line_count:
                 print(added, count, loops, fetched_line_count)
                 for lu in lines:
