@@ -50,7 +50,7 @@ def validate_uniqueness(lu, uploaded, unique):
     unique_set = build_player_set_from_dict(lu)
     for u in uploaded:
         u_set = build_player_set(u)
-        if len(unique_set - u_set) <= unique:
+        if len(unique_set - u_set) < unique:
             print("not Unique", unique_set - u_set)
             return False
     return True
