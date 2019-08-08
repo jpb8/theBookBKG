@@ -58,14 +58,14 @@ def save_lus(post, user):
     punt = True if post.get('punt', "all") == "punt" else False
     p1_id = post.get("p1")
     p2_id = post.get("p2")
-    unique = post.get("unique")
+    unique = int(post.get("unique")) if "unique" in post else 0
     p1 = Player.objects.get(id=p1_id)
     p2 = Player.objects.get(id=p2_id)
     salary = p1.salary + p2.salary
     for code, count in post.items():
         if count is None:
             count = 0
-        if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt") and int(count) > 0:
+        if code not in ("p1", "p2", "csrfmiddlewaretoken", "punt", "unique") and int(count) > 0:
             print(code, count)
             lines = fetch_top_lines(50000 - salary, code, count, punt)
             added = 0
@@ -98,7 +98,7 @@ def save_lus(post, user):
                     print("saved")
                 else:
                     print("Salary To Low")
-                if added >= count:
+                if int(added) >= int(count):
                     break
 
 
