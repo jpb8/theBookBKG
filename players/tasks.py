@@ -181,6 +181,6 @@ def pown(pown_data):
     for r in csv_data:
         try:
             Player.objects.filter(dk_name=str(r[0])).update(pown=Decimal(r[1]))
-            print(Player.objects.filter(dk_name=str(r[0])).dk_name, r[0], r[1])
+            print(Player.objects.filter(dk_name=str(r[0])), r[0], r[1])
         except Player.DoesNotExist:
             print("No player")
