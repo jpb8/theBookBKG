@@ -180,7 +180,7 @@ def pown(pown_data):
     csv_data = csv.reader(io_string, delimiter=',')
     for r in csv_data:
         try:
-            Player.objects.filter(dk_name=str(r[0])).update(pown=Decimal([1]))
+            Player.objects.filter(dk_name=str(r[0])).update(pown=Decimal(r[1]))
             print(Player.objects.filter(dk_name=str(r[0])).dk_name, r[0], r[1])
         except Player.DoesNotExist:
             print("No player")
