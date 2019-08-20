@@ -131,7 +131,7 @@ def player_pown(request):
         dk_csv = request.FILES["file"]
         if not dk_csv.name.endswith('.csv'):
             return redirect("players:stats")
-        upload_batting_hands(dk_csv)
+        pown(dk_csv)
     return redirect("players:stats")
 
 
