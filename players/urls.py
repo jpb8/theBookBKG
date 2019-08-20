@@ -16,4 +16,5 @@ urlpatterns = [
     path('player_bats', views.player_bats, name='player_bats'),
     path('pull_projections', views.pull_projections, name='pull_projections'),
     path('stacks_call', views.stacks_call, name='stacks_call'),
+    path('pown', views.player_pown, name='pown'),
 ]

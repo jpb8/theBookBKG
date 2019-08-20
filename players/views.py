@@ -5,7 +5,8 @@ from django.template.loader import render_to_string
 import json
 
 from .models import Player
-from .tasks import orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands, update_projections
+from .tasks import (orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands, update_projections,
+                    pown)
 
 from teams.models import Team
 from slate.models import Stack, Punt
@@ -120,10 +121,18 @@ def player_bats(request):
     if request.method == "POST":
         dk_csv = request.FILES["file"]
         if not dk_csv.name.endswith('.csv'):
-            error = True  # ???????
+            return redirect("players:stats")
         upload_batting_hands(dk_csv)
-    cont_dict = {}
-    return render(request, "players/stats_upload.html", cont_dict)
+    return redirect("players:stats")
+
+
+def player_pown(request):
+    if request.method == "POST":
+        dk_csv = request.FILES["file"]
+        if not dk_csv.name.endswith('.csv'):
+            return redirect("players:stats")
+        upload_batting_hands(dk_csv)
+    return redirect("players:stats")
 
 
 def pull_projections(request):

@@ -35,6 +35,12 @@
         <input type="file" name="file">
         <button type="submit" class="btn btn-secondary">Batting Hands</button>
     </form>
+    <form method="post" enctype="multipart/form-data" action="{% url 'players:pown' %}">
+        {% csrf_token %}
+        <label>Upload a file</label>
+        <input type="file" name="file">
+        <button type="submit" class="btn btn-secondary">P Ownership</button>
+    </form>
 </div>
 </body>
 {% endlocaltime %}

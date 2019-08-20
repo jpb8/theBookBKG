@@ -52,6 +52,7 @@ class Player(models.Model):
     throws = models.CharField(max_length=5, null=True, blank=True)
     active = models.BooleanField(default=True)
     bats = models.CharField(max_length=1, null=True, blank=True)
+    pown = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     objects = PlayerManager()
 

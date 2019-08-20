@@ -157,7 +157,7 @@ def upload_batting_hands(player_data):
     for r in csv_data:
         try:
             Player.objects.filter(rotowire_name=str(r[0])).update(bats=str(r[1]))
-            print(Player.objects.filter(rotowire_name=str(r[0])), r[0], r[1])
+            print(Player.objects.filter(rotowire_name=str(r[0])).fg_name, r[0], r[1])
         except Player.DoesNotExist:
             print("No player")
 
@@ -171,3 +171,16 @@ def update_projections():
     for p in csv_data:
         Player.objects.filter(rotowire_name=str(p[0])).update(pts=Decimal(p[7]))
         print(p[0], p[7])
+
+@db_task()
+def pown(pown_data):
+    _csv = pown_data.read().decode('UTF-8')
+    io_string = io.StringIO(_csv)
+    next(io_string)
+    csv_data = csv.reader(io_string, delimiter=',')
+    for r in csv_data:
+        try:
+            Player.objects.filter(dk_name=str(r[0])).update(pown=Decimal([1]))
+            print(Player.objects.filter(dk_name=str(r[0])).dk_name, r[0], r[1])
+        except Player.DoesNotExist:
+            print("No player")
