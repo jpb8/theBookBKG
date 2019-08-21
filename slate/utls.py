@@ -73,12 +73,18 @@ def hitter_cnt(user):
     with connection.cursor() as cursor:
         cursor.execute('''
                         with t as (select * from slate_exportlineup where user_id={}),
+                        tot as (select count(*) as cnt from slate_exportlineup where user_id={}),
                         a as (select "fB" as p from t union all select "sB" as p from t 
                         union all select "tB" as p from t union all select ss from t
                         union all select of1 from t as p union all select of2 as p from t 
-                        union all select of3 as p from t union all select c as p from t)
-                        select count(p) as cnt, p from a group by p order by cnt desc;
-                        '''.format(user))
+                        union all select of3 as p from t union all select c as p from t),
+                        p as (select count(p) as cnt, p, tot.cnt as totcnt from a, tot group by p, tot.cnt)
+                        select p.p, p.cnt, pp.pown, 
+                        round(((p.cnt::numeric/p.totcnt::numeric) - pp.pown),2) as field
+                        from p
+                        left join players_player pp on pp.name_id = p.p
+                        order by p.cnt desc;
+                        '''.format(user, user))
         qs = dictfetchall(cursor)
     return qs
 
