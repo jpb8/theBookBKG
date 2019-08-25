@@ -152,6 +152,11 @@ class Pitching(models.Model):
     whip = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     era = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     siera = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    woba = models.DecimalField(default=0.00, max_digits=10, decimal_places=3)
+    xfip = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    fbp = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    gbp = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    hardp = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def __str__(self):
         return "{} vs {}".format(self.player, self.vs)
@@ -161,20 +166,40 @@ class Pitching(models.Model):
         for r in data:
             try:
                 player = Player.objects.filter(fg_name=r[0])[:1].get()
-                _s, new = cls.objects.update_or_create(player=player,
-                                                       vs=hand,
-                                                       defaults={
-                                                           "kk_p9": Decimal(r[2]),
-                                                           "bb_p9": Decimal(r[3]),
-                                                           "kk_pbb": Decimal(r[4]),
-                                                           "hr_p9": Decimal(r[5]),
-                                                           "kp": Decimal(r[6][:-1]),
-                                                           "avg": Decimal(r[9]),
-                                                           "whip": Decimal(r[10]),
-                                                           "babip": Decimal(r[11]),
-                                                           "era": Decimal(r[16]),
-                                                           "siera": Decimal(r[20]) if 20 in r else 0.00,
-                                                       })
+                if hand in [0, 1]:
+                    _s, new = cls.objects.update_or_create(player=player,
+                                                           vs=hand,
+                                                           defaults={
+                                                               "kk_p9": Decimal(r[2]),
+                                                               "bb_p9": Decimal(r[3]),
+                                                               "kk_pbb": Decimal(r[4]),
+                                                               "hr_p9": Decimal(r[5]),
+                                                               "kp": Decimal(r[6][:-1]),
+                                                               "avg": Decimal(r[9]),
+                                                               "whip": Decimal(r[10]),
+                                                               "babip": Decimal(r[11]),
+                                                               "era": Decimal(r[16]),
+                                                               "siera": Decimal(r[20]) if 20 in r else 0.00,
+                                                               "woba": Decimal(r[17]),
+                                                               "fbp": Decimal(r[18][:-1]),
+                                                               "gbp": Decimal(r[20][:-1]),
+                                                               "hardp": Decimal(r[19][:-1])
+                                                           })
+                else:
+                    _s, new = cls.objects.update_or_create(player=player,
+                                                           vs=hand,
+                                                           defaults={
+                                                               "kk_p9": Decimal(r[2]),
+                                                               "bb_p9": Decimal(r[3]),
+                                                               "kk_pbb": Decimal(r[4]),
+                                                               "hr_p9": Decimal(r[5]),
+                                                               "kp": Decimal(r[6][:-1]),
+                                                               "avg": Decimal(r[9]),
+                                                               "whip": Decimal(r[10]),
+                                                               "babip": Decimal(r[11]),
+                                                               "era": Decimal(r[16]),
+                                                               "siera": Decimal(r[20]) if 20 in r else 0.00
+                                                           })
                 print(player, new)
             except Player.DoesNotExist:
                 print("No player")
