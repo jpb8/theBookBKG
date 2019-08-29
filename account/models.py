@@ -19,6 +19,7 @@ class Account(models.Model):
     max_deposit = models.DecimalField(max_digits=10, decimal_places=2, default=1000.00)
     limit = models.DecimalField(max_digits=10, decimal_places=2, default=100.00)
     customer_id = models.CharField(max_length=120, null=True, blank=True)
+    live_money = models.BooleanField(default=False)
 
     objects = AccountManager()
 
@@ -41,4 +42,4 @@ class Account(models.Model):
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'balance', 'limit')
+    list_display = ('__str__', 'balance', 'limit', "live_money")
