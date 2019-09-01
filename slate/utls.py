@@ -25,11 +25,11 @@ def dictfetchall(cursor):
 
 
 def all_lines(cost, punt):
-    # TODO: Separate 4Man and 5Man Stacks
+    # TODO: Separate 4Man and 5Man Stacks, add back 5Man
     inn = "not in" if punt else "in"
     with connection.cursor() as cursor:
         cursor.execute('''select count(l."TMCODE") as lus, l."TMCODE"
-                        from bkg_slate_lus l  where l."COST"<={} and l."Source" {} ('5Man', 'Dual', '4Man')
+                        from bkg_slate_lus l  where l."COST"<={} and l."Source" {} ('Dual', '4Man')
                         group by l."TMCODE";
                         '''.format(cost, inn))
         qs = dictfetchall(cursor)
@@ -37,11 +37,12 @@ def all_lines(cost, punt):
 
 
 def fetch_top_lines(cost, team_code, count, punt):
+    # TODO: Separate 4Man and 5Man Stacks, add back 5Man
     inn = "not in" if punt else "in"
     with connection.cursor() as cursor:
         cursor.execute('''
                         select * from bkg_slate_lus l 
-                        where l."TMCODE" = '{}' and l."COST"<={} and l."Source" {} ('5Man', 'Dual', '4Man')
+                        where l."TMCODE" = '{}' and l."COST"<={} and l."Source" {} ('Dual', '4Man')
                         order by l."PTS" desc, l."COST" desc;
                         '''.format(team_code, cost, inn))
         qs = dictfetchall(cursor)
@@ -63,7 +64,8 @@ def tm_cnt(user):
     with connection.cursor() as cursor:
         cursor.execute('''
                         with tms as (select team1 as tm from slate_exportlineup where user_id={}
-                        union all select team2 as tm from slate_exportlineup where user_id={} and lu_type<>'5Man')
+                        union all select team2 as tm from slate_exportlineup 
+                        where user_id={} and lu_type<>'5Man' and lu_type<>'4Man')
                         select count(tm) as cnt, tm from tms group by tm;
                         '''.format(user, user))
         qs = dictfetchall(cursor)
