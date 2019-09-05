@@ -29,7 +29,7 @@ def all_lines(cost, punt):
     inn = "not in" if punt else "in"
     with connection.cursor() as cursor:
         cursor.execute('''select count(l."TMCODE") as lus, l."TMCODE"
-                        from bkg_slate_lus l  where l."COST"<={} and l."Source" {} ('Dual', '4Man')
+                        from bkg_slate_lus l  where l."COST"<={} and l."Source" {} ('Dual', '5Man')
                         group by l."TMCODE";
                         '''.format(cost, inn))
         qs = dictfetchall(cursor)
@@ -42,7 +42,7 @@ def fetch_top_lines(cost, team_code, count, punt):
     with connection.cursor() as cursor:
         cursor.execute('''
                         select * from bkg_slate_lus l 
-                        where l."TMCODE" = '{}' and l."COST"<={} and l."Source" {} ('Dual', '4Man')
+                        where l."TMCODE" = '{}' and l."COST"<={} and l."Source" {} ('Dual', '5Man')
                         order by l."PTS" desc, l."COST" desc;
                         '''.format(team_code, cost, inn))
         qs = dictfetchall(cursor)
