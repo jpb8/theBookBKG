@@ -1,32 +1,34 @@
-<div class="main" style="float: right; font-size: 2em">
-    {% if total_lus %}
-    <h3>Total: {{ total_lus }}</h3>
-    {% endif %}
-    {% if p_cnt %}
-    {% for p in p_cnt %}
-    <h3>{{ p.p }} {{ p.cnt }}</h3>
-    {% endfor %}
-    {% endif %}
-    {% if saved_lus %}
-    <h3>Total team count</h3>
-    {% for l in saved_lus %}
-    <p><a href="#" data-toggle="modal" class="team-bd"  data-team="{{ l.tm }}">{{ l.tm }} => {{ l.cnt }}</a></p>
-    {% endfor %}
-    {% endif %}
-    {% if groups %}
-    <h3>Total Combo Count</h3>
-    {% for g in groups %}
-    <p><a href="#" data-toggle="modal" class="team-bd"  data-team="{{ g.combo }}">{{ g.combo }} => {{ g.lu_count }}</a></p>
-    {% endfor %}
-    {% endif %}
-    <form action="{% url 'slate:delete_all' %}" method="POST">{% csrf_token %}
-        <button type="submit" class="btn btn-primary">Remove Lineups</button>
-    </form>
-</div>
-<div class="main" style="float: right;padding: 50px; font-size: 2em">
-    {% if h_cnt %}
-    {% for h in h_cnt %}
-    <p>{{ h.p }} => {{ h.cnt }} => {{ h.pown }} => {{ h.field }}</p>
-    {% endfor %}
-    {% endif %}
+<div class="row">
+    <div class="col">
+        {% if total_lus %}
+        <h3>Total: {{ total_lus }}</h3>
+        {% endif %}
+        {% if p_cnt %}
+        {% for p in p_cnt %}
+        <h5>{{ p.p }} {{ p.cnt }}</h5>
+        {% endfor %}
+        {% endif %}
+        {% if saved_lus %}
+        <h3>Total team count</h3>
+        {% for l in saved_lus %}
+        <p><a href="#" data-toggle="modal" class="team-bd"  data-team="{{ l.tm }}">{{ l.tm }} => {{ l.cnt }}</a></p>
+        {% endfor %}
+        {% endif %}
+        {% if groups %}
+        <h3>Total Combo Count</h3>
+        {% for g in groups %}
+        <p><a href="#" data-toggle="modal" class="team-bd"  data-team="{{ g.combo }}">{{ g.combo }} => {{ g.lu_count }}</a></p>
+        {% endfor %}
+        {% endif %}
+        <form action="{% url 'slate:delete_all' %}" method="POST">{% csrf_token %}
+            <button type="submit" class="btn btn-primary">Remove Lineups</button>
+        </form>
+    </div>
+    <div class="col">
+        {% if h_cnt %}
+        {% for h in h_cnt %}
+        <p>{{ h.p }} => {{ h.cnt }} => {{ h.pown }} => {{ h.field }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
 </div>

@@ -32,6 +32,9 @@ class PlayerManager(models.Manager):
         slate = [x.dk_name for x in slate_teams]
         return self.get_queryset().filter(starting=True, team__in=slate).order_by("-salary")
 
+    def all_slate_batters(self):
+        return self.get_queryset().all().exclude(order_pos=0).order_by("-proj_pown")
+
 
 class Player(models.Model):
     dkid = models.IntegerField()
@@ -53,6 +56,10 @@ class Player(models.Model):
     active = models.BooleanField(default=True)
     bats = models.CharField(max_length=1, null=True, blank=True)
     pown = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    proj_pown = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    max_pown = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    min_pown = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    on_slate = models.BooleanField(default=False)
 
     objects = PlayerManager()
 
@@ -71,9 +78,16 @@ class Player(models.Model):
         return hand
 
     @classmethod
+    def update_proj_pown(cls, proj_powns):
+        cls.objects.all().update(proj_pown=0.00)
+        for p, o in proj_powns.items():
+            cls.objects.filter(name_id=p).update(proj_pown=o)
+
+    @classmethod
     def upload_dk(cls, data):
         teams = []
         games = []
+        cls.objects.update(on_slate=False)
         for col in data:
             positions = col[0].split("/")
             pos_1 = positions[0]
@@ -101,7 +115,8 @@ class Player(models.Model):
                     "code_2": pos_codes[pos_2] if pos_2 != "" else 0,
                     "name_id": col[1],
                     "pts": Decimal(col[8]),
-                    "active": True if pos_1 != "RP" else False
+                    "active": True if pos_1 != "RP" else False,
+                    "on_slate": True
                 }
             )
         Team.update_slate(teams)

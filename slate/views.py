@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 from .models import StackPlayer, Stack, ExportLineup, Punt
 from .utls import *
-from .tasks import save_lus, refresh_bkg
+from .tasks import save_lus, refresh_bkg, save_lineups_new
 
 from teams.models import Team
 from teams.tasks import update_projected, manual_live_lu_update
@@ -225,3 +225,50 @@ def team_breakdown(request):
         response_data = {"html": html}
         return JsonResponse(response_data)
     return redirect("slate:lineups")
+
+
+@login_required(login_url="/")
+def lineup_builder(request):
+    if request.method == "POST":
+        line_config = {"pitchers": {}, "teams": {}, "bats": {}}
+        user = request.user
+        line_config["total"] = request.POST.get("total_lus")
+        for p, percent in request.POST.items():
+            if p.startswith("pit_"):
+                if float(percent) > 0:
+                    percent = (float(percent))
+                    line_config["pitchers"][p.split("_")[1]] = percent
+            elif p.startswith("team_"):
+                if float(percent) > 0:
+                    count = int(int(line_config["total"]) * float(percent))
+                    line_config["teams"][p.split("_")[1]] = count
+            elif p.startswith("bat_"):
+                if float(percent) > 0:
+                    batter = Player.objects.get(id=p.split("_")[1])
+                    count = int(int(line_config["total"]) * float(percent))
+                    line_config["bats"][batter.dkid] = count
+        print(line_config)
+        save_lineups_new(line_config, user)
+    teams = Team.objects.filter(on_slate=True).order_by("-max_stack")
+    batters = Player.objects.all_slate_batters()
+    pitchers = Player.objects.all_starters()
+    user = request.user
+    groups = ExportLineup.objects.group(user)
+    saved_lus = tm_cnt(user.pk)
+    p_cnt = pitcher_cnt(user.pk)
+    h_cnt = hitter_cnt(user.pk)
+    total_lus = 0
+    for p in p_cnt:
+        total_lus += int(p["cnt"])
+    total_lus = total_lus * 0.5
+    cont_dict = {
+        "teams": teams,
+        "pitchers": pitchers,
+        "batters": batters,
+        "saved_lus": saved_lus,
+        "p_cnt": p_cnt,
+        "total_lus": total_lus,
+        "h_cnt": h_cnt,
+        "groups": groups,
+    }
+    return render(request, "slate/slate_builder.html", cont_dict)

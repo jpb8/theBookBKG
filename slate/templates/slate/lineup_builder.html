@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<div class="container">
+    <div class="main" style="margin-top: 20px; float: left; font-size: 1em">
+        <div class="row">
+            <div class="col-sm-8">
+                {% if teams %}
+                <form action="{% url 'slate:lineup_builder' %}" method="POST" id="lineup-builder">{% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <div style="padding; 3px">
+                                <label for="total_lus">Total Lineups</label>
+                                <input type="number" id="total_lus" name="total_lus" value="0">
+                            </div>
+                            {% for p in pitchers %}
+                            <div style="padding; 3px">
+                                {{ p }}<input type="number" id="pit_{{ p.pk }}" name="pit_{{ p.pk }}" value="0">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col">
+                            {% for t in teams %}
+                            <div style="padding; 3px">
+                                {{ b }}<input type="number" id="team_{{ t }}" name="team_{{ t }}" value="0">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create LUs</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+</div>
+<!--<script type="text/javascript" charset="utf8">-->
+<!--    $(document).ready(function() {-->
+
+<!--        $('#lineup-builder').submit(function(event) {-->
+<!--            event.preventDefault();-->
+<!--            var team = $(this).attr('data-team')-->
+<!--            var url = '{% url 'slate:lineup_builder' %}';-->
+<!--            var method = 'POST'-->
+<!--            var data = {"team": team}-->
+<!--            $.ajax({-->
+<!--                url: url,-->
+<!--                method: method,-->
+<!--                data: data,-->
+<!--                success: function(responseData){-->
+<!--                    $( "#pstats-modal" ).html(responseData.html);-->
+<!--                    $('#bannerformmodal').modal('show');-->
+<!--                }, error: function(error){-->
+<!--                    console.log(error);-->
+<!--                }-->
+<!--            })-->
+<!--        });-->
+
+<!--    } );-->
+<!--</script>-->
+{% endlocaltime %}
+{% endblock %}

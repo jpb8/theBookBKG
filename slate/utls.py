@@ -1,6 +1,6 @@
 from django.db import connection
 from .models import Stack
-
+import pandas as pd
 
 def append_stacks(lines):
     for i, l in enumerate(lines):
@@ -25,7 +25,6 @@ def dictfetchall(cursor):
 
 
 def all_lines(cost, punt):
-    # TODO: Separate 4Man and 5Man Stacks, add back 5Man
     inn = "not in" if punt else "in"
     with connection.cursor() as cursor:
         cursor.execute('''select count(l."TMCODE") as lus, l."TMCODE"
@@ -37,7 +36,6 @@ def all_lines(cost, punt):
 
 
 def fetch_top_lines(cost, team_code, count, punt):
-    # TODO: Separate 4Man and 5Man Stacks, add back 5Man
     inn = "not in" if punt else "in"
     with connection.cursor() as cursor:
         cursor.execute('''
@@ -45,6 +43,20 @@ def fetch_top_lines(cost, team_code, count, punt):
                         where l."TMCODE" = '{}' and l."COST"<={} and l."Source" {} ('Dual', '5Man')
                         order by l."PTS" desc, l."COST" desc;
                         '''.format(team_code, cost, inn))
+        qs = dictfetchall(cursor)
+    return qs
+
+
+def fetch_team_lines(cost, team_code):
+    # TODO: Remove lines with blacklisted players
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        select * from bkg_slate_lus l 
+                        where l."TMCODE" LIKE '%{}%' 
+                        and l."COST"<={} 
+                        and l."COST">={}-1000 
+                        order by l."PTS" desc, l."COST" desc;
+                        '''.format(team_code, cost, cost))
         qs = dictfetchall(cursor)
     return qs
 
@@ -204,3 +216,28 @@ def indy_pitcher(pitcher):
                         '''.format(pitcher))
         pr_qs = dictfetchall(cursor)
     return pr_qs, pl_qs
+
+
+def pitcher_builder_combos():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+                        select pp1.name_id as "p1", pp1.id as "p1id",
+                        pp2.name_id as "p2", pp2.id as "p2id",
+                        round(pp1.pown*(pp2.pown/(2-pp1.pown)),2) as "percent", 
+                        pp1.salary+pp2.salary as "salary"
+                        from players_player pp1
+                        cross join players_player pp2
+                        where pp1.starting = true and pp2.starting = true and 
+                        pp1.id <> pp2.id and pp1.id > pp2.id 
+                        and (round(pp1.pown*(pp2.pown/(2-pp1.pown)),2)>0)
+                        order by round(pp1.pown*(pp2.pown/(2-pp1.pown)),2) desc;
+                        ''')
+        return dictfetchall(cursor)
+
+
+def projections_for_ownership():
+    with connection.cursor() as cursor:
+        cursor.execute("select name_id, dkproj, ptsstd, team, sal, pos, tri, pown  from test1 order by name_id;")
+        df = pd.DataFrame(cursor.fetchall())
+        df.columns = [col[0] for col in cursor.description]
+        return df

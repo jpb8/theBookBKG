@@ -10,6 +10,10 @@ import json
 from datetime import datetime as dt
 import pytz
 from decimal import Decimal
+from scipy import stats
+import pandas as pd
+import math
+import statistics
 
 from teams.models import Team, DefaultOrders
 import csv
@@ -113,7 +117,7 @@ def starting_pitchers():
             print("Game Not on slate")
 
 
-@db_task()
+# @db_task()
 def upload_salaries(dk_csv):
     player_data = dk_csv.read().decode('UTF-8')
     io_string = io.StringIO(player_data)
@@ -172,15 +176,60 @@ def update_projections():
         Player.objects.filter(rotowire_name=str(p[0])).update(pts=Decimal(p[7]))
         print(p[0], p[7])
 
-@db_task()
+
+# @db_task()
 def pown(pown_data):
     _csv = pown_data.read().decode('UTF-8')
     io_string = io.StringIO(_csv)
     next(io_string)
     csv_data = csv.reader(io_string, delimiter=',')
+    Player.objects.all().update(pown=0.0)
     for r in csv_data:
         try:
             Player.objects.filter(dk_name=str(r[0])).update(pown=Decimal(r[1]))
             print(Player.objects.filter(dk_name=str(r[0])), r[0], r[1])
         except Player.DoesNotExist:
             print("No player")
+
+
+def remove_low_own_players(pos_stats):
+    median = statistics.median(pos_stats.values())
+    new = {}
+    for p, pown in pos_stats.items():
+        if pown >= median:
+            new[p] = pown
+    return new
+
+
+def calc_final_pos_pown(pos_stats, pos):
+    new_pstat = remove_low_own_players(pos_stats)
+    total_prob = sum(new_pstat.values())
+    for play, prob in new_pstat.items():
+        divider = 1 if pos == "OF" else 3
+        new_pstat[play] = (prob / total_prob) / divider
+    return new_pstat
+
+
+def build_pown(pstats):
+    positions = pstats.pos.unique()
+    final_player_pown = {}
+    for pos in positions:
+        plays = pstats.loc[pstats["pos"] == pos]
+        tiles = plays.tri.unique()
+        pos_final_pown = {}
+        for tile in tiles:
+            players_in_tile = plays.loc[plays["tri"] == tile]
+            pos_stats = {}
+            for i, player in players_in_tile.iterrows():
+                compare = players_in_tile.drop([i, ])
+                prob = 1
+                for i2, p in compare.iterrows():
+                    mean = player.dkproj - p.dkproj
+                    std = math.sqrt((player.ptsstd ** 2) + (p.dkproj ** 2))
+                    std = 1 if std == 0 else std
+                    prob *= stats.norm.cdf(float(mean) / std)
+                pos_stats[player.name_id] = prob
+            pos_pown = calc_final_pos_pown(pos_stats, pos)
+            pos_final_pown.update(pos_pown)
+        final_player_pown.update(pos_final_pown)
+    return final_player_pown

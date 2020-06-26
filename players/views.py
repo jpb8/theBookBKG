@@ -6,14 +6,16 @@ import json
 
 from .models import Player
 from .tasks import (orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands, update_projections,
-                    pown)
+                    pown, build_pown)
 
 from teams.models import Team
 from slate.models import Stack, Punt
-from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher
+from slate.utls import todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher, \
+    projections_for_ownership
 
 
 def index(request):
+    Player.update_proj_pown(build_pown(projections_for_ownership()))
     return render(request, "players/index.html", {})
 
 

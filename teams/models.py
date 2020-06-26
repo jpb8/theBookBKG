@@ -19,6 +19,7 @@ class Team(models.Model):
     home = models.BooleanField(default=False)
     on_slate = models.BooleanField(default=False)
     start_time = models.DateTimeField(null=True)
+    max_stack = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     objects = TeamManager()
 
