@@ -49,6 +49,12 @@ class Team(models.Model):
             cls.objects.filter(dk_name=home).update(opp=away, home=True)
             cls.objects.filter(dk_name=away).update(opp=home)
 
+    @classmethod
+    def update_max_pown(cls, teams, total=1):
+        for t, pown in teams.items():
+            print(t, pown)
+            cls.objects.filter(dk_name=t).update(max_stack=pown)
+
 
 class OrdersManager(models.Manager):
     def projected(self, team, game_type):

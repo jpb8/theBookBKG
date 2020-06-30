@@ -2,6 +2,7 @@ from django.db import connection
 from .models import Stack
 import pandas as pd
 
+
 def append_stacks(lines):
     for i, l in enumerate(lines):
         l[i]["players"] = []
@@ -47,17 +48,26 @@ def fetch_top_lines(cost, team_code, count, punt):
     return qs
 
 
-def fetch_team_lines(cost, team_code):
+def fetch_team_lines(cost, team_code, blacklist):
     # TODO: Remove lines with blacklisted players
+    bl_sql = ""
+    if len(blacklist) > 0:
+        bl_sql = " and ("
+        for b in blacklist:
+            bl_sql += '''l."DUPE" not like '%{}%' and '''.format(b)
+        bl_sql = "{})".format(bl_sql.rstrip(" and "))
     with connection.cursor() as cursor:
         cursor.execute('''
                         select * from bkg_slate_lus l 
                         where l."TMCODE" LIKE '%{}%' 
                         and l."COST"<={} 
                         and l."COST">={}-1000 
+                        {}
                         order by l."PTS" desc, l."COST" desc;
-                        '''.format(team_code, cost, cost))
+                        '''.format(team_code, cost, cost, bl_sql))
         qs = dictfetchall(cursor)
+        if len(qs) == 0:
+            print(bl_sql)
     return qs
 
 

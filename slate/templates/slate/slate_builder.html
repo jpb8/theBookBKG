@@ -10,6 +10,9 @@
             <div class="col-sm-7">
                 {% if teams %}
                 <form action="{% url 'slate:lineup_builder' %}" method="POST" id="lineup-builder">{% csrf_token %}
+                    <button type="submit" class="btn btn-primary w-100">Create LUs</button>
+                    <button type="submit" class="btn btn-primary w-100" id="save-max-owner">Save Max Ownership</button>
+                    <input type="checkbox" name="save" value="save" id="save-check" hidden>
                     <div class="row">
                         <div class="col">
                             <div style="padding; 3px">
@@ -19,9 +22,9 @@
                             {% for p in pitchers %}
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="lbl{{p.pk}}" style="font-size: 1em">{{ p }}</span>
+                                    <span class="input-group-text" id="lbl{{p.pk}}" style="font-size: 1em">{{ p }} {{ p.proj_pown }}</span>
                                 </div>
-                                <input type="number" step=".01" class="form-control" id="pit_{{ p.pk }}" name="pit_{{ p.pk }}" value="0" aria-label="Small" aria-describedby="lbl{{p.pk}}">
+                                <input type="number" step=".01" class="form-control" id="pit_{{ p.pk }}" name="pit_{{ p.pk }}" value="{{ p.max_pown }}" aria-label="Small" aria-describedby="lbl{{p.pk}}">
                             </div>
                             {% endfor %}
                         </div>
@@ -39,14 +42,14 @@
                             {% for b in batters %}
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="lbl{{ b.pk }}" style="font-size: 1em">{{ b }}</span>
+                                    <span class="input-group-text" id="lbl{{ b.pk }}" style="font-size: 1em">{{ b }} {{ b.proj_pown }}</span>
                                 </div>
-                                <input type="number" step=".01" class="form-control" id="bat_{{ b.pk }}" name="bat_{{ b.pk }}" value="{{ b.proj_pown }}" aria-label="Small" aria-describedby="lbl{{ b.pk }}">
+                                <input type="number" step=".01" class="form-control" id="bat_{{ b.pk }}" name="bat_{{ b.pk }}" value="{{ b.max_pown }}" aria-label="Small" aria-describedby="lbl{{ b.pk }}">
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Create LUs</button>
+
                 </form>
                 {% endif %}
             </div>
@@ -57,5 +60,16 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" charset="utf8">
+    $(document).ready(function() {
+
+        $('#save-max-owner').click(function(event) {
+            event.preventDefault();
+            console.log("hello");
+            $("#save-check").prop("checked", true);
+            $('#lineup-builder').submit();
+        });
+    });
+</script>
 {% endlocaltime %}
 {% endblock %}

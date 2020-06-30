@@ -128,12 +128,23 @@ def add_batter_count(lu, post, bl):
                 bl.append(dkid)
 
 
+def validate_lineup(lu_dict):
+    # Can keep a running total??? Why ping db everytime?
+    uploaded = ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], combo=lu_dict["TMCODE"])
+    if validate_uniqueness(lu_dict, uploaded, 0) and check_lineup(lu_dict):
+        return True, lu_dict
+    else:
+        return False
+
+
 def save_lineups_new(post, user):
     update_pitcher_pown(post["pitchers"])
     total_lines = post["total"]
     pitchers = pitcher_builder_combos()
     blacklist = []
+    added_total = 0
     for code, count in post["teams"].items():
+        team_total = 0
         if int(count) > 0:
             for p in pitchers:
                 p1 = Player.objects.get(name_id=p["p1"])
@@ -143,15 +154,12 @@ def save_lineups_new(post, user):
                     pcnt = math.ceil(p["percent"] * count)
                 else:
                     pcnt = round(p["percent"] * count)
-                print(code, count, pcnt, p["percent"], p["p1"], p["p2"], salary)
-                lines = fetch_team_lines(50000 - salary, code)
+                print(code, count, pcnt, p["percent"], p["p1"], p["p2"], salary, blacklist)
+                lines = fetch_team_lines(50000 - salary, code, blacklist)
                 added = 0
                 for lu in lines:
                     lu_dict = build_lineup_dict(lu, p1, p2)
-                    # Can keep a running total??? Why ping db everytime?
-                    uploaded = ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], combo=lu_dict["TMCODE"])
-                    line_is_unique = validate_uniqueness(lu_dict, uploaded, 0)
-                    if int(lu_dict["salary"]) + salary > 49000 and check_lineup(lu_dict) and line_is_unique:
+                    if int(lu_dict["salary"]) + salary > 49000 and validate_lineup(lu):
                         new_line = ExportLineup(
                             user=user,
                             p1=lu_dict["p1"],
@@ -173,8 +181,9 @@ def save_lineups_new(post, user):
                         )
                         new_line.save()
                         add_batter_count(lu, post, blacklist)
-                        print(blacklist)
                         added += 1
+                        team_total += 1
+                        added_total += 1
                         print("saved")
                     else:
                         print("Salary To Low")
