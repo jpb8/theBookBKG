@@ -251,3 +251,24 @@ def projections_for_ownership():
         df = pd.DataFrame(cursor.fetchall())
         df.columns = [col[0] for col in cursor.description]
         return df
+
+
+def total_pitcher_percent(user):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                with un as (
+                    select pc.p1_id as p, pc."percent" as tot
+                    from slate_pitchercombo pc
+                    where user_id = {}
+                    union all
+                    select pc.p2_id as p, pc."percent" as tot
+                    from slate_pitchercombo pc
+                    where user_id = {}
+                )
+                select pp.name_id as p, Sum(un.tot) as "sum"
+                from un 
+                left join players_player pp on pp.id = un.p
+                group by pp.name_id;
+            """.format(user, user))
+        data = dictfetchall(cursor)
+    return data

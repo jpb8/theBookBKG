@@ -1,6 +1,6 @@
 from huey.contrib.djhuey import db_task
 from players.models import Player
-from .models import ExportLineup
+from .models import ExportLineup, PitcherCombo
 from .utls import fetch_top_lines, refresh_materialized_bkg, fetch_team_lines, pitcher_builder_combos
 from decimal import Decimal
 import math
@@ -34,8 +34,8 @@ def build_lineup_dict(lu, p1, p2):
     lu_dict["source"] = lu["Source"]
     lu_dict["pts"] = lu["PTS"]
     lu_dict["salary"] = lu["COST"]
-    lu_dict["p1"] = p1.name_id
-    lu_dict["p2"] = p2.name_id
+    lu_dict["p1"] = p1
+    lu_dict["p2"] = p2
     lu_dict["dedupe"] = lu["DUPE"]
     return lu_dict
 
@@ -128,68 +128,72 @@ def add_batter_count(lu, post, bl):
                 bl.append(dkid)
 
 
-def validate_lineup(lu_dict):
+def validate_lineup(lu_dict, salary):
     # Can keep a running total??? Why ping db everytime?
-    uploaded = ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], combo=lu_dict["TMCODE"])
-    if validate_uniqueness(lu_dict, uploaded, 0) and check_lineup(lu_dict):
+    # uploaded = ExportLineup.objects.filter(p1=lu_dict["p1"], p2=lu_dict["p2"], combo=lu_dict["TMCODE"])
+    # if validate_uniqueness(lu_dict, uploaded, 0) and check_lineup(lu_dict) and int(lu_dict["salary"]) + salary > 49000:
+    if check_lineup(lu_dict) and int(lu_dict["salary"]) + salary > 49000:
         return True, lu_dict
     else:
         return False
 
 
+def add_teams_lineups(team, count, pitchers, blacklist, user, post):
+    total_added_lineups = 0
+    for p in pitchers:
+        salary = p["salary"]
+        if p["percent"] * count < 1:
+            pcnt = math.ceil(p["percent"] * count)
+        else:
+            pcnt = round(p["percent"] * count)
+        print(team, count, pcnt, p["percent"], p["p1"], p["p2"], salary, blacklist)
+        lines = fetch_team_lines(50000 - salary, team, blacklist)
+        added = 0
+        for lu in lines:
+            lu_dict = build_lineup_dict(lu, p["p1"], p["p2"])
+            if validate_lineup(lu_dict, salary):
+                new_line = ExportLineup(
+                    user=user,
+                    p1=lu_dict["p1"],
+                    p2=lu_dict["p2"],
+                    c=lu_dict["C"],
+                    fB=lu_dict["1B"],
+                    sB=lu_dict["2B"],
+                    tB=lu_dict["3B"],
+                    ss=lu_dict["SS"],
+                    of1=lu_dict["OF1"],
+                    of2=lu_dict["OF2"],
+                    of3=lu_dict["OF3"],
+                    salary=int(lu_dict["salary"]) + salary,
+                    team1=lu["TM"],
+                    team2=lu["TM2"],
+                    combo=lu_dict["TMCODE"],
+                    lu_type=lu_dict["source"],
+                    dedupe=lu_dict["dedupe"],
+                )
+                new_line.save()
+                add_batter_count(lu, post, blacklist)
+                added += 1
+                total_added_lineups += 1
+                print("saved")
+            else:
+                print("Salary To Low")
+            if int(added) >= int(pcnt):
+                print("broke")
+                break
+    return total_added_lineups
+
+
 def save_lineups_new(post, user):
-    update_pitcher_pown(post["pitchers"])
-    total_lines = post["total"]
-    pitchers = pitcher_builder_combos()
+    pitchers = PitcherCombo.objects.import_data(user)
     blacklist = []
-    added_total = 0
     for code, count in post["teams"].items():
-        team_total = 0
+        added = 0
         if int(count) > 0:
-            for p in pitchers:
-                p1 = Player.objects.get(name_id=p["p1"])
-                p2 = Player.objects.get(name_id=p["p2"])
-                salary = p["salary"]
-                if p["percent"] * count < 1:
-                    pcnt = math.ceil(p["percent"] * count)
-                else:
-                    pcnt = round(p["percent"] * count)
-                print(code, count, pcnt, p["percent"], p["p1"], p["p2"], salary, blacklist)
-                lines = fetch_team_lines(50000 - salary, code, blacklist)
-                added = 0
-                for lu in lines:
-                    lu_dict = build_lineup_dict(lu, p1, p2)
-                    if int(lu_dict["salary"]) + salary > 49000 and validate_lineup(lu):
-                        new_line = ExportLineup(
-                            user=user,
-                            p1=lu_dict["p1"],
-                            p2=lu_dict["p2"],
-                            c=lu_dict["C"],
-                            fB=lu_dict["1B"],
-                            sB=lu_dict["2B"],
-                            tB=lu_dict["3B"],
-                            ss=lu_dict["SS"],
-                            of1=lu_dict["OF1"],
-                            of2=lu_dict["OF2"],
-                            of3=lu_dict["OF3"],
-                            salary=int(lu_dict["salary"]) + salary,
-                            team1=lu["TM"],
-                            team2=lu["TM2"],
-                            combo=lu_dict["TMCODE"],
-                            lu_type=lu_dict["source"],
-                            dedupe=lu_dict["dedupe"],
-                        )
-                        new_line.save()
-                        add_batter_count(lu, post, blacklist)
-                        added += 1
-                        team_total += 1
-                        added_total += 1
-                        print("saved")
-                    else:
-                        print("Salary To Low")
-                    if int(added) >= int(pcnt):
-                        print("broke")
-                        break
+            added = add_teams_lineups(code, count, pitchers, blacklist, user, post)
+        if int(count) - added > 0:
+            print("{} missed {}".format(code, int(count) - added))
+            added2 = add_teams_lineups(code, int(count) - added, pitchers, blacklist, user, post)
 
 
 @db_task()

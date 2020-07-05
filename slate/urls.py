@@ -18,4 +18,6 @@ urlpatterns = [
     path("update_line_lineups", views.update_live_lineups, name="update_live_lineups"),
     path("team_breakdown", views.team_breakdown, name="team_breakdown"),
     path("lineup_builder", views.lineup_builder, name="lineup_builder"),
+    path("pitcher_combos", views.pitcher_combos, name="pitcher_combos"),
+    path("delete_pcombo", views.delete_pcombo, name="delete_pcombo"),
 ]

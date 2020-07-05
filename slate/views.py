@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from .models import StackPlayer, Stack, ExportLineup, Punt
+from .models import StackPlayer, ExportLineup, Punt, PitcherCombo
 from .utls import *
 from .tasks import save_lus, refresh_bkg, save_lineups_new
 
@@ -124,7 +124,7 @@ def add_lineups(request):
 @login_required(login_url="/")
 def delete_all(request):
     ExportLineup.objects.filter(user=request.user).delete()
-    return redirect("slate:lineups")
+    return redirect("slate:lineup_builder")
 
 
 @login_required(login_url="/")
@@ -233,18 +233,17 @@ def lineup_builder(request):
         line_config = {"pitchers": {}, "teams": {}, "bats": {}}
         user = request.user
         save_pown = request.POST.get("save", None)
-        print(save_pown)
         line_config["total"] = request.POST.get("total_lus") if not save_pown else 1
         for p, percent in request.POST.items():
             if p.startswith("pit_"):
                 if float(percent) > 0:
                     line_config["pitchers"][p.split("_")[1]] = float(percent)
             elif p.startswith("team_"):
-                if float(percent) > 0:
+                if float(percent) > 0 or save_pown:
                     count = int(int(line_config["total"]) * float(percent))
                     line_config["teams"][p.split("_")[1]] = count if not save_pown else float(percent)
             elif p.startswith("bat_"):
-                if float(percent) > 0:
+                if float(percent) > 0 or save_pown:
                     batter = Player.objects.get(id=p.split("_")[1])
                     count = int(int(line_config["total"]) * float(percent))
                     line_config["bats"][batter.dkid] = count if not save_pown else float(percent)
@@ -276,3 +275,45 @@ def lineup_builder(request):
         "groups": groups,
     }
     return render(request, "slate/slate_builder.html", cont_dict)
+
+
+@login_required(login_url="/")
+def pitcher_combos(request):
+    lines, pplay = None, None
+    p1, p2 = None, None
+    user = request.user
+    if request.method == "POST":
+        save = request.POST.get("save", None)
+        p1_id = request.POST.get("p1")
+        p2_id = request.POST.get("p2")
+        p1 = Player.objects.get(id=p1_id)
+        p2 = Player.objects.get(id=p2_id)
+        if save:
+            percent = float(request.POST.get("percent"))
+            p_combo = PitcherCombo(user=user, p1=p1, p2=p2, percent=percent)
+            p_combo.save()
+        else:
+            salary = p1.salary + p2.salary
+            lines = all_lines(50000 - salary, punt=False)
+            pplay = all_lines(50000 - salary, punt=True)
+    pitchers = Player.objects.all_starters()
+    combos = PitcherCombo.objects.filter(user=user)
+    total_percent = PitcherCombo.objects.total_percentage(user)["sum"] * 100
+    total_pitcher = total_pitcher_percent(user.id)
+    cont_dict = {
+        "pitchers": pitchers,
+        "lines": lines,
+        "pplays": pplay,
+        "p1": p1,
+        "p2": p2,
+        "combos": combos,
+        "total_percent": total_percent,
+        "total_pitcher": total_pitcher
+    }
+    return render(request, "slate/pitcher_combos.html", cont_dict)
+
+@login_required(login_url="/")
+def delete_pcombo(request):
+    if request.method == "POST":
+        PitcherCombo.objects.filter(pk=request.POST.get("pc-pk")).delete()
+    return redirect("slate:pitcher_combos")

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum, F
 
 from players.models import Player
 from teams.models import Team
@@ -116,3 +116,32 @@ class Punt(models.Model):
 
     def __str__(self):
         return "{} {} ${}".format(self.name_id, self.position, self.salary)
+
+
+class PitcherComboManager(models.Manager):
+    def total_percentage(self, user):
+        return self.get_queryset().filter(user=user).aggregate(sum=Sum('percent'))
+
+    def import_data(self, user):
+        data = []
+        combos = self.get_queryset().filter(user=user).order_by("-percent")
+        for c in combos:
+            data.append({
+                "p1": c.p1.name_id,
+                "p2": c.p2.name_id,
+                "salary": c.p1.salary + c.p2.salary,
+                "percent": c.percent
+            })
+        return data
+
+
+class PitcherCombo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    p1 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="p1")
+    p2 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="p2")
+    percent = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+
+    objects = PitcherComboManager()
+
+    def __str__(self):
+        return "{} {} {}%".format(self.p1.dk_name, self.p2.dk_name, self.percent * 100)

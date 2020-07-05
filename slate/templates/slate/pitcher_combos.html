@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+{% load tz %}
+{% localtime on %}
+<div class="container">
+    <div class="main" style="margin: 20px; float: left; font-size: 1.25em">
+        <div class="row">
+            <div class="col-sm-7">
+                <form action="{% url 'slate:pitcher_combos' %}" method="POST">{% csrf_token %}
+                    <select name="p1">
+                        {% if pitchers %}
+                        {% for p in pitchers %}
+                        <option value="{{ p.id }}">{{ p }} ${{ p.salary }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <select name="p2">
+                        {% if pitchers %}
+                        {% for p in pitchers %}
+                        <option value="{{ p.id }}">{{ p }} ${{ p.salary }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Fetch Lineups</button>
+                </form>
+                {% if lines %}
+                {% for l in lines %}
+                <p>{{ l.TMCODE }} => {{ l.lus }}</p>
+                {% endfor %}
+                {% for l in pplays %}
+                <p>{{ l.TMCODE }} => {{ l.lus }}</p>
+                {% endfor %}
+                <form action="{% url 'slate:pitcher_combos' %}" method="POST">{% csrf_token %}
+                    {% if p1 and p2 %}
+                    <input type="hidden" name="p1" value="{{ p1.pk }}">
+                    <input type="hidden" name="p2" value="{{ p2.pk }}">
+                    <h5>{{ p1 }}</h5>
+                    <h5>{{ p2 }}</h5>
+                    {% endif %}
+                    <input type="number" step=".01" class="form-control" id="percent" name="percent" value="0.00" aria-label="Small">
+                    <input type="checkbox" name="save" value="save" id="save-check" hidden checked>
+                    <button type="submit" class="btn btn-primary">Submit Combo Percentage</button>
+                </form>
+                {% endif %}
+            </div>
+            <div class="col-sm-5">
+                {% if total_percent %}
+                <h5>Total: {{ total_percent }}%</h5>
+                {% endif %}
+                {% if combos %}
+                {% for pc in combos %}
+                <p>{{ pc }}</p>
+                <form action="{% url 'slate:delete_pcombo' %}" method="POST">{% csrf_token %}
+                    <input type="number" name="pc-pk" value="{{ pc.pk }}" hidden>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+                {% endfor %}
+                {% endif %}
+                {% if total_pitcher %}
+                {% for tp in total_pitcher %}
+                <p>{{ tp.p }} {{ tp.sum }}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endlocaltime %}
+{% endblock %}
