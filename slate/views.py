@@ -264,6 +264,9 @@ def lineup_builder(request):
     for p in p_cnt:
         total_lus += int(p["cnt"])
     total_lus = total_lus * 0.5
+    combos = PitcherCombo.objects.filter(user=user)
+    total_percent = PitcherCombo.objects.total_percentage(user)["sum"] * 100
+    total_pitcher = total_pitcher_percent(user.id)
     cont_dict = {
         "teams": teams,
         "pitchers": pitchers,
@@ -273,6 +276,9 @@ def lineup_builder(request):
         "total_lus": total_lus,
         "h_cnt": h_cnt,
         "groups": groups,
+        "combos": combos,
+        "total_percent": total_percent,
+        "total_pitcher": total_pitcher
     }
     return render(request, "slate/slate_builder.html", cont_dict)
 

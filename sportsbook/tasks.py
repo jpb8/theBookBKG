@@ -202,46 +202,46 @@ def active_events(sport):
     return False
 
 
-@db_periodic_task(crontab(minute='*/30'))
-def pull_nfl():
-    pull_sport_odds("NFL")
+# @db_periodic_task(crontab(minute='*/30'))
+# def pull_nfl():
+#     pull_sport_odds("NFL")
+#
+#
+# @db_periodic_task(crontab(minute='*/30'))
+# def update_nfl():
+#     if active_events("NFL"):
+#         print("NFL is active")
+#         update_results("NFL")
+#     else:
+#         print("NFL is inactive")
 
 
-@db_periodic_task(crontab(minute='*/30'))
-def update_nfl():
-    if active_events("NFL"):
-        print("NFL is active")
-        update_results("NFL")
-    else:
-        print("NFL is inactive")
+# @db_periodic_task(crontab(minute='*/30'))
+# def pull_ncaaf():
+#     pull_sport_odds("NCAAF")
+#
+#
+# @db_periodic_task(crontab(minute='*/30'))
+# def update_ncaaf():
+#     if active_events("NCAAF"):
+#         print("NCAA is active")
+#         update_results("NCAAF")
+#     else:
+#         print("NCAA is inactive")
 
 
-@db_periodic_task(crontab(minute='*/30'))
-def pull_ncaaf():
-    pull_sport_odds("NCAAF")
-
-
-@db_periodic_task(crontab(minute='*/30'))
-def update_ncaaf():
-    if active_events("NCAAF"):
-        print("NCAA is active")
-        update_results("NCAAF")
-    else:
-        print("NCAA is inactive")
-
-
-@db_periodic_task(crontab(minute='0', hour='*/3'))
-def pull_nhl():
-    pull_sport_odds("NHL")
-
-
-@db_periodic_task(crontab(minute='*/30'))
-def update_nhl():
-    if active_events("NHL"):
-        print("NHL is active")
-        update_results("NHL")
-    else:
-        print("NHL is inactive")
+# @db_periodic_task(crontab(minute='0', hour='*/3'))
+# def pull_nhl():
+#     pull_sport_odds("NHL")
+#
+#
+# @db_periodic_task(crontab(minute='*/30'))
+# def update_nhl():
+#     if active_events("NHL"):
+#         print("NHL is active")
+#         update_results("NHL")
+#     else:
+#         print("NHL is inactive")
 
 
 @db_periodic_task(crontab(minute='*/30'))
@@ -258,18 +258,18 @@ def update_nba():
         print("NBA is inactive")
 
 
-# @db_periodic_task(crontab(minute='*/30'))
-# def pull_mlb():
-#     pull_sport_odds("MLB")
-#
-#
-# @db_periodic_task(crontab(minute='*/10'))
-# def update_mlb():
-#     if active_events("MLB"):
-#         print("NBA is active")
-#         update_results("MLB")
-#     else:
-#         print("NBA is inactive")
+@db_periodic_task(crontab(minute='*/30'))
+def pull_mlb():
+    pull_sport_odds("MLB")
+
+
+@db_periodic_task(crontab(minute='*/10'))
+def update_mlb():
+    if active_events("MLB"):
+        print("NBA is active")
+        update_results("MLB")
+    else:
+        print("NBA is inactive")
 
 
 # @db_periodic_task(crontab(minute='0', hour="*/2"))
@@ -286,15 +286,15 @@ def update_nba():
 #         print("NCAAB is inactive")
 
 
-@db_periodic_task(crontab(minute='0', hour="*/3"))
-def pull_mma():
-    pull_sport_odds("MMA")
-
-
-@db_periodic_task(crontab(minute='*/30'))
-def update_mma():
-    if active_events("MMA"):
-        print("MMA is active")
-        update_results("MMA")
-    else:
-        print("MMA is inactive")
+# @db_periodic_task(crontab(minute='0', hour="*/3"))
+# def pull_mma():
+#     pull_sport_odds("MMA")
+#
+#
+# @db_periodic_task(crontab(minute='*/30'))
+# def update_mma():
+#     if active_events("MMA"):
+#         print("MMA is active")
+#         update_results("MMA")
+#     else:
+#         print("MMA is inactive")

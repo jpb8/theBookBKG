@@ -19,14 +19,7 @@
                                 <label for="total_lus">Total Lineups</label>
                                 <input type="number" id="total_lus" name="total_lus" value="0" width="5">
                             </div>
-                            {% for p in pitchers %}
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="lbl{{p.pk}}" style="font-size: 1em">{{ p }} {{ p.proj_pown }}</span>
-                                </div>
-                                <input type="number" step=".01" class="form-control" id="pit_{{ p.pk }}" name="pit_{{ p.pk }}" value="{{ p.max_pown }}" aria-label="Small" aria-describedby="lbl{{p.pk}}">
-                            </div>
-                            {% endfor %}
+                            {% include 'slate/snippets/pcombos.html' %}
                         </div>
                         <div class="col">
                             {% for t in teams %}

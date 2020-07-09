@@ -135,6 +135,23 @@ def refresh_materialized_bkg():
         cursor.execute('''REFRESH MATERIALIZED VIEW bkg_slate_lus;''')
 
 
+def update_team_pown():
+    with connection.cursor() as cursor:
+        cursor.execute('''with team_proj as (
+            select rs.team,avg(rs.proj_pown) as proj
+            FROM (
+                SELECT pp.team,pp.proj_pown, Rank() 
+                  over (Partition BY pp.team
+                        ORDER BY pp.proj_pown DESC ) AS Rank
+                FROM players_player pp
+                ) rs WHERE Rank <= 5
+                group by rs.team
+            ) 
+            update teams_team tt set max_stack = tp.proj
+            FROM team_proj tp
+            WHERE tt.dk_name = tp.team;''')
+
+
 def todays_pitchers():
     with connection.cursor() as cursor:
         cursor.execute('''

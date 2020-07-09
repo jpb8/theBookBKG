@@ -189,11 +189,13 @@ def save_lineups_new(post, user):
     blacklist = []
     for code, count in post["teams"].items():
         added = 0
+        added2 = 0
         if int(count) > 0:
             added = add_teams_lineups(code, count, pitchers, blacklist, user, post)
         if int(count) - added > 0:
             print("{} missed {}".format(code, int(count) - added))
             added2 = add_teams_lineups(code, int(count) - added, pitchers, blacklist, user, post)
+        print("Added {} lineups for {}".format(added + added2, code))
 
 
 @db_task()
