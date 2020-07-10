@@ -1,0 +1,17 @@
+{% if total_percent %}
+<h5>Total: {{ total_percent }}%</h5>
+{% endif %}
+{% if combos %}
+{% for pc in combos %}
+<p>{{ pc }}</p>
+<form action="{% url 'slate:delete_pcombo' %}" method="POST">{% csrf_token %}
+    <input type="number" name="pc-pk" value="{{ pc.pk }}" hidden>
+    <button type="submit" class="btn btn-primary btn-sm">Delete</button>
+</form>
+{% endfor %}
+{% endif %}
+{% if total_pitcher %}
+{% for tp in total_pitcher %}
+<p>{{ tp.p }} {{ tp.sum }}</p>
+{% endfor %}
+{% endif %}
