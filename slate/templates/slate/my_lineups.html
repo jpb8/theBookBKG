@@ -27,7 +27,11 @@
     <div class="col">
         {% if h_cnt %}
         {% for h in h_cnt %}
-        <p>{{ h.p }} => {{ h.cnt }} => {{ h.pown }} => {{ h.field }}</p>
+        <p>
+            {{ h.p }}<br>
+            Count: {{ h.cnt }} Your POwn: {{ h.mypown }}<br>
+            Field Owned: {{ h.pown }} Diff From Field: {{ h.field }}
+        </p>
         {% endfor %}
         {% endif %}
     </div>

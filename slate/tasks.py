@@ -184,18 +184,40 @@ def add_teams_lineups(team, count, pitchers, blacklist, user, post):
     return total_added_lineups
 
 
+def build_lineup_config(post_data, total_lineups):
+    data = {"pitchers": {}, "teams": {}, "bats": {}}
+    for p, percent in post_data.items():
+        if p.startswith("team_"):
+            if float(percent) > 0:
+                count = int(total_lineups * float(percent))
+                data["teams"][p.split("_")[1]] = count
+        elif p.startswith("bat_"):
+            if float(percent) > 0:
+                batter = Player.objects.get(id=p.split("_")[1])
+                count = int(total_lineups * float(percent))
+                data["bats"][batter.dkid] = count
+    return data
+
+
 def save_lineups_new(post, user):
+    total_lineups = int(post.get("total_lus"))
+    lineup_config = build_lineup_config(post, total_lineups)
     pitchers = PitcherCombo.objects.import_data(user)
     blacklist = []
-    for code, count in post["teams"].items():
+    total_added = 0
+    for code, count in lineup_config["teams"].items():
         added = 0
-        added2 = 0
         if int(count) > 0:
-            added = add_teams_lineups(code, count, pitchers, blacklist, user, post)
+            added = add_teams_lineups(code, count, pitchers, blacklist, user, lineup_config)
         if int(count) - added > 0:
-            print("{} missed {}".format(code, int(count) - added))
-            added2 = add_teams_lineups(code, int(count) - added, pitchers, blacklist, user, post)
-        print("Added {} lineups for {}".format(added + added2, code))
+            added += add_teams_lineups(code, int(count) - added, pitchers, blacklist, user, lineup_config)
+        if int(count) - added > 0:
+            added += add_teams_lineups(code, int(count) - added, pitchers, [], user, lineup_config)
+        print("Added {} lineups for {}".format(added, code))
+        total_added += added
+        if total_added >= total_lineups:
+            break
+    print("Missed {} lineups".format(total_lineups - total_added))
 
 
 @db_task()

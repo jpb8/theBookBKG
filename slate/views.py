@@ -230,28 +230,25 @@ def team_breakdown(request):
 @login_required(login_url="/")
 def lineup_builder(request):
     if request.method == "POST":
-        line_config = {"pitchers": {}, "teams": {}, "bats": {}}
         user = request.user
         save_pown = request.POST.get("save", None)
-        line_config["total"] = request.POST.get("total_lus") if not save_pown else 1
-        for p, percent in request.POST.items():
-            if p.startswith("pit_"):
-                if float(percent) > 0:
-                    line_config["pitchers"][p.split("_")[1]] = float(percent)
-            elif p.startswith("team_"):
-                if float(percent) > 0 or save_pown:
-                    count = int(int(line_config["total"]) * float(percent))
-                    line_config["teams"][p.split("_")[1]] = count if not save_pown else float(percent)
-            elif p.startswith("bat_"):
-                if float(percent) > 0 or save_pown:
-                    batter = Player.objects.get(id=p.split("_")[1])
-                    count = int(int(line_config["total"]) * float(percent))
-                    line_config["bats"][batter.dkid] = count if not save_pown else float(percent)
-        if save_pown:
+        if not save_pown:
+            save_lineups_new(request.POST, user)
+        else:
+            line_config = {"pitchers": {}, "teams": {}, "bats": {}}
+            line_config["total"] = request.POST.get("total_lus") if not save_pown else 1
+            for p, percent in request.POST.items():
+                if p.startswith("team_"):
+                    if float(percent) > 0 or save_pown:
+                        count = int(int(line_config["total"]) * float(percent))
+                        line_config["teams"][p.split("_")[1]] = count if not save_pown else float(percent)
+                elif p.startswith("bat_"):
+                    if float(percent) > 0 or save_pown:
+                        batter = Player.objects.get(id=p.split("_")[1])
+                        count = int(int(line_config["total"]) * float(percent))
+                        line_config["bats"][batter.dkid] = count if not save_pown else float(percent)
             Player.update_max_pown(line_config["bats"], line_config["pitchers"])
             Team.update_max_pown(line_config["teams"])
-        else:
-            save_lineups_new(line_config, user)
     teams = Team.objects.filter(on_slate=True).order_by("-max_stack")
     batters = Player.objects.all_slate_batters()
     pitchers = Player.objects.all_starters()

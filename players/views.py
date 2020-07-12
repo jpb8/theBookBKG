@@ -11,7 +11,7 @@ from .tasks import (orders, starting_pitchers, upload_stats, upload_salaries, up
 from teams.models import Team
 from slate.models import Stack, Punt
 from slate.utls import (todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher,
-                        projections_for_ownership, update_team_pown)
+                        projections_for_ownership, update_team_pown, update_players_projections)
 
 
 def index(request):
@@ -137,7 +137,7 @@ def player_pown(request):
 
 
 def pull_projections(request):
-    update_projections()
+    update_players_projections()
     Player.update_proj_pown(build_pown(projections_for_ownership()))
     update_team_pown()
     return redirect("players:stack_builder")

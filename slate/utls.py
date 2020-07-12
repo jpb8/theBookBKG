@@ -49,7 +49,6 @@ def fetch_top_lines(cost, team_code, count, punt):
 
 
 def fetch_team_lines(cost, team_code, blacklist):
-    # TODO: Remove lines with blacklisted players
     bl_sql = ""
     if len(blacklist) > 0:
         bl_sql = " and ("
@@ -67,7 +66,7 @@ def fetch_team_lines(cost, team_code, blacklist):
                         '''.format(team_code, cost, cost, bl_sql))
         qs = dictfetchall(cursor)
         if len(qs) == 0:
-            print(bl_sql)
+            print("{} is empty with blacklist {} and cost {}".format(team_code, blacklist, cost))
     return qs
 
 
@@ -105,7 +104,8 @@ def hitter_cnt(user):
                         union all select of3 as p from t union all select c as p from t),
                         p as (select count(p) as cnt, p, tot.cnt as totcnt from a, tot group by p, tot.cnt)
                         select p.p, p.cnt, pp.pown, 
-                        round(((p.cnt::numeric/p.totcnt::numeric) - pp.pown),2) as field
+                        round(((p.cnt::numeric/p.totcnt::numeric) - pp.pown),2) as field,
+                        round((p.cnt::numeric/p.totcnt::numeric),2) as myPown
                         from p
                         left join players_player pp on pp.name_id = p.p
                         order by p.cnt desc;
@@ -150,6 +150,13 @@ def update_team_pown():
             update teams_team tt set max_stack = tp.proj
             FROM team_proj tp
             WHERE tt.dk_name = tp.team;''')
+        cursor.execute('''update players_player
+            set max_pown = teams_team.max_stack
+            from teams_team
+            where 
+            players_player.team = teams_team.dk_name and 
+            players_player.order_pos > 0 and 
+            players_player.max_pown < teams_team.max_stack;''')
 
 
 def todays_pitchers():
@@ -264,7 +271,9 @@ def pitcher_builder_combos():
 
 def projections_for_ownership():
     with connection.cursor() as cursor:
-        cursor.execute("select name_id, dkproj, ptsstd, team, sal, pos, tri, pown  from test1 order by name_id;")
+        cursor.execute(
+            "select name_id, dkproj, ptsstd, team, sal, pos, tri, pown  from ownership_builder order by name_id;"
+        )
         df = pd.DataFrame(cursor.fetchall())
         df.columns = [col[0] for col in cursor.description]
         return df
@@ -289,3 +298,14 @@ def total_pitcher_percent(user):
             """.format(user, user))
         data = dictfetchall(cursor)
     return data
+
+
+def update_players_projections():
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                update players_player
+                set pts = dkproj
+                from projections
+                where players_player.name_id = projections.name_id;
+            """)
+        cursor.execute("REFRESH MATERIALIZED VIEW ownership_builder;")
