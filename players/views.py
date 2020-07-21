@@ -70,14 +70,20 @@ def stack_builder(request):
 def pitching_stats(request):
     pitchers = todays_pitchers()
     tp_data = tp_utils()
+    no_starter = Player.objects.missing_starter()
+    all_teams_pitchers = []
     for r in tp_data:
         r['min'] = float(r['min']) if r['min'] is not None else 0
         r['max'] = float(r['max']) if r['max'] is not None else 0
         r['avg'] = float(r['avg']) if r['avg'] is not None else 0
         r['std'] = float(r['std']) if r['std'] is not None else 0
+    if request.method == "POST":
+        all_teams_pitchers = Player.objects.filter(team=request.POST.get("team"), position="SP")
     cont_dict = {
         'pitchers': pitchers,
-        'cols': json.dumps(tp_data)
+        'cols': json.dumps(tp_data),
+        "no_starter": no_starter,
+        "all_teams_pitchers": all_teams_pitchers
     }
     return render(request, "players/pitcher_stats.html", cont_dict)
 
@@ -153,3 +159,10 @@ def stacks_call(request):
         response_data = {"html": html}
         return JsonResponse(response_data)
     return render(request, "players/stack_players.html", cont_dict)
+
+
+def add_starter(request):
+    if request.method == "POST":
+        pid = int(request.POST.get("player"))
+        Player.objects.filter(pk=pid).update(starting=True)
+    return redirect("players:pitching")

@@ -32,6 +32,14 @@ class PlayerManager(models.Manager):
         slate = [x.dk_name for x in slate_teams]
         return self.get_queryset().filter(starting=True, team__in=slate).order_by("-salary")
 
+    def missing_starter(self):
+        slate_teams = Team.objects.filter(on_slate=True)
+        no_starter = []
+        for t in slate_teams:
+            if not self.get_queryset().filter(starting=True, team=t).exists():
+                no_starter.append(t)
+        return no_starter
+
     def all_slate_batters(self):
         return self.get_queryset().all().exclude(order_pos=0).order_by("-proj_pown")
 

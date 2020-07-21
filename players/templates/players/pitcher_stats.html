@@ -94,6 +94,29 @@
             </tr>
         </tfoot>
     </table>
+    {% if no_starter %}
+    <div class="row">
+          <form action="{% url 'players:pitching' %}" method="POST">{% csrf_token %}
+            <select name="team">
+                {% for t in no_starter %}
+                <option value="{{ t }}">{{ t }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm">Get Pitchers</button>
+        </form>
+    </div>
+    <div class="row">
+        <form action="{% url 'players:add_starter' %}" method="POST">{% csrf_token %}
+            {% if all_teams_pitchers %}
+            {% for p in all_teams_pitchers %}
+            <input style="padding; 3px" type="checkbox" name="player" value="{{ p.pk }}">
+            {{ p }}<br>
+            {% endfor %}
+            {% endif %}
+            <input type="submit" class="btn btn-primary btn-sm">
+        </form>
+    </div>
+    {% endif %}
     <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" style="width:1500px">
         <div class="modal-content" id="pstats-modal" style="width:1000px">
