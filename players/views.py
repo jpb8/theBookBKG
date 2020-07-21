@@ -5,13 +5,12 @@ from django.template.loader import render_to_string
 import json
 
 from .models import Player
-from .tasks import (orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands, update_projections,
-                    pown, build_pown)
+from .tasks import (orders, starting_pitchers, upload_stats, upload_salaries, upload_batting_hands,
+                    pown, update_projected_ownership_full)
 
 from teams.models import Team
 from slate.models import Stack, Punt
-from slate.utls import (todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher,
-                        projections_for_ownership, update_team_pown, update_players_projections)
+from slate.utls import (todays_stacks, todays_pitchers, tp_utils, stack_utils, pstats, indy_pitcher)
 
 
 def index(request):
@@ -137,9 +136,7 @@ def player_pown(request):
 
 
 def pull_projections(request):
-    update_players_projections()
-    Player.update_proj_pown(build_pown(projections_for_ownership()))
-    update_team_pown()
+    update_projected_ownership_full()
     return redirect("players:stack_builder")
 
 

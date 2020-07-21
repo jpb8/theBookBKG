@@ -11,11 +11,11 @@ from datetime import datetime as dt
 import pytz
 from decimal import Decimal
 from scipy import stats
-import pandas as pd
 import math
 import statistics
 
 from teams.models import Team, DefaultOrders
+from slate.utls import update_players_projections, projections_for_ownership, update_team_pown
 import csv
 import io
 
@@ -117,7 +117,7 @@ def starting_pitchers():
             print("Game Not on slate")
 
 
-# @db_task()
+@db_task()
 def upload_salaries(dk_csv):
     player_data = dk_csv.read().decode('UTF-8')
     io_string = io.StringIO(player_data)
@@ -177,7 +177,7 @@ def update_projections():
         print(p[0], p[7])
 
 
-# @db_task()
+@db_task()
 def pown(pown_data):
     _csv = pown_data.read().decode('UTF-8')
     io_string = io.StringIO(_csv)
@@ -233,3 +233,9 @@ def build_pown(pstats):
             pos_final_pown.update(pos_pown)
         final_player_pown.update(pos_final_pown)
     return final_player_pown
+
+@db_task()
+def update_projected_ownership_full():
+    update_players_projections()
+    Player.update_proj_pown(build_pown(projections_for_ownership()))
+    update_team_pown()

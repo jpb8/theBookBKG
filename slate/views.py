@@ -301,7 +301,11 @@ def pitcher_combos(request):
             pplay = all_lines(50000 - salary, punt=True)
     pitchers = Player.objects.all_starters()
     combos = PitcherCombo.objects.filter(user=user)
-    total_percent = PitcherCombo.objects.total_percentage(user)["sum"] * 100
+    total_percent = PitcherCombo.objects.total_percentage(user)["sum"]
+    if total_percent:
+        total_percent *= 100
+    else:
+        total_percent = 0
     total_pitcher = total_pitcher_percent(user.id)
     cont_dict = {
         "pitchers": pitchers,
