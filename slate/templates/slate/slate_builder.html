@@ -37,7 +37,7 @@
                             {% for b in batters %}
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="lbl{{ b.pk }}" style="font-size: 1em">{{ b }}<br>CALC: {{ b.proj_pown }} PROJ: {{b.pown}}</span>
+                                    <span class="input-group-text" id="lbl{{ b.pk }}" style="font-size: 1em">{{ b }} {{ b.salary }}<br>CALC: {{ b.proj_pown }} PROJ: {{b.pown}}</span>
                                 </div>
                                 <input type="number" step=".01" class="form-control" id="bat_{{ b.pk }}"
                                        name="bat_{{ b.pk }}" value="{{ b.max_pown }}" aria-label="Small"

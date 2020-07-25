@@ -43,11 +43,10 @@ def update_projected():
                 print(game_type)
                 for o, p in v.items():
                     print(o, p)
-                    DefaultOrders.objects.filter(
-                        team=t,
-                        game_type=game_type,
-                        order=o
-                    ).update(rw_name=p)
+                    DefaultOrders.objects.update_or_create(
+                        team=t, game_type=game_type, order=o,
+                        defaults={'rw_name': p}
+                    )
 
 
 def update_live_lus():

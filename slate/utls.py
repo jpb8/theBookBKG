@@ -62,7 +62,7 @@ def fetch_team_lines(cost, team_code, blacklist):
                         and l."COST"<={} 
                         and l."COST">={}-1000 
                         {}
-                        order by l."PTS" desc, l."COST" desc;
+                        order by l.proj desc, l."COST" desc;
                         '''.format(team_code, cost, cost, bl_sql))
         qs = dictfetchall(cursor)
         if len(qs) == 0:
@@ -302,10 +302,5 @@ def total_pitcher_percent(user):
 
 def update_players_projections():
     with connection.cursor() as cursor:
-        cursor.execute("""
-                update players_player
-                set pts = dkproj
-                from projections
-                where players_player.name_id = projections.name_id;
-            """)
-        cursor.execute("REFRESH MATERIALIZED VIEW ownership_builder;")
+        cursor.execute("select projections_function();")
+

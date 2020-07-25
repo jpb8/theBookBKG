@@ -88,10 +88,7 @@ def projected_orders():
     teams = Team.objects.filter(on_slate=True)
     for t in teams:
         throws = Player.team_starter_trows(t.opp)
-        opp = Team.objects.get(dk_name=t.opp)
         game_type = throws if throws != "" else "R"
-        if not t.home and opp.league != t.league:
-            game_type = "IL" + throws
         p_orders = DefaultOrders.objects.projected(team=t, game_type=game_type)
         for p in p_orders:
             Player.objects.filter(rotowire_name=p.rw_name, active=True).update(order_pos=p.order)
@@ -236,6 +233,6 @@ def build_pown(pstats):
 
 @db_task()
 def update_projected_ownership_full():
-    update_players_projections()
+    # update_players_projections()
     Player.update_proj_pown(build_pown(projections_for_ownership()))
     update_team_pown()

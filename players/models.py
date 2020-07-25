@@ -87,8 +87,11 @@ class Player(models.Model):
 
     @classmethod
     def update_proj_pown(cls, proj_powns):
-        cls.objects.all().update(proj_pown=0.00)
+        cls.objects.all().update(proj_pown=0.00, max_pown=0.00)
         for p, o in proj_powns.items():
+            print(p, o)
+            if o < 0.05:
+                o = 0.05
             cls.objects.filter(name_id=p).update(proj_pown=o, max_pown=o)
 
     @classmethod

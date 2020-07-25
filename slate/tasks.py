@@ -199,6 +199,7 @@ def build_lineup_config(post_data, total_lineups):
     return data
 
 
+@db_task()
 def save_lineups_new(post, user):
     total_lineups = int(post.get("total_lus"))
     lineup_config = build_lineup_config(post, total_lineups)
