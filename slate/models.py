@@ -98,10 +98,17 @@ class Stack(models.Model):
         return "{}: {}".format(self.user, self.team)
 
 
+class StackPlayerManager(models.Manager):
+    def delete_not_in_order(self):
+        return self.get_queryset().filter(player__order_pos=0).delete()
+
+
 class StackPlayer(models.Model):
     stack = models.ForeignKey(Stack, on_delete=models.CASCADE, related_name="players")
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     order_spot = models.IntegerField(default=0)
+
+    objects = StackPlayerManager()
 
     def __str__(self):
         return "{}: {}".format(self.player, self.order_spot)

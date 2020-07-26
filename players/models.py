@@ -95,13 +95,13 @@ class Player(models.Model):
             cls.objects.filter(name_id=p).update(proj_pown=o, max_pown=o)
 
     @classmethod
-    def update_max_pown(cls, batters, pitchers, total=1):
+    def update_max_pown(cls, batters, teams):
         for b, pown in batters.items():
             print(b, pown)
             cls.objects.filter(dkid=int(b)).update(max_pown=pown)
-        for p, pown in pitchers.items():
-            print(p, pown)
-            cls.objects.filter(id=int(p)).update(max_pown=pown)
+        for t, pown in teams.items():
+            if pown > 0:
+                cls.objects.filter(team=t, max_pown__lte=pown).exclude(order_pos=0).update(max_pown=pown)
 
     @classmethod
     def upload_dk(cls, data):

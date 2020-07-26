@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 from .models import StackPlayer, ExportLineup, Punt, PitcherCombo
 from .utls import *
-from .tasks import save_lus, refresh_bkg, save_lineups_new
+from .tasks import save_lus, refresh_bkg, save_lineups_new_pitchers_first
 
 from teams.models import Team
 from teams.tasks import update_projected, manual_live_lu_update
@@ -215,11 +215,12 @@ def team_breakdown(request):
     if request.is_ajax:
         user = request.user
         team_id = request.POST.get("team")
-        p_combo, batters, pitchers = team_breakdown_data(team_id, user.pk)
+        p_combo, batters, pitchers, lu_type = team_breakdown_data(team_id, user.pk)
         cont_dict = {
             "p_combo": p_combo,
             "batters": batters,
-            "pitchers": pitchers
+            "pitchers": pitchers,
+            "lu_type": lu_type
         }
         html = render_to_string("slate/team_breakdown.html", cont_dict, request=request)
         response_data = {"html": html}
@@ -233,7 +234,7 @@ def lineup_builder(request):
         user = request.user
         save_pown = request.POST.get("save", None)
         if not save_pown:
-            save_lineups_new(request.POST, user)
+            save_lineups_new_pitchers_first(request.POST, user)
         else:
             line_config = {"pitchers": {}, "teams": {}, "bats": {}}
             line_config["total"] = request.POST.get("total_lus") if not save_pown else 1
@@ -247,7 +248,7 @@ def lineup_builder(request):
                         batter = Player.objects.get(id=p.split("_")[1])
                         count = int(int(line_config["total"]) * float(percent))
                         line_config["bats"][batter.dkid] = count if not save_pown else float(percent)
-            Player.update_max_pown(line_config["bats"], line_config["pitchers"])
+            Player.update_max_pown(line_config["bats"], line_config["teams"])
             Team.update_max_pown(line_config["teams"])
     teams = Team.objects.filter(on_slate=True).order_by("-max_stack")
     batters = Player.objects.all_slate_batters()

@@ -5,7 +5,7 @@
 {% localtime on %}
 <body class="body">
 <div class="main">
-    <div class="container-fluid" style="margin-top: 20px; font-size: 1em">
+    <div class="container-fluid" style="margin-top: 20px; font-size: 1.5em">
         <div class="row">
             <div class="col-sm-7">
                 {% if teams %}
@@ -57,8 +57,8 @@
     </div>
     <div class="modal fade bd-example-modal-lg" id="bannerformmodal" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" id="pstats-modal">
+        <div class="modal-dialog modal-lg" style="width:1500px">
+            <div class="modal-content" id="pstats-modal" style="width:1250px">
             </div>
         </div>
     </div>
@@ -86,6 +86,31 @@
                     $( "#pstats-modal" ).html(responseData.html);
                     $('#bannerformmodal').modal('show');
                 }, error: function(error){
+                    console.log(error);
+                }
+            })
+        });
+
+        $('.team-stats').click(function () {
+            var team = $(this).attr('data-team');
+            var pitcher = $(this).attr('data-pitcher');
+            var url = "{% url 'players:pstats' %}";
+            var method = 'POST';
+            var data = {"team": team, "pitcher": pitcher};
+            $.ajax({
+                url: url,
+                method: method,
+                data: data,
+                success: function (responseData) {
+                    $("#pstats-modal").html(responseData.html);
+                    $('#pstats').dataTable({
+                        paging: false
+                    });
+                    $('#indy-pitcher').dataTable({
+                        paging: false
+                    });
+                    $('#bannerformmodal').modal('show');
+                }, error: function (error) {
                     console.log(error);
                 }
             })

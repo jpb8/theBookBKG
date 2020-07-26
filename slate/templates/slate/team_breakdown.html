@@ -1,5 +1,5 @@
-<div style="margin: 20px; font-size: 1.5em">
-    <div style="float: left">
+<div class="row" style="margin: 20px; font-size: 1.5em">
+    <div class="col">
         <h1>Pitcher Combos</h1>
         {% if p_combo %}
         {% for p in p_combo %}
@@ -12,8 +12,14 @@
         <p>{{ p.p }} - {{ p.cnt }}</p>
         {% endfor %}
         {% endif %}
+        <h1>Lineup Types</h1>
+        {% if lu_type %}
+        {% for lut in lu_type %}
+        <p>{{ lut.type }} - {{ lut.cnt }}</p>
+        {% endfor %}
+        {% endif %}
     </div>
-    <div style="float: right">
+    <div class="col">
         <h1>Batters</h1>
         {% if batters %}
         {% for p in batters %}
@@ -21,4 +27,5 @@
         {% endfor %}
         {% endif %}
     </div>
+
 </div>

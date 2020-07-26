@@ -4,6 +4,7 @@ from .models import Team, DefaultOrders
 from players.models import Player
 from huey.contrib.djhuey import db_task, db_periodic_task
 from huey import crontab
+from slate.models import StackPlayer
 
 matchup_mapper = {
     "Default vs. RHP": "R",
@@ -63,6 +64,7 @@ def update_live_lus():
             for o, p in order.items():
                 print(o, p, t)
                 Player.objects.filter(rotowire_name=p, team=t.dk_name).update(order_pos=o)
+    StackPlayer.objects.delete_not_in_order()
 
 
 @db_periodic_task(crontab(minute='*/10', hour='19-22'))

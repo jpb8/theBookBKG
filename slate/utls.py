@@ -96,20 +96,26 @@ def tm_cnt(user):
 def hitter_cnt(user):
     with connection.cursor() as cursor:
         cursor.execute('''
-                        with t as (select * from slate_exportlineup where user_id={}),
-                        tot as (select count(*) as cnt from slate_exportlineup where user_id={}),
+                        with t as (select * from slate_exportlineup where user_id={user}),
+                        tot as (select count(*) as cnt from slate_exportlineup where user_id={user}), 
                         a as (select "fB" as p from t union all select "sB" as p from t 
                         union all select "tB" as p from t union all select ss from t
                         union all select of1 from t as p union all select of2 as p from t 
-                        union all select of3 as p from t union all select c as p from t),
-                        p as (select count(p) as cnt, p, tot.cnt as totcnt from a, tot group by p, tot.cnt)
-                        select p.p, p.cnt, pp.pown, 
+                        union all select of3 as p from t union all select c as p from t), 
+                        p as (select count(p) as cnt, p, tot.cnt as totcnt from a, tot group by p, tot.cnt), 
+                        starters as (select pp.dk_name, tt.opp
+                        from players_player pp
+                        left join teams_team tt on tt.dk_name = pp.team
+                        where pp.starting = true)
+                        select p.p, p.cnt, pp.pown, pp."position" as pos, pp.second_pos as pos2, 
+                        starters.dk_name as opp, pp.team, pp.salary as sal,
                         round(((p.cnt::numeric/p.totcnt::numeric) - pp.pown),2) as field,
                         round((p.cnt::numeric/p.totcnt::numeric),2) as myPown
                         from p
                         left join players_player pp on pp.name_id = p.p
+                        left join starters on starters.opp = pp.team
                         order by p.cnt desc;
-                        '''.format(user, user))
+                        '''.format(user=user))
         qs = dictfetchall(cursor)
     return qs
 
@@ -236,7 +242,15 @@ def team_breakdown_data(team, user):
                         select count(p) as cnt, p from a group by p order by cnt desc;
                         '''.format(team, user))
         pitchers = dictfetchall(cursor)
-    return p_combo, batters, pitchers
+        cursor.execute('''
+                        select count(lu_type) as cnt, lu_type as type
+                        from slate_exportlineup el
+                        where el.combo like '%{}%' and user_id={}
+                        group by el.lu_type
+                        order by count(el.lu_type) desc;
+                        '''.format(team, user))
+        lu_type = dictfetchall(cursor)
+    return p_combo, batters, pitchers, lu_type
 
 
 def indy_pitcher(pitcher):

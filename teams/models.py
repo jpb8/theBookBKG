@@ -56,6 +56,7 @@ class Team(models.Model):
             cls.objects.filter(dk_name=t).update(max_stack=pown)
 
 
+
 class OrdersManager(models.Manager):
     def projected(self, team, game_type):
         return self.get_queryset().filter(game_type=game_type, team__dk_name=team)

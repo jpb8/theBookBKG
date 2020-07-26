@@ -28,7 +28,10 @@
         {% if h_cnt %}
         {% for h in h_cnt %}
         <p>
-            {{ h.p }}<br>
+            <a href="#" data-toggle="modal" class="team-stats" data-team="{{ h.team }}" data-pitcher="{{ h.opp }}">
+                {{ h.p }} {{ h.team }}<br>
+                {{ h.pos }} {{ h.pos2 }} {{ h.sal}}
+            </a><br>
             Count: {{ h.cnt }} Your POwn: {{ h.mypown }}<br>
             Field Owned: {{ h.pown }} Diff From Field: {{ h.field }}
         </p>
