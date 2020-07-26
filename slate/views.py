@@ -236,7 +236,7 @@ def lineup_builder(request):
         if not save_pown:
             save_lineups_new_pitchers_first(request.POST, user)
         else:
-            line_config = {"pitchers": {}, "teams": {}, "bats": {}}
+            line_config = {"proj": {}, "teams": {}, "bats": {}}
             line_config["total"] = request.POST.get("total_lus") if not save_pown else 1
             for p, percent in request.POST.items():
                 if p.startswith("team_"):
@@ -245,10 +245,16 @@ def lineup_builder(request):
                         line_config["teams"][p.split("_")[1]] = count if not save_pown else float(percent)
                 elif p.startswith("bat_"):
                     if float(percent) > 0 or save_pown:
-                        batter = Player.objects.get(id=p.split("_")[1])
+                        batter = int(p.split("_")[1])
                         count = int(int(line_config["total"]) * float(percent))
-                        line_config["bats"][batter.dkid] = count if not save_pown else float(percent)
-            Player.update_max_pown(line_config["bats"], line_config["teams"])
+                        line_config["bats"][batter] = count if not save_pown else float(percent)
+                elif p.startswith("proj_"):
+                    if float(percent) > 0 or save_pown:
+                        batter = int(p.split("_")[1])
+                        pnts = float(percent)
+                        print(batter, pnts)
+                        line_config["proj"][batter] = pnts
+            Player.update_max_pown(line_config["bats"], line_config["teams"], line_config["proj"])
             Team.update_max_pown(line_config["teams"])
     teams = Team.objects.filter(on_slate=True).order_by("-max_stack")
     batters = Player.objects.all_slate_batters()

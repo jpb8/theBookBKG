@@ -5,7 +5,7 @@
 {% localtime on %}
 <body class="body">
 <div class="main">
-    <div class="container-fluid" style="margin-top: 20px; font-size: 1.5em">
+    <div class="container-fluid" style="margin-top: 20px; font-size: 1.25em">
         <div class="row">
             <div class="col-sm-7">
                 {% if teams %}
@@ -41,6 +41,9 @@
                                 </div>
                                 <input type="number" step=".01" class="form-control" id="bat_{{ b.pk }}"
                                        name="bat_{{ b.pk }}" value="{{ b.max_pown }}" aria-label="Small"
+                                       aria-describedby="lbl{{ b.pk }}">
+                                <input type="number" step=".01" class="form-control" id="proj_{{ b.pk }}"
+                                       name="proj_{{ b.pk }}" value="{{ b.pts }}" aria-label="Small"
                                        aria-describedby="lbl{{ b.pk }}">
                             </div>
                             {% endfor %}
