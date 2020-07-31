@@ -136,6 +136,8 @@ class PitcherComboManager(models.Manager):
             data.append({
                 "p1": c.p1.name_id,
                 "p2": c.p2.name_id,
+                "opp1": c.p1.opp,
+                "opp2": c.p2.opp,
                 "salary": c.p1.salary + c.p2.salary,
                 "percent": c.percent
             })

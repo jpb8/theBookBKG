@@ -228,7 +228,7 @@ def add_pitchers_lineups(p_combo, lu_config, blacklist, user, pc_cnt, remaining)
             tcnt = math.ceil(percent * pc_cnt)
         else:
             tcnt = round(percent * pc_cnt)
-        lines = fetch_team_lines(50000 - p_combo["salary"], code, blacklist)
+        lines = fetch_team_lines(50000 - p_combo["salary"], code, blacklist, p_combo["opp1"], p_combo["opp2"])
         added = 0
         for lu in lines:
             lu_dict = build_lineup_dict(lu, p_combo["p1"], p_combo["p2"])

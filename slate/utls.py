@@ -48,7 +48,7 @@ def fetch_top_lines(cost, team_code, count, punt):
     return qs
 
 
-def fetch_team_lines(cost, team_code, blacklist):
+def fetch_team_lines(cost, team_code, blacklist, opp1="BLANK", opp2="BLANK"):
     bl_sql = ""
     if len(blacklist) > 0:
         bl_sql = " and ("
@@ -59,11 +59,12 @@ def fetch_team_lines(cost, team_code, blacklist):
         cursor.execute('''
                         select * from bkg_slate_lus l 
                         where l."TMCODE" LIKE '%{}%' 
+                        and (l."ALLTMS" not like '%{}%' and l."ALLTMS" not like '%{}%')
                         and l."COST"<={} 
                         and l."COST">={}-1000 
                         {}
                         order by l.proj desc, l."COST" desc;
-                        '''.format(team_code, cost, cost, bl_sql))
+                        '''.format(team_code, opp1, opp2, cost, cost, bl_sql))
         qs = dictfetchall(cursor)
         if len(qs) == 0:
             print("{} is empty with blacklist {} and cost {}".format(team_code, blacklist, cost))

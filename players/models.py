@@ -77,6 +77,10 @@ class Player(models.Model):
         else:
             return "{} {} {}".format(self.dk_name, self.position, self.team)
 
+    @property
+    def opp(self):
+        return Team.objects.get(dk_name=self.team).opp
+
     @classmethod
     def team_starter_trows(cls, team):
         if cls.objects.filter(team=team, starting=True).exists():
